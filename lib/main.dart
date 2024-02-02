@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/body_pages.dart';
 import 'package:menu_craft/models/navigation_icons.dart';
+import 'package:menu_craft/pages/scan_qr_page.dart';
 import 'package:menu_craft/widgets/bottom_navigation/navigation_destination.dart';
 
 void main() {
@@ -16,8 +17,23 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        primaryColor: Colors.orangeAccent,
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.amber,
+          secondary: Color.fromRGBO(74, 68, 88, 1),
+          primaryContainer: Color.fromRGBO(74, 68, 88, 1),
+          primary: Color.fromRGBO(16, 20, 24, 1),
+
+        ),
+        cardColor: const Color.fromRGBO(236, 230, 240, 1),
+        canvasColor: const Color.fromRGBO(16, 20, 24, 1),
+        // colorScheme: const ColorScheme.dark(secondary: Color.fromRGBO(74, 68, 88, 1)),
       ),
+
+      routes: {
+        '/scanner': (context) => const QrScanner(),
+      },
+
       home: const RootPage(),
     );
   }
@@ -55,6 +71,7 @@ class _RootPageState extends State<RootPage> {
       body: BodyPages.pages[currentPage],
       bottomNavigationBar: NavigationBar(
         backgroundColor: const Color.fromRGBO(16, 20, 24, 1),
+        overlayColor: MaterialStateProperty.all(Colors.amber),
         destinations: NavigationIcons.icons
             .map((icon) => navigationDestination(icon))
             .toList(),
