@@ -1,6 +1,5 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_craft/pages/scan_qr_page.dart';
+
 
 class CardButton extends StatelessWidget {
   const CardButton({super.key});
@@ -8,50 +7,36 @@ class CardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       alignment: Alignment.topCenter,
-      child: OpenContainer(
-        transitionType:   ContainerTransitionType.fade,
-          closedBuilder: (BuildContext context, void Function() action) {
-
-           return FilledButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme
-                      .of(context)
-                      .cardColor,
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    )),
+      child: FilledButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            Theme.of(context).cardColor,
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          )),
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, '/scanner');
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Scan QR Code",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold),
               ),
-              onPressed: () {
-                action();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Scan QR Code",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Image(image: AssetImage('images/qr.png')),
-                  ],
-                ),
-              ),
-            );
-          },
-          openBuilder: (BuildContext context,
-              void Function() action) {
-            return QrScanner( action,);
-          },
-
+              Image(image: AssetImage('images/qr.png')),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -1,26 +1,29 @@
 import "package:flutter/material.dart";
 import "package:mobile_scanner/mobile_scanner.dart";
 
-
 class QrScanner extends StatefulWidget {
-  void Function() action;
+  // void Function() action;
 
-
-  QrScanner(this.action, {super.key});
+  const QrScanner({super.key});
 
   @override
-  QrScannerState createState() =>
-      QrScannerState();
+  QrScannerState createState() => QrScannerState();
 }
 
 class QrScannerState extends State<QrScanner> {
   String overlayText = "Please scan QR Code";
-  bool camStarted = false;
+  bool camStarted = true;
 
   final MobileScannerController controller = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
-    autoStart: false,
+    autoStart: true,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    startCamera();
+  }
 
   @override
   void dispose() {
@@ -57,9 +60,11 @@ class QrScannerState extends State<QrScanner> {
       overlayText = barcodeCapture.barcodes.last.displayValue ??
           barcode.rawValue ??
           'Barcode has no displayable value';
-
+      camStarted = false;
     });
-    widget.action();
+
+    Navigator.maybePop(context);
+    // widget.action();
   }
 
   @override
@@ -71,105 +76,51 @@ class QrScannerState extends State<QrScanner> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Scanner with Overlay Example app'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: camStarted
-                  ? Stack(
-                fit: StackFit.expand,
-                children: [
-                  Center(
-                    child: MobileScanner(
-                      fit: BoxFit.contain,
-                      onDetect: onBarcodeDetect,
-                      overlay: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Opacity(
-                            opacity: 0.7,
-                            child: Text(
-                              overlayText,
-                              style: const TextStyle(
-                                backgroundColor: Colors.black26,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              maxLines: 1,
-                            ),
-                          ),
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+          Expanded(
+              child: Stack(fit: StackFit.expand, children: [
+            Center(
+              child: MobileScanner(
+                fit: BoxFit.fitHeight,
+                onDetect: onBarcodeDetect,
+                overlay: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Opacity(
+                      opacity: 1,
+                      child: Text(
+                        "Please scan a valid QR Code",
+                        style: TextStyle(
+                          backgroundColor: Colors.black54,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 4824,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      controller: controller,
-                      scanWindow: scanWindow,
-
-                    ),
-                  ),
-                  CustomPaint(
-                    painter: QrScannerOverlay(scanWindow),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ValueListenableBuilder<TorchState>(
-                            valueListenable: controller.torchState,
-                            builder: (context, value, child) {
-                              final Color iconColor;
-
-                              switch (value) {
-                                case TorchState.off:
-                                  iconColor = Colors.black;
-                                case TorchState.on:
-                                  iconColor = Colors.yellow;
-                              }
-
-                              return IconButton(
-                                onPressed: () => controller.toggleTorch(),
-                                icon: Icon(
-                                  Icons.flashlight_on,
-                                  color: iconColor,
-                                ),
-                              );
-                            },
-                          ),
-                          IconButton(
-                            onPressed: () => controller.switchCamera(),
-                            icon: const Icon(
-                              Icons.cameraswitch_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                        maxLines: 1,
                       ),
                     ),
                   ),
-                ],
-              )
-                  : const Center(
-                child: Text("Tap on Camera to activate QR Scanner"),
+                ),
+                controller: controller,
+                scanWindow: scanWindow,
               ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: camStarted
-          ? null
-          : FloatingActionButton(
-        onPressed: startCamera,
-        child: const Icon(Icons.camera_alt),
-      ),
-    );
+            CustomPaint(
+              painter: QrScannerOverlay(scanWindow),
+            ),
+            // const Padding(
+            //   padding: EdgeInsets.all(16.0),
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: Text("MenuCraft"),
+            //   ),
+            // ),
+          ]))
+        ]));
   }
 }
 

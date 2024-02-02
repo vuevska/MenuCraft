@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/body_pages.dart';
 import 'package:menu_craft/models/navigation_icons.dart';
+import 'package:menu_craft/pages/scan_qr_page.dart';
 import 'package:menu_craft/widgets/bottom_navigation/navigation_destination.dart';
 
 void main() {
@@ -28,6 +29,11 @@ class MyApp extends StatelessWidget {
         canvasColor: const Color.fromRGBO(16, 20, 24, 1),
         // colorScheme: const ColorScheme.dark(secondary: Color.fromRGBO(74, 68, 88, 1)),
       ),
+
+      routes: {
+        '/scanner': (context) => const QrScanner(),
+      },
+
       home: const RootPage(),
     );
   }
