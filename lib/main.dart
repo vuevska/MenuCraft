@@ -16,7 +16,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        primaryColor: Colors.orangeAccent,
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.amber,
+          secondary: Color.fromRGBO(74, 68, 88, 1),
+          primaryContainer: Color.fromRGBO(74, 68, 88, 1),
+          primary: Color.fromRGBO(16, 20, 24, 1),
+
+        ),
+        cardColor: const Color.fromRGBO(236, 230, 240, 1),
+        canvasColor: const Color.fromRGBO(16, 20, 24, 1),
+        // colorScheme: const ColorScheme.dark(secondary: Color.fromRGBO(74, 68, 88, 1)),
       ),
       home: const RootPage(),
     );
@@ -55,6 +65,7 @@ class _RootPageState extends State<RootPage> {
       body: BodyPages.pages[currentPage],
       bottomNavigationBar: NavigationBar(
         backgroundColor: const Color.fromRGBO(16, 20, 24, 1),
+        overlayColor: MaterialStateProperty.all(Colors.amber),
         destinations: NavigationIcons.icons
             .map((icon) => navigationDestination(icon))
             .toList(),
