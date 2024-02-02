@@ -56,8 +56,12 @@ class ProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // TODO: dodadi funkcii za prenosacuvanje kon drugi stranici
                   const ProfileMenuItem(title: "Your Menus"),
-                  const ProfileMenuItem(title: "Favorite Menus"),
+                  ProfileMenuItem(
+                    title: "Favorite Menus",
+                    onTap: () {},
+                  ),
                   const ProfileMenuItem(title: "Profile Settings"),
                   const SizedBox(height: 40),
                   ElevatedButton(

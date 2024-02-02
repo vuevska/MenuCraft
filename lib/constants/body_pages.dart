@@ -8,7 +8,7 @@ class BodyPages {
   static List<Widget> pages = const [
     HomePage(),
     SearchPage(),
-    FavouritesPage(),
-    ProfilePage()
+    ProfilePage(),
+    FavouritesPage()
   ];
 }

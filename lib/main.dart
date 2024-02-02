@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:menu_craft/models/body_pages.dart';
-import 'package:menu_craft/models/navigation_icons.dart';
+import 'package:menu_craft/constants/body_pages.dart';
+import 'package:menu_craft/constants/navigation_icons.dart';
 import 'package:menu_craft/widgets/bottom_navigation/navigation_destination.dart';
 
 void main() {
