@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:mobile_scanner/mobile_scanner.dart";
 
 class QrScanner extends StatefulWidget {
-  // void Function() action;
 
   const QrScanner({super.key});
 
