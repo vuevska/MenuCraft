@@ -48,6 +48,8 @@ dependencies:
   cloud_firestore: ^4.15.3
   geocoding: ^2.1.1
   geolocator: ^10.1.0
+  shimmer: ^3.0.0
+  animate_do: ^3.3.3
 
 dev_dependencies:
   flutter_test:
