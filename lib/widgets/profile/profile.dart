@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/services/auth_service.dart';
+import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:provider/provider.dart';
 
@@ -28,14 +29,16 @@ class _ProfileState extends State<Profile> {
               margin: const EdgeInsets.only(bottom: 10),
               child: Consumer<UserProvider>(
                 builder: (context, user, child) {
+
                   return Column(
                     children: [
                       CircleAvatar(
                         radius: 65,
                         backgroundColor: Colors.purple,
                         child: Text(
-                          user.initial ?? "",
-                          style: const TextStyle(fontSize: 44, color: Colors.white),
+                          user.initial(),
+                          style: const TextStyle(
+                              fontSize: 44, color: Colors.white),
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -43,18 +46,25 @@ class _ProfileState extends State<Profile> {
                         user.fullName ?? "",
                         style: const TextStyle(fontSize: 20),
                       ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.pin_drop_rounded,
-                            color: Colors.green,
-                          ),
-                          Text(
-                            'Skopje, MK', //TODO: da se zemi od user
-                          )
-                        ],
-                      )
+                      Consumer<LocationService>(
+                          builder: (context, LocationService location, child) {
+                        if (location.currentPosition == null) {
+                          return const Text("Loading...");
+                        }
+
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.pin_drop_rounded,
+                              color: Colors.green,
+                            ),
+                            Text(
+                              location.currentAddress,
+                            )
+                          ],
+                        );
+                      }),
                     ],
                   );
                 },
@@ -83,6 +93,10 @@ class _ProfileState extends State<Profile> {
                             context, "Successfully Logged Out!");
                         context.read<UserProvider>().setUser(null);
                         widget.refresh();
+                      }).catchError((error) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(error.toString()),
+                        ));
                       });
                     },
                     child: const Text(

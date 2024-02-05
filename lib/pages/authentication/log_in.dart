@@ -56,12 +56,11 @@ class _LoginPageState extends State<LoginPage> {
                   AuthService.signInWithMail(
                           context, _emailController.text, _passController.text)
                       .then((value) {
-
                     context.read<UserProvider>().setUser(value);
 
                     widget.refresh();
                   }).catchError((onError) {
-                     //TODO: da se sredi error handling
+                    //TODO: da se sredi error handling
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(onError.toString()),
                     ));
@@ -84,8 +83,11 @@ class _LoginPageState extends State<LoginPage> {
               SignInButton(
                 Buttons.googleDark,
                 onPressed: () {
-                  AuthService.signInWithGoogle()
-                      .then((value) => widget.refresh());
+                  AuthService.signInWithGoogle().then((value) {
+                    context.read<UserProvider>().setUser(value);
+
+                    widget.refresh();
+                  });
                 },
               ),
             ],

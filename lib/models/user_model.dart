@@ -17,8 +17,7 @@ class UserModel {
       userId: data['uid'],
       email: data['email'],
       name: data['name'],
-      surname: data['surname'],
-
+      surname: data['surname'] ?? "",
     );
   }
 

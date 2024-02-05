@@ -9,13 +9,24 @@ class DbAuthService {
     String uid,
     String email,
     String name,
-      String surname,
+    String surname,
   ) async {
-
     await _db.collection('users').doc(uid).set({
       'email': email,
       'name': name,
       'surname': surname,
+      'uid': uid,
+    });
+  }
+
+  Future<void> addGoogleAccount(
+    String uid,
+    String email,
+    String name,
+  ) async {
+    await _db.collection("users").doc(uid).set({
+      'email': email,
+      'name': name,
       'uid': uid,
     });
   }

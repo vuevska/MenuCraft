@@ -21,16 +21,14 @@ class AuthService {
     String email,
     String password,
   ) async {
-    UserCredential result = await _auth.signInWithEmailAndPassword(
-        email: email, password: password).then((value)  {
-          userCredential = value;
-          user = value.user;
-          return value;
-        });
+    UserCredential result = await _auth
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) {
+      userCredential = value;
+      user = value.user;
+      return value;
+    });
     return await _db.getUser(result.user!.uid);
-
-
-
   }
 
   static Future signUpWithMail(
@@ -55,12 +53,12 @@ class AuthService {
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
+        content: Text(e.toString()), // TODO: da go premestam vo glavnio del
       ));
     }
   }
 
-  static Future<UserCredential?> signInWithGoogle() async {
+  static Future<UserModel> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -77,18 +75,20 @@ class AuthService {
         await FirebaseAuth.instance.signInWithCredential(credential);
     user = userCredential?.user;
 
+    _db.addGoogleAccount(
+      userCredential?.user?.uid ?? "",
+      //TODO: sigurno postoj podobar nacin za ova da se napraj
+      userCredential?.additionalUserInfo?.profile?["email"],
+      userCredential?.additionalUserInfo?.profile?["name"],
+    );
     // Once signed in, return the UserCredential
-    return userCredential;
+    return await _db.getUser(user!.uid);
   }
 
   static Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-      user = FirebaseAuth.instance.currentUser;
-
-    } catch (e) {
-      print("Error signing out: $e");
-    }
+    await _auth.signOut();
+    user = null;
+    userCredential = null;
   }
 
   static User? getCurrentUser() {

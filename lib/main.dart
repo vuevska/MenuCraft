@@ -6,6 +6,7 @@ import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/pages/authentication/sign_up.dart';
 import 'package:menu_craft/pages/scan_qr_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
+import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/widgets/bottom_navigation/navigation_destination.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (context) => UserProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => LocationService(),
           ),
         ],
         child: MaterialApp(
@@ -70,6 +74,8 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<LocationService>().determinePosition();
+
     return Scaffold(
       appBar: AppBar(
         // leading: IconButton(

@@ -48,13 +48,11 @@ class _SignUpState extends State<SignUp> {
                 controller: _passController,
                 icon: Icons.password,
                 pass: true),
-
             textInputAuth(
                 label: "Confirm Password",
                 controller: _passConfirmController,
                 icon: Icons.password,
                 pass: true),
-
             ElevatedButton(
               onPressed: () {
                 if (_passController.text == _passConfirmController.text) {
@@ -82,12 +80,6 @@ class _SignUpState extends State<SignUp> {
               },
               child: const Text("Log In"),
             )
-            // IconButton(
-            //   onPressed: () => {},
-            //   icon: Icons.,
-            //   color: Colors.white,
-            //   iconSize: 30,
-            // ), TODO: Add social media login
           ],
         ),
       ),
