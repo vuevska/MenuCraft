@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/authentication/input_auth.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginPage extends StatefulWidget {
   final Function refresh;
@@ -46,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _passController,
                   icon: Icons.password,
                   pass: true),
-
               ElevatedButton(
                 onPressed: () {
                   AuthService.signInWithMail(
@@ -63,13 +63,14 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.pushNamed(context, '/signup');
                 },
                 child: const Text("Sign Up"),
-              )
-              // IconButton(
-              //   onPressed: () => {},
-              //   icon: Icons.,
-              //   color: Colors.white,
-              //   iconSize: 30,
-              // ), TODO: Add social media login
+              ),
+              SignInButton(
+                Buttons.googleDark,
+                onPressed: () {
+                  AuthService.signInWithGoogle()
+                      .then((value) => widget.refresh());
+                },
+              ),
             ],
           ),
         ),
