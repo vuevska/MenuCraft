@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
+import 'package:provider/provider.dart';
 
 import 'menu_item.dart';
 
@@ -24,34 +26,38 @@ class _ProfileState extends State<Profile> {
             Container(
               padding: const EdgeInsets.only(top: 40),
               margin: const EdgeInsets.only(bottom: 10),
-              child: const Column(
-                children: [
-                  CircleAvatar(
-                    radius: 65,
-                    backgroundColor: Colors.purple,
-                    child: Text(
-                      'JD',
-                      style: TextStyle(fontSize: 44, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Text(
-                    'Jane Doe',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              child: Consumer<UserProvider>(
+                builder: (context, user, child) {
+                  return Column(
                     children: [
-                      Icon(
-                        Icons.pin_drop_rounded,
-                        color: Colors.green,
+                      CircleAvatar(
+                        radius: 65,
+                        backgroundColor: Colors.purple,
+                        child: Text(
+                          user.initial ?? "",
+                          style: const TextStyle(fontSize: 44, color: Colors.white),
+                        ),
                       ),
+                      const SizedBox(height: 15),
                       Text(
-                        'Skopje, MK',
+                        user.fullName ?? "",
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.pin_drop_rounded,
+                            color: Colors.green,
+                          ),
+                          Text(
+                            'Skopje, MK', //TODO: da se zemi od user
+                          )
+                        ],
                       )
                     ],
-                  )
-                ],
+                  );
+                },
               ),
             ),
             Container(
@@ -73,7 +79,9 @@ class _ProfileState extends State<Profile> {
                   ElevatedButton(
                     onPressed: () {
                       AuthService.signOut().then((value) {
-                        ToastificationUtil.show(context, "Successfully Logged Out!");
+                        ToastificationUtil.show(
+                            context, "Successfully Logged Out!");
+                        context.read<UserProvider>().setUser(null);
                         widget.refresh();
                       });
                     },

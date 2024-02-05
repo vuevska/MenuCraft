@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/authentication/input_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
+
+import '../../models/providers/user_provider.dart';
 
 class LoginPage extends StatefulWidget {
   final Function refresh;
@@ -31,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       return Scaffold(
+          //TODO: ko ce vnesis gresen login da go snema loading
           body: Container(
         color: Theme.of(context).primaryColor,
         child: Container(
@@ -51,7 +55,20 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   AuthService.signInWithMail(
                           context, _emailController.text, _passController.text)
-                      .then((value) => widget.refresh());
+                      .then((value) {
+
+                    context.read<UserProvider>().setUser(value);
+
+                    widget.refresh();
+                  }).catchError((onError) {
+                     //TODO: da se sredi error handling
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(onError.toString()),
+                    ));
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  });
                   setState(() {
                     _isLoading = true;
                   });

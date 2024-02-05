@@ -13,12 +13,15 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _passConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( //TODO:  da se sredi malce izgledov
+    return Scaffold(
+        //TODO:  da se sredi malce izgledov
         body: Container(
       color: Theme.of(context).primaryColor,
       child: Container(
@@ -29,6 +32,16 @@ class _SignUpState extends State<SignUp> {
                 label: "Email",
                 controller: _emailController,
                 icon: Icons.email,
+                pass: false),
+            textInputAuth(
+                label: "Name",
+                controller: _nameController,
+                icon: Icons.account_box,
+                pass: false),
+            textInputAuth(
+                label: "Surname",
+                controller: _surnameController,
+                icon: Icons.account_box,
                 pass: false),
             textInputAuth(
                 label: "Password",
@@ -46,8 +59,12 @@ class _SignUpState extends State<SignUp> {
               onPressed: () {
                 if (_passController.text == _passConfirmController.text) {
                   AuthService.signUpWithMail(
-                          context, _emailController.text, _passController.text)
-                      .then((value) {
+                    context,
+                    _emailController.text,
+                    _passController.text,
+                    _nameController.text,
+                    _surnameController.text,
+                  ).then((value) {
                     if (value != null) {
                       ToastificationUtil.show(
                           context, "Please verify your email address");
@@ -81,6 +98,8 @@ class _SignUpState extends State<SignUp> {
   void dispose() {
     super.dispose();
     _emailController.dispose();
+    _nameController.dispose();
+    _surnameController.dispose();
     _passController.dispose();
     _passConfirmController.dispose();
   }
