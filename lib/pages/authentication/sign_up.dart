@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/authentication/input_auth.dart';
@@ -53,32 +54,46 @@ class _SignUpState extends State<SignUp> {
                 controller: _passConfirmController,
                 icon: Icons.password,
                 pass: true),
-            ElevatedButton(
-              onPressed: () {
-                if (_passController.text == _passConfirmController.text) {
-                  AuthService.signUpWithMail(
-                    context,
-                    _emailController.text,
-                    _passController.text,
-                    _nameController.text,
-                    _surnameController.text,
-                  ).then((value) {
-                    if (value != null) {
-                      ToastificationUtil.show(
-                          context, "Please verify your email address");
-                      Navigator.maybePop(context);
-                    }
-                  });
-                } //TODO: Add error handling
-                //TODO: Add password strength check
-              },
-              child: const Text('Sign Up'),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_passController.text == _passConfirmController.text) {
+                    AuthService.signUpWithMail(
+                      context,
+                      _emailController.text,
+                      _passController.text,
+                      _nameController.text,
+                      _surnameController.text,
+                    ).then((value) {
+                      if (value != null) {
+                        ToastificationUtil.show(
+                            context, "Please verify your email address");
+                        Navigator.maybePop(context);
+                      }
+                    }).catchError((onError){
+
+                      onError as FirebaseAuthException;
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(onError.message ?? "" )),
+                      );
+                    });
+                  } //TODO: Add error handling
+                  //TODO: Add password strength check
+                },
+                child: const Text('Sign Up'),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.maybePop(context);
-              },
-              child: const Text("Log In"),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.maybePop(context);
+                },
+                child: const Text("Log In"),
+              ),
             )
           ],
         ),

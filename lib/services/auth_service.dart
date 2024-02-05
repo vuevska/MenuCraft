@@ -21,9 +21,21 @@ class AuthService {
     String email,
     String password,
   ) async {
+    if(email.isEmpty || password.isEmpty){
+      throw FirebaseAuthException(
+        code: "empty",
+        message: "Please fill in all the fields",
+      );
+    }
     UserCredential result = await _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
+          if(value.user?.emailVerified == false){
+            throw FirebaseAuthException(
+              code: "emailNotVerified",
+              message: "Please verify your email",
+            );
+          }
       userCredential = value;
       user = value.user;
       return value;
@@ -38,35 +50,35 @@ class AuthService {
     String name,
     String surname,
   ) async {
-    try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-
-      user = result.user;
-      userCredential = result;
-      user?.sendEmailVerification();
-      user?.updateDisplayName(name);
-
-      _db.addUserEmail(user!.uid, email, name, surname);
-
-      return user;
-    } catch (e) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()), // TODO: da go premestam vo glavnio del
-      ));
+    if(email.isEmpty || password.isEmpty || name.isEmpty || surname.isEmpty){
+      throw FirebaseAuthException(
+        code: "empty",
+        message: "Please fill in all the fields",
+      );
     }
+
+    UserCredential result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+
+
+    await result.user?.sendEmailVerification();
+
+    await _db.addUserEmail(result.user!.uid, email, name, surname);
+
+    await _auth.signOut();
+
+    return result.user;
   }
 
   static Future<UserModel> signInWithGoogle() async {
-    // Trigger the authentication flow
+// Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
+// Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
-    // Create a new credential
+// Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
@@ -77,11 +89,11 @@ class AuthService {
 
     _db.addGoogleAccount(
       userCredential?.user?.uid ?? "",
-      //TODO: sigurno postoj podobar nacin za ova da se napraj
+//TODO: sigurno postoj podobar nacin za ova da se napraj
       userCredential?.additionalUserInfo?.profile?["email"],
       userCredential?.additionalUserInfo?.profile?["name"],
     );
-    // Once signed in, return the UserCredential
+// Once signed in, return the UserCredential
     return await _db.getUser(user!.uid);
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/authentication/input_auth.dart';
@@ -51,34 +52,47 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _passController,
                   icon: Icons.password,
                   pass: true),
-              ElevatedButton(
-                onPressed: () {
-                  AuthService.signInWithMail(
-                          context, _emailController.text, _passController.text)
-                      .then((value) {
-                    context.read<UserProvider>().setUser(value);
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
 
-                    widget.refresh();
-                  }).catchError((onError) {
-                    //TODO: da se sredi error handling
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(onError.toString()),
-                    ));
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  });
-                  setState(() {
-                    _isLoading = true;
-                  });
-                },
-                child: const Text('Login'),
+                    onPressed: () {
+                      AuthService.signInWithMail(
+                              context, _emailController.text, _passController.text)
+                          .then((value) {
+                        context.read<UserProvider>().setUser(value);
+
+                        widget.refresh();
+                      }).catchError((onError) {
+                        //TODO: da se sredi error handling
+                        onError as FirebaseAuthException;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(onError.message ?? "" )),
+                        );
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      });
+                      setState(() {
+                        _isLoading = true;
+                      });
+                    },
+                    child: const Text('Login'),
+                  ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/signup');
-                },
-                child: const Text("Sign Up"),
+              const Divider(),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  child: const Text("Sign Up"),
+                ),
               ),
               SignInButton(
                 Buttons.googleDark,
