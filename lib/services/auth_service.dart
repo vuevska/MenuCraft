@@ -13,7 +13,12 @@ class AuthService {
   static UserCredential? userCredential;
 
   static bool isUserLoggedIn() {
+    user = FirebaseAuth.instance.currentUser;
     return FirebaseAuth.instance.currentUser != null;
+  }
+
+  static void updateCurrentUser() {
+    user = FirebaseAuth.instance.currentUser;
   }
 
   static Future<UserModel> signInWithMail(
@@ -99,6 +104,7 @@ class AuthService {
 
   static Future<void> signOut() async {
     await _auth.signOut();
+
     user = null;
     userCredential = null;
   }
@@ -109,5 +115,44 @@ class AuthService {
 
   static String? getEmailOfCurrentUser() {
     return user?.email;
+  }
+
+  static Future<void> changePassword(String currentPassword, String newPassword,
+      String confirmPassword) async {
+    if (currentPassword.isEmpty ||
+        newPassword.isEmpty ||
+        confirmPassword.isEmpty) {
+      throw FirebaseAuthException(
+        code: "empty",
+        message: "Please fill in all the fields",
+      );
+    }
+    if (newPassword != confirmPassword) {
+      throw FirebaseAuthException(
+        code: "passwordsDontMatch",
+        message: "Passwords don't match",
+      );
+    }
+
+    final credential = EmailAuthProvider.credential(
+      email: user?.email ?? "",
+      password: currentPassword,
+    );
+
+    await user
+        ?.reauthenticateWithCredential(credential)
+        .then((value) async {
+              await user?.updatePassword(newPassword).catchError((onError) {
+                throw onError;
+              });
+
+            })
+        .catchError((onError) {
+      throw onError;
+    });
+  }
+
+  static Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
   }
 }

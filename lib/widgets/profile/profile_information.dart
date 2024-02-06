@@ -36,7 +36,9 @@ class _ProfileInformationState extends State<ProfileInformation> {
               Consumer<LocationService>(
                   builder: (context, LocationService location, child) {
                 if (location.currentPosition == null) {
-                  return const Text("Loading...");
+                  return const SizedBox(
+                    height: 20,
+                  );
                 }
 
                 return Row(

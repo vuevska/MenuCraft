@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_craft/pages/authentication/send_pass_reset.dart';
 import 'package:menu_craft/pages/authentication/sign_up.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/authentication/input_auth.dart';
@@ -116,6 +117,31 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const Divider(),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {
+                        //Navigator.pushNamed(context, '/signup');
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (BuildContext context) {
+                              return const PasswordResetPage();
+                            },
+                          ),
+                        );
+                      },
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.grey),
+                        textStyle: MaterialStateProperty.all(
+                          const TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      child: const Text("Forgot Password? Reset it!"),
+                    ),
+                  ),
                   SizedBox(
                     width: double.infinity,
                     child: TextButton(
