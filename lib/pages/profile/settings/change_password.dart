@@ -45,7 +45,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   color: const Color.fromRGBO(29, 27, 32, 1),
                   borderRadius: BorderRadius.circular(16.0),
                 ),
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.all(24.0),
                   child: Column(
                     children: [

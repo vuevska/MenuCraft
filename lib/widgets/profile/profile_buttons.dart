@@ -62,7 +62,7 @@ class _ProfileButtonsState extends State<ProfileButtons> {
           ElevatedButton(
             onPressed: () {
               AuthService.signOut().then((value) {
-                ToastificationUtil.show(context, "Successfully Logged Out!");
+                InterfaceUtils.show(context, "Successfully Logged Out!");
                 context.read<UserProvider>().setUser(null);
                 widget.refresh();
               }).catchError((error) {

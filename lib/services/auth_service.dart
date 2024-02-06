@@ -17,6 +17,13 @@ class AuthService {
     return FirebaseAuth.instance.currentUser != null;
   }
 
+  static bool isGoogleUser() {
+    return user?.providerData[0].providerId == "google.com";
+  }
+  static bool isEmailUser() {
+    return user?.providerData[0].providerId == "password";
+  }
+
   static void updateCurrentUser() {
     user = FirebaseAuth.instance.currentUser;
   }
@@ -53,9 +60,16 @@ class AuthService {
     BuildContext context,
     String email,
     String password,
+    String passwordConfirm,
     String name,
     String surname,
   ) async {
+    if (password != passwordConfirm) {
+      throw FirebaseAuthException(
+        code: "passwordsDontMatch",
+        message: "Passwords don't match",
+      );
+    }
     if (email.isEmpty || password.isEmpty || name.isEmpty || surname.isEmpty) {
       throw FirebaseAuthException(
         code: "empty",
@@ -98,6 +112,7 @@ class AuthService {
       userCredential?.additionalUserInfo?.profile?["email"],
       userCredential?.additionalUserInfo?.profile?["name"],
     );
+    await _db.addNetworkImageToUser(user!.uid, user!.photoURL ?? "");
 // Once signed in, return the UserCredential
     return await _db.getUser(user!.uid);
   }
@@ -139,15 +154,11 @@ class AuthService {
       password: currentPassword,
     );
 
-    await user
-        ?.reauthenticateWithCredential(credential)
-        .then((value) async {
-              await user?.updatePassword(newPassword).catchError((onError) {
-                throw onError;
-              });
-
-            })
-        .catchError((onError) {
+    await user?.reauthenticateWithCredential(credential).then((value) async {
+      await user?.updatePassword(newPassword).catchError((onError) {
+        throw onError;
+      });
+    }).catchError((onError) {
       throw onError;
     });
   }

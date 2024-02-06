@@ -50,13 +50,13 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
             onPressed: () {
               AuthService.changePassword(_oldPassController.text,
                       _newPassController.text, _confirmPassController.text).then((value) {
-                ToastificationUtil.show(context, "Password changed successfully",type: ToastificationType.success);
+                InterfaceUtils.show(context, "Password changed successfully",type: ToastificationType.success);
                 Navigator.maybePop(context);
               })
                   .catchError((onError) {
                 onError as FirebaseAuthException;
 
-                ToastificationUtil.show(context, onError.message!,type: ToastificationType.error);
+                InterfaceUtils.show(context, onError.message!,type: ToastificationType.error);
               });
             },
             child: const Text(

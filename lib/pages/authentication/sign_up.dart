@@ -94,11 +94,12 @@ class _SignUpState extends State<SignUp> {
                           context,
                           _emailController.text,
                           _passController.text,
+                          _passConfirmController.text,
                           _nameController.text,
                           _surnameController.text,
                         ).then((value) {
                           if (value != null) {
-                            ToastificationUtil.show(
+                            InterfaceUtils.show(
                                 context, "Please verify your email address");
                             Navigator.maybePop(context);
                           }

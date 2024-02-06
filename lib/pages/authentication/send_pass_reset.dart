@@ -52,7 +52,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                   borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
                       textInputAuth(
@@ -71,14 +71,14 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                             AuthService.sendPasswordResetEmail(
                                     _emailController.text)
                                 .then((value) {
-                              ToastificationUtil.show(
+                              InterfaceUtils.show(
                                   context, "Password reset email sent!",
                                   type: ToastificationType.success);
                               Navigator.maybePop(context);
                             }).catchError((onError) {
                               onError as FirebaseAuthException;
 
-                              ToastificationUtil.show(context, onError.message!,
+                              InterfaceUtils.show(context, onError.message!,
                                   type: ToastificationType.error);
                             });
                           },

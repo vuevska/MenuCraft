@@ -55,7 +55,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(14.0),
+                  padding: const EdgeInsets.all(14.0),
                   child: Column(
                     children: [
                       ProfileSettingRow(
@@ -70,34 +70,44 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                           );
                         },
                       ),
-                      SizedBox(height: 10.0),
-                      ProfileSettingRow(
-                        title: "Change Password",
-                        onTap: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (BuildContext context) {
-                                return const ChangePasswordPage();
-                              },
-                            ),
+                      const SizedBox(height: 10.0),
+                      Builder(builder: (context) {
+                        if (AuthService.isEmailUser()) {
+                          return Column(
+                            children: [
+                              ProfileSettingRow(
+                                title: "Change Password",
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (BuildContext context) {
+                                        return const ChangePasswordPage();
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 10.0),
+                            ],
                           );
-                        },
-                      ),
-                      SizedBox(height: 10.0),
+                        }
+                        return const SizedBox.shrink();
+                      }),
+
                       ProfileSettingRow(
                         title: "Privacy and Security",
                         onTap: () {
                           Navigator.pop(context);
                         },
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       ProfileSettingRow(
                         title: "About",
                         onTap: () {
                           Navigator.pop(context);
                         },
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       ProfileSettingRow(
                         title: "Logout",
                         logout: true,
@@ -117,7 +127,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
   void signOut() {
     AuthService.signOut().then((value) {
-      ToastificationUtil.show(context, "Successfully Logged Out!");
+      InterfaceUtils.show(context, "Successfully Logged Out!");
       context.read<UserProvider>().setUser(null);
       widget.refresh();
     }).catchError((error) {

@@ -50,6 +50,8 @@ dependencies:
   geolocator: ^10.1.0
   shimmer: ^3.0.0
   animate_do: ^3.3.3
+  image_picker: ^1.0.7
+  firebase_storage: ^11.6.5
 
 dev_dependencies:
   flutter_test:
