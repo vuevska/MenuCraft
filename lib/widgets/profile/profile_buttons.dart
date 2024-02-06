@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/pages/profile/profile_settings_page.dart';
+import 'package:menu_craft/services/auth_service.dart';
+import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/profile/menu_item.dart';
+import 'package:provider/provider.dart';
 
 class ProfileButtons extends StatefulWidget {
-  const ProfileButtons({super.key});
+  const ProfileButtons({super.key, required this.refresh});
+  final Function refresh;
 
   @override
   State<ProfileButtons> createState() => _ProfileButtonsState();
@@ -52,12 +57,22 @@ class _ProfileButtonsState extends State<ProfileButtons> {
           ),
           const SizedBox(height: 40),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              AuthService.signOut().then((value) {
+                ToastificationUtil.show(context, "Successfully Logged Out!");
+                context.read<UserProvider>().setUser(null);
+                widget.refresh();
+              }).catchError((error) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(error.toString()),
+                ));
+              });
+            },
             child: const Text(
               'Log Out',
               style: TextStyle(fontSize: 16),
             ),
-          ),
+          )
         ],
       ),
     );
