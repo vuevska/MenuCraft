@@ -21,7 +21,7 @@ class AuthService {
     String email,
     String password,
   ) async {
-    if(email.isEmpty || password.isEmpty){
+    if (email.isEmpty || password.isEmpty) {
       throw FirebaseAuthException(
         code: "empty",
         message: "Please fill in all the fields",
@@ -30,12 +30,12 @@ class AuthService {
     UserCredential result = await _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
-          if(value.user?.emailVerified == false){
-            throw FirebaseAuthException(
-              code: "emailNotVerified",
-              message: "Please verify your email",
-            );
-          }
+      if (value.user?.emailVerified == false) {
+        throw FirebaseAuthException(
+          code: "emailNotVerified",
+          message: "Please verify your email",
+        );
+      }
       userCredential = value;
       user = value.user;
       return value;
@@ -43,6 +43,7 @@ class AuthService {
     return await _db.getUser(result.user!.uid);
   }
 
+  // TODO: Add check if confirm pass is missing
   static Future signUpWithMail(
     BuildContext context,
     String email,
@@ -50,7 +51,7 @@ class AuthService {
     String name,
     String surname,
   ) async {
-    if(email.isEmpty || password.isEmpty || name.isEmpty || surname.isEmpty){
+    if (email.isEmpty || password.isEmpty || name.isEmpty || surname.isEmpty) {
       throw FirebaseAuthException(
         code: "empty",
         message: "Please fill in all the fields",
@@ -59,7 +60,6 @@ class AuthService {
 
     UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
-
 
     await result.user?.sendEmailVerification();
 

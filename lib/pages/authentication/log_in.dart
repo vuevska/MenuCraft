@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_craft/pages/authentication/sign_up.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/authentication/input_auth.dart';
 import 'package:provider/provider.dart';
@@ -48,11 +50,10 @@ class _LoginPageState extends State<LoginPage> {
                     duration: const Duration(milliseconds: 700),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
-
-                      child:  Image(
+                      child: Image(
                         image: const AssetImage('images/loginImage.jpg'),
                         width: MediaQuery.of(context).size.width,
-                       height: 200,
+                        height: 200,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -93,7 +94,6 @@ class _LoginPageState extends State<LoginPage> {
 
                             widget.refresh();
                           }).catchError((onError) {
-
                             onError as FirebaseAuthException;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(onError.message ?? "")),
@@ -120,7 +120,14 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
+                        //Navigator.pushNamed(context, '/signup');
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (BuildContext context) {
+                              return const SignUp();
+                            },
+                          ),
+                        );
                       },
                       style: ButtonStyle(
                         foregroundColor:

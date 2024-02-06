@@ -27,20 +27,3 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 }
-
-// class SectionItem extends StatelessWidget {
-//   final String title;
-//
-//   const SectionItem({super.key, required this.title});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(vertical: 8.0),
-//       child: Text(
-//         title,
-//         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-//       ),
-//     );
-//   }
-// }
