@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/widgets/appbar/custom_appbar.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -6,6 +7,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      appBar: CustomAppBar(),
       body: Text('Search Page'),
     );
   }

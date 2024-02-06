@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/models/restaurant.dart';
+import 'package:menu_craft/widgets/appbar/custom_appbar.dart';
 import 'package:menu_craft/widgets/favorites/favorite_restaurant_card.dart';
 
-class FavouritesPage extends StatelessWidget {
-  const FavouritesPage({Key? key});
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,31 +23,22 @@ class FavouritesPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 22.0),
-        child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          itemCount: favoriteRestaurants.length,
-          itemBuilder: (BuildContext context, int index) {
-            return FavoriteRestaurantCard(
-              restaurant: favoriteRestaurants[index],
-            );
-          },
+      appBar: const CustomAppBar(),
+      body: Container(
+        color: Theme.of(context).primaryColor,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 22.0),
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            itemCount: favoriteRestaurants.length,
+            itemBuilder: (BuildContext context, int index) {
+              return FavoriteRestaurantCard(
+                restaurant: favoriteRestaurants[index],
+              );
+            },
+          ),
         ),
       ),
     );
   }
-}
-
-// TODO: ova da se odnese vo papka models
-class Restaurant {
-  final String name;
-  final String location;
-  final String imagePath;
-
-  Restaurant({
-    required this.name,
-    required this.location,
-    required this.imagePath,
-  });
 }

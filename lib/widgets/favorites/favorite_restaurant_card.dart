@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:menu_craft/pages/favourites_page.dart';
+import 'package:menu_craft/models/restaurant.dart';
 
 class FavoriteRestaurantCard extends StatelessWidget {
   final Restaurant restaurant;

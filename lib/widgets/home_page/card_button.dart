@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:menu_craft/pages/scan_qr_page.dart';
 
 class CardButton extends StatelessWidget {
   const CardButton({super.key});
@@ -19,7 +19,10 @@ class CardButton extends StatelessWidget {
           )),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, '/scanner');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const QrScanner()),
+          );
         },
         child: const Padding(
           padding: EdgeInsets.all(16.0),
