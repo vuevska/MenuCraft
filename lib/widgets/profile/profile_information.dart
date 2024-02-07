@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/utils/location_services.dart';
+import 'package:menu_craft/widgets/profile/profile_avatar.dart';
 import 'package:provider/provider.dart';
 
 class ProfileInformation extends StatefulWidget {
@@ -20,14 +21,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
         builder: (context, user, child) {
           return Column(
             children: [
-              CircleAvatar(
-                radius: 65,
-                backgroundColor: Colors.purple,
-                child: Text(
-                  user.initial(),
-                  style: const TextStyle(fontSize: 44, color: Colors.white),
-                ),
-              ),
+              ProfileAvatar(user: user),
               const SizedBox(height: 15),
               Text(
                 user.fullName ?? "",
@@ -36,7 +30,9 @@ class _ProfileInformationState extends State<ProfileInformation> {
               Consumer<LocationService>(
                   builder: (context, LocationService location, child) {
                 if (location.currentPosition == null) {
-                  return const Text("Loading...");
+                  return const SizedBox(
+                    height: 20,
+                  );
                 }
 
                 return Row(

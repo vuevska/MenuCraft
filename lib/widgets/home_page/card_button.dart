@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:menu_craft/models/restaurant.dart';
 import 'package:menu_craft/pages/scan_qr_page.dart';
-import 'package:menu_craft/widgets/favorites/favorite_restaurant_card.dart';
 
 class CardButton extends StatelessWidget {
   const CardButton({super.key});

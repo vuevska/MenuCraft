@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/constants/routes.dart';
-import 'package:menu_craft/pages/add_restaurant.dart';
+import 'package:menu_craft/pages/restaurant/add_restaurant.dart';
 import 'package:menu_craft/pages/favourites_page.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
-import 'package:menu_craft/pages/profile/profile_settings_page.dart';
 import 'package:menu_craft/pages/profile/profile_page.dart';
 import 'package:menu_craft/pages/root_page.dart';
 import 'package:menu_craft/models/providers/user_provider.dart';
@@ -58,7 +57,6 @@ class MyApp extends StatelessWidget {
           searchRoute: (context) => const SearchPage(),
           profileRoute: (context) => const ProfilePage(),
           favoritesRoute: (context) => const FavoritesPage(),
-          profileSettingsRoute: (context) => const ProfileSettingsPage(),
           profileOwnerMenus: (context) => const OwnerMenusPage(),
           addRestaurant: (context) => const AddRestaurantPage(),
         },
