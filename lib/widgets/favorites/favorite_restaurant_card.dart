@@ -24,7 +24,7 @@ class FavoriteRestaurantCard extends StatelessWidget {
                   height: 100.0,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(restaurant.imagePath),
+                      image: AssetImage(restaurant.imageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),

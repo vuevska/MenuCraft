@@ -3,12 +3,14 @@ class UserModel {
   late String email;
   late String name;
   late String surname;
+  late List<String> favoriteRestaurants;
 
   UserModel({
     required this.userId,
     required this.email,
     required this.name,
     required this.surname,
+    required this.favoriteRestaurants,
   });
 
   // Factory method to create a user model from Firestore data
@@ -18,6 +20,7 @@ class UserModel {
       email: data['email'],
       name: data['name'],
       surname: data['surname'] ?? "",
+      favoriteRestaurants: List<String>.from(data['favoriteRestaurants'] ?? []),
     );
   }
 
@@ -28,6 +31,7 @@ class UserModel {
       'email': email,
       'name': name,
       'surname': surname,
+      'favoriteRestaurants': favoriteRestaurants,
       // Add other user-related fields as needed
     };
   }

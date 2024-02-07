@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/constants/routes.dart';
+import 'package:menu_craft/pages/add_restaurant.dart';
 import 'package:menu_craft/pages/favourites_page.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/pages/profile/profile_settings_page.dart';
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
           profileRoute: (context) => const ProfilePage(),
           favoritesRoute: (context) => const FavoritesPage(),
           profileSettingsRoute: (context) => const ProfileSettingsPage(),
-          profileOwnerMenus: (context) => const OwnerMenus(),
+          profileOwnerMenus: (context) => const OwnerMenusPage(),
+          addRestaurant: (context) => const AddRestaurantPage(),
         },
         home: const RootPage(),
       ),

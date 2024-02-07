@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:mobile_scanner/mobile_scanner.dart";
 
 class QrScanner extends StatefulWidget {
-
   const QrScanner({super.key});
 
   @override
@@ -75,51 +74,54 @@ class QrScannerState extends State<QrScanner> {
     );
 
     return Scaffold(
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
           Expanded(
-              child: Stack(fit: StackFit.expand, children: [
-            Center(
-              child: MobileScanner(
-                fit: BoxFit.fitHeight,
-                onDetect: onBarcodeDetect,
-                overlay: const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Opacity(
-                      opacity: 1,
-                      child: Text(
-                        "Please scan a valid QR Code",
-                        style: TextStyle(
-                          backgroundColor: Colors.black54,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 4824,
-                          overflow: TextOverflow.ellipsis,
+            child: Stack(fit: StackFit.expand, children: [
+              Center(
+                child: MobileScanner(
+                  fit: BoxFit.fitHeight,
+                  onDetect: onBarcodeDetect,
+                  overlay: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Opacity(
+                        opacity: 1,
+                        child: Text(
+                          "Please scan a valid QR Code",
+                          style: TextStyle(
+                            backgroundColor: Colors.black54,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 4824,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
                       ),
                     ),
                   ),
+                  controller: controller,
+                  scanWindow: scanWindow,
                 ),
-                controller: controller,
-                scanWindow: scanWindow,
               ),
-            ),
-            CustomPaint(
-              painter: QrScannerOverlay(scanWindow),
-            ),
-            // const Padding(
-            //   padding: EdgeInsets.all(16.0),
-            //   child: Align(
-            //     alignment: Alignment.bottomCenter,
-            //     child: Text("MenuCraft"),
-            //   ),
-            // ),
-          ]))
-        ]));
+              CustomPaint(
+                painter: QrScannerOverlay(scanWindow),
+              ),
+              // const Padding(
+              //   padding: EdgeInsets.all(16.0),
+              //   child: Align(
+              //     alignment: Alignment.bottomCenter,
+              //     child: Text("MenuCraft"),
+              //   ),
+              // ),
+            ]),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -180,4 +182,3 @@ class QrScannerOverlay extends CustomPainter {
     return false;
   }
 }
-
