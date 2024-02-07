@@ -7,6 +7,7 @@ import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/pages/profile/profile_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
+import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
@@ -33,26 +34,7 @@ class _EditProfileSettingsPageState extends State<EditProfileSettingsPage> {
         padding: const EdgeInsets.only(top: 60.0),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(Icons.arrow_back,
-                        color: Colors.white, size: 30.0),
-                  ),
-                  const SizedBox(width: 10.0),
-                  const Text("Edit User Profile",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
+            const SecondaryCustomAppBar(title: "Edit User Profile"),
             const SizedBox(height: 20.0),
             Container(
                 width: MediaQuery.of(context).size.width - 30,
@@ -80,7 +62,6 @@ class _EditProfileSettingsPageState extends State<EditProfileSettingsPage> {
                           }
 
                           if (image != null) {
-
                             final file = File(image.path);
                             await _db
                                 .addLocalImageToUser(
@@ -89,10 +70,16 @@ class _EditProfileSettingsPageState extends State<EditProfileSettingsPage> {
                               InterfaceUtils.removeOverlay(context);
 
                               context.read<UserProvider>().updateImage(value);
-                              InterfaceUtils.show(context, "You have changed your profile picture!", type: ToastificationType.success);
-                              Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context) => const ProfilePage()), (route) => false);
-
-                                }).catchError((onError) {
+                              InterfaceUtils.show(context,
+                                  "You have changed your profile picture!",
+                                  type: ToastificationType.success);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) =>
+                                          const ProfilePage()),
+                                  (route) => false);
+                            }).catchError((onError) {
                               InterfaceUtils.show(context, onError.toString());
                               InterfaceUtils.removeOverlay(context);
                             });

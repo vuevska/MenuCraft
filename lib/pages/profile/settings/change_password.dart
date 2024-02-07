@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:menu_craft/widgets/profile/settings/password_reset_form.dart';
-
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -18,26 +18,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         padding: const EdgeInsets.only(top: 60.0),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(Icons.arrow_back,
-                        color: Colors.white, size: 30.0),
-                  ),
-                  const SizedBox(width: 10.0),
-                  const Text("Change Password",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
+            const SecondaryCustomAppBar(title: "Change Password"),
             const SizedBox(height: 20.0),
             Container(
                 width: MediaQuery.of(context).size.width - 30,

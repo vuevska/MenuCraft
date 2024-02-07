@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/pages/profile/settings/change_password.dart';
 import 'package:menu_craft/pages/profile/settings/edit_profile.dart';
+import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/providers/user_provider.dart';
@@ -27,26 +28,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
         padding: const EdgeInsets.only(top: 60.0),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(Icons.arrow_back,
-                        color: Colors.white, size: 30.0),
-                  ),
-                  const SizedBox(width: 10.0),
-                  const Text("Profile settings",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
+            const SecondaryCustomAppBar(title: "Profile settings"),
             const SizedBox(height: 20.0),
             Container(
                 width: MediaQuery.of(context).size.width - 30,
@@ -93,7 +75,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                         }
                         return const SizedBox.shrink();
                       }),
-
                       ProfileSettingRow(
                         title: "Privacy and Security",
                         onTap: () {

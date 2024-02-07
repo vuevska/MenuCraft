@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class OwnerMenus extends StatefulWidget {
-  const OwnerMenus({super.key});
+class OwnerMenusPage extends StatefulWidget {
+  const OwnerMenusPage({super.key});
 
   @override
-  State<OwnerMenus> createState() => _OwnerMenusState();
+  State<OwnerMenusPage> createState() => _OwnerMenusPageState();
 }
 
-class _OwnerMenusState extends State<OwnerMenus> {
+class _OwnerMenusPageState extends State<OwnerMenusPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

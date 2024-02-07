@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:menu_craft/models/restaurant_model.dart';
 
 import '../models/user_model.dart';
 
@@ -65,4 +66,68 @@ class DbAuthService {
 
     return UserModel.fromMap(user.data() as Map<String, dynamic>);
   }
+
+  Future<void> addRestaurant({
+    required String name,
+    required String location,
+    required String imageUrl,
+    required String restaurantId,
+  }) async {
+    final restaurant = RestaurantModel(
+      name: name,
+      location: location,
+      imageUrl: imageUrl,
+      restaurantId: restaurantId,
+    );
+    await _db
+        .collection('restaurants')
+        .doc(restaurantId)
+        .set(restaurant.toMap());
+  }
+
+  Future<void> addRestaurantToUser(String uid, String restaurantId) async {
+    final userDocRef = _db.collection('users').doc(uid);
+
+    await userDocRef.update({
+      'ownRestaurants': FieldValue.arrayUnion([restaurantId])
+    });
+  }
+
+  Future<List<RestaurantModel>> getAllRestaurants() async {
+    QuerySnapshot restaurantSnapshot =
+        await _db.collection('restaurants').get();
+
+    List<RestaurantModel> restaurants = restaurantSnapshot.docs
+        .map((doc) =>
+            RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
+
+    return restaurants;
+  }
+
+  Future<String> uploadRestaurantImage(String restaurantId, File file) async {
+    final firebaseStorageRef =
+        _storage.ref().child('restaurants/$restaurantId.png');
+
+    final uploadTask = firebaseStorageRef.putFile(file);
+    final taskSnapshot = await uploadTask.whenComplete(() => null);
+
+    final imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+    return imageUrl;
+  }
+
+  // Future<void> addRestaurantToFavorites(
+  //     String userId, String restaurantId) async {
+  //   await _db.collection('users').doc(userId).update({
+  //     'favoriteRestaurants': FieldValue.arrayUnion([restaurantId]),
+  //   });
+  // }
+
+  // Future<void> removeRestaurantFromFavorites(
+  //     String userId, String restaurantId) async {
+  //   await _db.collection('users').doc(userId).update({
+  //     'favoriteRestaurants': FieldValue.arrayRemove([restaurantId]),
+  //   });
+  // }
 }

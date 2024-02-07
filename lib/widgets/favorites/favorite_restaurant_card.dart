@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:menu_craft/models/restaurant.dart';
+import 'package:menu_craft/models/restaurant_model.dart';
 
 class FavoriteRestaurantCard extends StatelessWidget {
-  final Restaurant restaurant;
+  final RestaurantModel restaurant;
 
   const FavoriteRestaurantCard({Key? key, required this.restaurant})
       : super(key: key);
@@ -24,7 +24,7 @@ class FavoriteRestaurantCard extends StatelessWidget {
                   height: 100.0,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(restaurant.imagePath),
+                      image: AssetImage(restaurant.imageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
