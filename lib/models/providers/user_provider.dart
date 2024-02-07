@@ -10,6 +10,10 @@ class UserProvider extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
+  void updateImage(String imageUrl) {
+    _user?.imageUrl = imageUrl;
+    notifyListeners();
+  }
 
   String? get fullName => "${_user?.name ?? ""} ${_user?.surname ?? ""}";
 
@@ -18,6 +22,8 @@ class UserProvider extends ChangeNotifier {
   String? get surname => _user?.surname;
 
   String? get email => _user?.email;
+
+  String? get imageUrl => _user?.imageUrl;
 
   String initial() {
     if (_user == null) return "";

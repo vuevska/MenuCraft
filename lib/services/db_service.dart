@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/user_model.dart';
 
 class DbAuthService {
   final _db = FirebaseFirestore.instance;
+  final _storage = FirebaseStorage.instance;
 
   Future<void> addUserEmail(
     String uid,
@@ -17,6 +21,31 @@ class DbAuthService {
       'surname': surname,
       'uid': uid,
     });
+  }
+
+  Future<void> addNetworkImageToUser(
+    String uid,
+    String imageUrl,
+  ) async {
+    await _db.collection('users').doc(uid).update({
+      'imageUrl': imageUrl,
+    });
+  }
+
+  Future<String> addLocalImageToUser(
+    String uid,
+    File file,
+  ) async {
+    final firebaseStorageRef = _storage.ref().child('$uid/$uid.png');
+
+    final uploadTask = firebaseStorageRef.putFile(file);
+    final taskSnapshot = await uploadTask.whenComplete(() => null);
+
+    final fileURL = await taskSnapshot.ref.getDownloadURL();
+
+    await _db.collection('users').doc(uid).update({'imageUrl': fileURL});
+
+    return fileURL;
   }
 
   Future<void> addGoogleAccount(

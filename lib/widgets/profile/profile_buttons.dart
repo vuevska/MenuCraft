@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 class ProfileButtons extends StatefulWidget {
   const ProfileButtons({super.key, required this.refresh});
+
   final Function refresh;
 
   @override
@@ -49,7 +50,9 @@ class _ProfileButtonsState extends State<ProfileButtons> {
               Navigator.of(context).push(
                 CupertinoPageRoute(
                   builder: (BuildContext context) {
-                    return const ProfileSettingsPage();
+                    return ProfileSettingsPage(
+                      refresh: widget.refresh,
+                    );
                   },
                 ),
               );
@@ -59,7 +62,7 @@ class _ProfileButtonsState extends State<ProfileButtons> {
           ElevatedButton(
             onPressed: () {
               AuthService.signOut().then((value) {
-                ToastificationUtil.show(context, "Successfully Logged Out!");
+                InterfaceUtils.show(context, "Successfully Logged Out!");
                 context.read<UserProvider>().setUser(null);
                 widget.refresh();
               }).catchError((error) {
