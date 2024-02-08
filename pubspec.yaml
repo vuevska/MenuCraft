@@ -55,6 +55,7 @@ dependencies:
   uuid: ^4.3.3
   location_picker_flutter_map: ^3.0.0
   url_launcher: ^6.2.4
+  geoflutterfire2: ^2.3.15
 
 dev_dependencies:
   flutter_test:

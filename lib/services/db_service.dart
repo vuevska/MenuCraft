@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
+import 'package:geoflutterfire2/geoflutterfire2.dart';
 
 import '../models/user_model.dart';
 
 class DbAuthService {
   final _db = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
+
+  final _geo = GeoFlutterFire();
 
   Future<void> addUserEmail(
     String uid,
@@ -75,14 +78,18 @@ class DbAuthService {
     required String restaurantId,
     required String owningUserID,
   }) async {
+    String hash = _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
     final restaurant = RestaurantModel(
       name: name,
+      geoHash: hash,
       latitude: latitude,
       longitude: longitude,
       imageUrl: imageUrl,
       restaurantId: restaurantId,
       owningUserID: owningUserID,
     );
+
+
     await _db
         .collection('restaurants')
         .doc(restaurantId)
@@ -101,11 +108,12 @@ class DbAuthService {
     QuerySnapshot restaurantSnapshot =
         await _db.collection('restaurants').get();
 
+
+
     List<RestaurantModel> restaurants = restaurantSnapshot.docs
         .map((doc) =>
             RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
         .toList();
-
     return restaurants;
   }
 

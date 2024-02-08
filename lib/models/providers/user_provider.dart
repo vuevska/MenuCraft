@@ -25,6 +25,7 @@ class UserProvider extends ChangeNotifier {
         print(restaurantId);
         return RestaurantModel(
           name: 'Restaurant $restaurantId',
+          geoHash: '',
           longitude: 0,
           latitude: 0,
           imageUrl: 'images/restaurant.jpg',

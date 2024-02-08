@@ -91,7 +91,7 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                        ),//TODO: mora da go smenime ova
+                        ), //TODO: mora da go smenime ova
                         onPressed: () {
                           Navigator.of(context).push(
                             CupertinoPageRoute(
@@ -104,7 +104,8 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                             ),
                           );
                         },
-                         child: Text('Pick Location', style: TextStyle(color: Colors.white)),
+                        child: Text('Pick Location',
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
                     widget.locationController?.data?.latLong != null
@@ -121,8 +122,8 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Text("Finding location...",
-                                    style: const TextStyle(color: Colors.white,
-                                        fontSize: 20.0));
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 20.0));
                               }
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
@@ -130,8 +131,11 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                               if (snapshot.hasData) {
                                 return Text(
                                   'Location: ${snapshot.data}',
-                                  style: const TextStyle(color: Colors.white,
-                                      fontSize: 20.0,),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                   textAlign: TextAlign.center,
                                 );
                               }

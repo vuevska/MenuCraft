@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geoflutterfire2/geoflutterfire2.dart';
 
 class RestaurantModel {
   late String restaurantId;
   late String name;
+  late String geoHash;
   late double latitude;
   late double longitude;
   late String imageUrl;
   late String owningUserID;
 
+  final _geo = GeoFlutterFire();
+
   RestaurantModel({
     required this.restaurantId,
     required this.name,
+    required this.geoHash,
     required this.latitude,
     required this.longitude,
     required this.imageUrl,
@@ -19,21 +24,27 @@ class RestaurantModel {
 
   factory RestaurantModel.fromMap(Map<String, dynamic> data) {
 
+    Map<String, dynamic> geoPoint = data['geoPoint'] as Map<String, dynamic>;
+    String geoHash = geoPoint['geohash'];
+    double latitude = (geoPoint['geopoint'] as GeoPoint).latitude;
+    double longitude= (geoPoint['geopoint'] as GeoPoint).longitude;
+
     return RestaurantModel(
       restaurantId: data['restaurantId'],
       name: data['name'],
-      latitude: data['geoPoint'].latitude ?? 34.000,
-      longitude: data['geoPoint'].longitude ??  32.000,
+      geoHash : geoHash,
+      latitude: latitude,
+      longitude: longitude,
       imageUrl: data['imageUrl'] ?? "",
       owningUserID: data['owningUserID'] ?? "",
-    );
+    );//TODO: akop nema nekoe pole da ne eksplodira cela aplikacija
   }
 
   Map<String, dynamic> toMap() {
     return {
       'restaurantId': restaurantId,
       'name': name,
-      'geoPoint': GeoPoint(latitude, longitude),
+      'geoPoint': _geo.point(latitude:latitude, longitude: longitude).data,
       'imageUrl': imageUrl,
       'owningUserID': owningUserID,
     };
