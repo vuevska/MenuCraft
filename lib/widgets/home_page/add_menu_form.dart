@@ -1,11 +1,10 @@
 import 'dart:io';
-
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
 import 'package:menu_craft/utils/location_services.dart';
+import 'package:menu_craft/widgets/menu/menu_input.dart';
 
 import 'pick_location.dart';
 import '../../utils/data_upward.dart';
@@ -53,7 +52,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
               children: [
                 Column(
                   children: [
-                    _buildInputField(
+                    menuInput(
                       label: 'Restaurant Name',
                       controller: widget.nameController,
                       icon: Icons.restaurant,
@@ -190,62 +189,4 @@ class _AddMenuFormState extends State<AddMenuForm> {
       ),
     );
   }
-
-  Widget _buildInputField({
-    required String label,
-    required TextEditingController controller,
-    required IconData icon,
-    required bool obscureText,
-  }) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(icon, color: Colors.white),
-        ),
-        Expanded(
-          child: TextFormField(
-            controller: controller,
-            obscureText: obscureText,
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              labelText: label,
-              labelStyle: const TextStyle(color: Colors.white),
-              enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
-              ),
-              border: InputBorder.none,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Widget _buildInputFieldWithIcon({
-  //   required String label,
-  //   required TextEditingController controller,
-  //   required IconData icon,
-  //   required bool obscureText,
-  // }) {
-  //   return FadeInDown(
-  //     duration: const Duration(milliseconds: 300),
-  //     from: 50,
-  //     child: TextFormField(
-  //       controller: controller,
-  //       decoration: InputDecoration(
-  //         icon: Icon(icon),
-  //         iconColor: Colors.white,
-  //         labelText: label,
-  //         labelStyle: const TextStyle(
-  //           color: Colors.white,
-  //         ),
-  //       ),
-  //       cursorColor: Colors.white,
-  //       style: const TextStyle(
-  //         color: Colors.white,
-  //       ),
-  //     ),
-  //   );
-  // }
 }
