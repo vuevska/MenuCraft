@@ -10,6 +10,11 @@ class LocationService extends ChangeNotifier {
 
   String get currentAddress => _currentAddress;
 
+  static Future<String> getAddress(double latitude, double longitude) async {
+    var placemarks = await placemarkFromCoordinates(latitude, longitude);
+    return "${placemarks[0].street} ${placemarks[0].administrativeArea} ${placemarks[0].isoCountryCode}";
+  }
+
   void determinePosition() async {
     if (_currentPosition != null) {
       return;
@@ -56,4 +61,5 @@ class LocationService extends ChangeNotifier {
         "${placemarks[0].street} ${placemarks[0].administrativeArea} ${placemarks[0].isoCountryCode}";
     notifyListeners();
   }
+
 }

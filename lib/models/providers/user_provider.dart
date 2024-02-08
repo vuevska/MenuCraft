@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/models/user_model.dart';
-import 'package:menu_craft/services/auth_service.dart';
+
 
 class UserProvider extends ChangeNotifier {
   UserModel? _user;
@@ -25,9 +25,11 @@ class UserProvider extends ChangeNotifier {
         print(restaurantId);
         return RestaurantModel(
           name: 'Restaurant $restaurantId',
-          location: 'Location $restaurantId',
+          longitude: 0,
+          latitude: 0,
           imageUrl: 'images/restaurant.jpg',
           restaurantId: '',
+          owningUserID: '',
         );
       }).toList();
     } else {

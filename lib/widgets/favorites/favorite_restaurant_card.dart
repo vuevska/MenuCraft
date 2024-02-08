@@ -40,7 +40,7 @@ class FavoriteRestaurantCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(restaurant.location),
+                      Text(restaurant.latitude.toString()),//TODO: fix
                     ],
                   ),
                 ),

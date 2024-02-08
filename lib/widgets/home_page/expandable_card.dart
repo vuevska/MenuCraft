@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
+import 'package:menu_craft/utils/location_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ExpandableCard extends StatefulWidget {
   final RestaurantModel restaurant;
@@ -14,6 +16,7 @@ class ExpandableCard extends StatefulWidget {
 
 class _ExpandableCardState extends State<ExpandableCard> {
   bool _expanded = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,11 @@ class _ExpandableCardState extends State<ExpandableCard> {
                   height: 155.0,
                   child: Image(
                     image: NetworkImage(widget.restaurant.imageUrl),
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Text("Error loading image"),
+                      );
+                    },
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -60,9 +68,35 @@ class _ExpandableCardState extends State<ExpandableCard> {
                       color: Colors.green,
                     ),
                     const SizedBox(width: 4.0),
-                    Text(
-                      widget.restaurant.location,
-                      style: const TextStyle(fontSize: 16.0),
+                    FutureBuilder<String>(
+                      future: LocationService.getAddress(
+                          widget.restaurant.latitude,
+                          widget.restaurant.longitude),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text("Finding location...");
+                        }
+                        if (snapshot.hasError) {
+                          return Text('Error finding location');
+                        }
+                        if (snapshot.hasData) {
+
+                          return GestureDetector(
+                            onLongPress: () {
+                              launchUrl(
+                                  Uri.parse('https://www.google.com/maps/search/?api=1&query=${widget.restaurant.latitude},${widget.restaurant.longitude}'),
+                                  mode: LaunchMode.externalApplication);
+                            },
+                            child: Text(
+                              snapshot.data!,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
                     ),
                   ],
                 ),
