@@ -22,9 +22,10 @@ class UserProvider extends ChangeNotifier {
     if (_user != null) {
       return _user!.ownRestaurants.map((restaurantId) {
         // TODO: get actual restaurants here
-        print(restaurantId);
+
         return RestaurantModel(
           name: 'Restaurant $restaurantId',
+          geoHash: '',
           longitude: 0,
           latitude: 0,
           imageUrl: 'images/restaurant.jpg',

@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:menu_craft/pages/home_page.dart';
 import 'package:menu_craft/services/db_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
@@ -14,6 +13,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../services/auth_service.dart';
 import '../../utils/data_upward.dart';
+import '../profile/profile_page.dart';
 
 class AddMenuPage extends StatefulWidget {
   const AddMenuPage({Key? key}) : super(key: key);
@@ -72,8 +72,6 @@ class _AddMenuPageState extends State<AddMenuPage> {
   }
 
   void _onPressed() async {
-    print(_locationController.data?.latLong.longitude);
-
     if (_nameController.text.isEmpty ||
         _locationController.data == null ||
         _locationController.data?.latLong == null ||
@@ -99,7 +97,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
       restaurantId: uuid.v4(),
       owningUserID: AuthService.user!.uid,
     );
-    print("test");
+
     if (!context.mounted) {
       return;
     }
@@ -111,7 +109,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
     InterfaceUtils.removeOverlay(context);
     Navigator.pushAndRemoveUntil(
       context,
-      CupertinoPageRoute(builder: (context) => const HomePage()),
+      CupertinoPageRoute(builder: (context) => const ProfilePage()),
       (route) => false,
     );
   }

@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
+import 'package:geoflutterfire2/geoflutterfire2.dart';
 
 import '../models/user_model.dart';
 
 class DbAuthService {
   final _db = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
+
+  final _geo = GeoFlutterFire();
 
   Future<void> addUserEmail(
     String uid,
@@ -75,26 +79,60 @@ class DbAuthService {
     required String restaurantId,
     required String owningUserID,
   }) async {
+    String hash =
+        _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
     final restaurant = RestaurantModel(
       name: name,
+      geoHash: hash,
       latitude: latitude,
       longitude: longitude,
       imageUrl: imageUrl,
       restaurantId: restaurantId,
       owningUserID: owningUserID,
     );
+
     await _db
         .collection('restaurants')
         .doc(restaurantId)
         .set(restaurant.toMap());
   }
 
-  Future<void> addRestaurantToUser(String uid, String restaurantId) async {
-    final userDocRef = _db.collection('users').doc(uid);
+  //TODO: razgledaj go ova
+  // Future<void> addRestaurantToUser(String uid, String restaurantId) async {
+  //   final userDocRef = _db.collection('users').doc(uid);
+  //
+  //   await userDocRef.update({
+  //     'ownRestaurants': FieldValue.arrayUnion([restaurantId])
+  //   });
+  // }
 
-    await userDocRef.update({
-      'ownRestaurants': FieldValue.arrayUnion([restaurantId])
-    });
+  Future<List<RestaurantModel>> getLocalRestoraunts(
+      Future<Position?> lastLocation) async {
+    Position? lastKnownPosition = await lastLocation;
+
+    if (lastKnownPosition == null) {
+      // Handle the case when lastKnownPosition is null
+      return Future.error('Last known position is null');
+    }
+
+    GeoFirePoint center = _geo.point(
+        latitude: lastKnownPosition.latitude,
+        longitude: lastKnownPosition.longitude);
+
+    var collectionReference = _db.collection('restaurants');
+
+    double radius = 1;
+    String field = 'geoPoint';
+    List<DocumentSnapshot> documentList = await _geo
+        .collection(collectionRef: collectionReference)
+        .within(center: center, radius: radius, field: field, strictMode: false)
+        .first;
+
+    List<RestaurantModel> restaurants = documentList
+        .map((doc) =>
+            RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
+    return restaurants;
   }
 
   Future<List<RestaurantModel>> getAllRestaurants() async {
@@ -105,7 +143,6 @@ class DbAuthService {
         .map((doc) =>
             RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
         .toList();
-
     return restaurants;
   }
 

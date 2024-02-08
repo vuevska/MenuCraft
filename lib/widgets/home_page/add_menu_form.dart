@@ -129,6 +129,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 20.0,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   textAlign: TextAlign.center,
                                 );
