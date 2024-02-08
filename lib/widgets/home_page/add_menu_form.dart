@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,14 +10,14 @@ import 'package:menu_craft/utils/location_services.dart';
 import 'pick_location.dart';
 import '../../utils/data_upward.dart';
 
-class AddRestaurantForm extends StatefulWidget {
+class AddMenuForm extends StatefulWidget {
   final TextEditingController nameController;
   final Data<PickedData>? locationController;
   final File? pickedImage;
   final Function(ImageSource) pickImage;
   final Function() onPressed;
 
-  const AddRestaurantForm({
+  const AddMenuForm({
     Key? key,
     required this.nameController,
     required this.locationController,
@@ -26,10 +27,10 @@ class AddRestaurantForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AddRestaurantForm> createState() => _AddRestaurantFormState();
+  State<AddMenuForm> createState() => _AddMenuFormState();
 }
 
-class _AddRestaurantFormState extends State<AddRestaurantForm> {
+class _AddMenuFormState extends State<AddMenuForm> {
   void refresh() {
     setState(() {});
   }
@@ -52,19 +53,12 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
               children: [
                 Column(
                   children: [
-                    TextFormField(
+                    _buildInputField(
+                      label: 'Restaurant Name',
                       controller: widget.nameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
+                      icon: Icons.restaurant,
+                      obscureText: false,
+                      //showBorder: false,
                     ),
                     const SizedBox(height: 20.0),
                     // TextFormField(
@@ -89,9 +83,9 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.purple,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
-                        ),//TODO: mora da go smenime ova
+                        ),
                         onPressed: () {
                           Navigator.of(context).push(
                             CupertinoPageRoute(
@@ -104,7 +98,10 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                             ),
                           );
                         },
-                         child: Text('Pick Location', style: TextStyle(color: Colors.white)),
+                        child: const Text(
+                          'Pick Location',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
                     widget.locationController?.data?.latLong != null
@@ -120,9 +117,9 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Text("Finding location...",
-                                    style: const TextStyle(color: Colors.white,
-                                        fontSize: 20.0));
+                                return const Text("Finding location...",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20.0));
                               }
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
@@ -130,8 +127,10 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                               if (snapshot.hasData) {
                                 return Text(
                                   'Location: ${snapshot.data}',
-                                  style: const TextStyle(color: Colors.white,
-                                      fontSize: 20.0,),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
                                   textAlign: TextAlign.center,
                                 );
                               }
@@ -175,13 +174,13 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     minimumSize: const Size(double.infinity, 50),
                   ),
                   onPressed: widget.onPressed,
-                  child: const Text('Add Restaurant',
+                  child: const Text('Add Menu',
                       style: TextStyle(color: Colors.white)),
                 ),
               ],
@@ -191,4 +190,62 @@ class _AddRestaurantFormState extends State<AddRestaurantForm> {
       ),
     );
   }
+
+  Widget _buildInputField({
+    required String label,
+    required TextEditingController controller,
+    required IconData icon,
+    required bool obscureText,
+  }) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(icon, color: Colors.white),
+        ),
+        Expanded(
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: label,
+              labelStyle: const TextStyle(color: Colors.white),
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              border: InputBorder.none,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Widget _buildInputFieldWithIcon({
+  //   required String label,
+  //   required TextEditingController controller,
+  //   required IconData icon,
+  //   required bool obscureText,
+  // }) {
+  //   return FadeInDown(
+  //     duration: const Duration(milliseconds: 300),
+  //     from: 50,
+  //     child: TextFormField(
+  //       controller: controller,
+  //       decoration: InputDecoration(
+  //         icon: Icon(icon),
+  //         iconColor: Colors.white,
+  //         labelText: label,
+  //         labelStyle: const TextStyle(
+  //           color: Colors.white,
+  //         ),
+  //       ),
+  //       cursorColor: Colors.white,
+  //       style: const TextStyle(
+  //         color: Colors.white,
+  //       ),
+  //     ),
+  //   );
+  // }
 }

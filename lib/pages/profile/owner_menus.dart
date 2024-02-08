@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_craft/pages/restaurant/add_restaurant.dart';
+import 'package:menu_craft/pages/restaurant/add_menu.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
@@ -32,7 +32,7 @@ class _OwnerMenusPageState extends State<OwnerMenusPage> {
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (BuildContext context) {
-                      return const AddRestaurantPage();
+                      return const AddMenuPage();
                     },
                   ),
                 );

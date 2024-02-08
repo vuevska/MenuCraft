@@ -5,4 +5,4 @@ const String profileRoute = '/profile';
 const String favoritesRoute = '/favorites';
 const String profileSettingsRoute = '/profile/settings';
 const String profileOwnerMenus = '/profile/menus';
-const String addRestaurant = '/restaurant/add';
+const String addMenu = '/menu/add';
