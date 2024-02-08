@@ -6,6 +6,8 @@ class LocationService extends ChangeNotifier {
   Position? _currentPosition;
   String _currentAddress = '';
 
+  static LocationPermission locationPermission = LocationPermission.denied;
+
   Position? get currentPosition => _currentPosition;
 
   String get currentAddress => _currentAddress;
@@ -15,12 +17,20 @@ class LocationService extends ChangeNotifier {
     return "${placemarks[0].street} ${placemarks[0].administrativeArea} ${placemarks[0].isoCountryCode}";
   }
 
+  static bool checkPermission() {
+    return locationPermission == LocationPermission.always || locationPermission == LocationPermission.whileInUse;
+  }
+
+  static Future<Position?> getLastKnownPosition() async {
+    return  Geolocator.getLastKnownPosition();
+
+  }
+
   void determinePosition() async {
     if (_currentPosition != null) {
       return;
     }
     bool serviceEnabled;
-    LocationPermission permission;
 
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -31,10 +41,10 @@ class LocationService extends ChangeNotifier {
       return Future.error('Location services are disabled.');
     }
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
+    locationPermission = await Geolocator.checkPermission();
+    if (locationPermission == LocationPermission.denied) {
+      locationPermission = await Geolocator.requestPermission();
+      if (locationPermission == LocationPermission.denied) {
         // Permissions are denied, next time you could try
         // requesting permissions again (this is also where
         // Android's shouldShowRequestPermissionRationale
@@ -44,7 +54,7 @@ class LocationService extends ChangeNotifier {
       }
     }
 
-    if (permission == LocationPermission.deniedForever) {
+    if (locationPermission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
