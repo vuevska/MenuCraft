@@ -72,8 +72,6 @@ class _AddMenuPageState extends State<AddMenuPage> {
   }
 
   void _onPressed() async {
-    print(_locationController.data?.latLong.longitude);
-
     if (_nameController.text.isEmpty ||
         _locationController.data == null ||
         _locationController.data?.latLong == null ||
@@ -99,7 +97,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
       restaurantId: uuid.v4(),
       owningUserID: AuthService.user!.uid,
     );
-    print("test");
+
     if (!context.mounted) {
       return;
     }

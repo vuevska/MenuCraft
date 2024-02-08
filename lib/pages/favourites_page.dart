@@ -23,7 +23,7 @@ class FavoritesPage extends StatelessWidget {
               // Access the user's favorite restaurants from the user provider
               List<RestaurantModel> favoriteRestaurants =
                   userProvider.favoriteRestaurants;
-              print(favoriteRestaurants);
+
 
               return ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),

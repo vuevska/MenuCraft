@@ -97,13 +97,14 @@ class DbAuthService {
         .set(restaurant.toMap());
   }
 
-  Future<void> addRestaurantToUser(String uid, String restaurantId) async {
-    final userDocRef = _db.collection('users').doc(uid);
-
-    await userDocRef.update({
-      'ownRestaurants': FieldValue.arrayUnion([restaurantId])
-    });
-  }
+  //TODO: razgledaj go ova
+  // Future<void> addRestaurantToUser(String uid, String restaurantId) async {
+  //   final userDocRef = _db.collection('users').doc(uid);
+  //
+  //   await userDocRef.update({
+  //     'ownRestaurants': FieldValue.arrayUnion([restaurantId])
+  //   });
+  // }
 
   Future<List<RestaurantModel>> getLocalRestoraunts(
       Future<Position?> lastLocation) async {
@@ -127,8 +128,10 @@ class DbAuthService {
         .within(center: center, radius: radius, field: field, strictMode: false)
         .first;
 
-    List<RestaurantModel> restaurants =
-        documentList.map((doc) => RestaurantModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    List<RestaurantModel> restaurants = documentList
+        .map((doc) =>
+            RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
     return restaurants;
   }
 

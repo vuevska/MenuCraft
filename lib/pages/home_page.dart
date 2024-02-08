@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/widgets/appbar/custom_appbar.dart';
 import 'package:menu_craft/widgets/home_page/menu_list.dart';
