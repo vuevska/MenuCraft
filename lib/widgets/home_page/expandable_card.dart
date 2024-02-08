@@ -17,7 +17,6 @@ class ExpandableCard extends StatefulWidget {
 class _ExpandableCardState extends State<ExpandableCard> {
   bool _expanded = false;
 
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -68,35 +67,46 @@ class _ExpandableCardState extends State<ExpandableCard> {
                       color: Colors.green,
                     ),
                     const SizedBox(width: 4.0),
-                    FutureBuilder<String>(
-                      future: LocationService.getAddress(
+                    Expanded(
+                      child: FutureBuilder<String>(
+                        future: LocationService.getAddress(
                           widget.restaurant.latitude,
-                          widget.restaurant.longitude),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Text("Finding location...");
-                        }
-                        if (snapshot.hasError) {
-                          return Text('Error finding location');
-                        }
-                        if (snapshot.hasData) {
-
-                          return GestureDetector(
-                            onLongPress: () {
-                              launchUrl(
-                                  Uri.parse('https://www.google.com/maps/search/?api=1&query=${widget.restaurant.latitude},${widget.restaurant.longitude}'),
-                                  mode: LaunchMode.externalApplication);
-                            },
-                            child: Text(
-                              snapshot.data!,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
+                          widget.restaurant.longitude,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Text("Finding location...");
+                          }
+                          if (snapshot.hasError) {
+                            return const Text('Error finding location');
+                          }
+                          if (snapshot.hasData) {
+                            return GestureDetector(
+                              onLongPress: () {
+                                launchUrl(
+                                  Uri.parse(
+                                    'https://www.google.com/maps/search/?api=1&query=${widget.restaurant.latitude},${widget.restaurant.longitude}',
+                                  ),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 4.0),
+                                  Text(
+                                    snapshot.data!,
+                                    overflow: TextOverflow.clip,
+                                    style: const TextStyle(fontSize: 16.0),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
                     ),
                   ],
                 ),
