@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/pages/favourites_page.dart';
 import 'package:menu_craft/pages/home_page.dart';
 import 'package:menu_craft/pages/profile/profile_page.dart';
+import 'package:menu_craft/pages/scan_qr_page.dart';
 import 'package:menu_craft/pages/search_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/utils/location_services.dart';
@@ -32,6 +33,7 @@ class _RootPageState extends State<RootPage> {
     return [
       const HomePage(),
       const SearchPage(),
+      const QrScanner(),
       const ProfilePage(),
       const FavoritesPage(),
     ];
@@ -48,6 +50,12 @@ class _RootPageState extends State<RootPage> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.search),
         title: ("Search"),
+        activeColorPrimary: CupertinoColors.white,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.qrcode),
+        title: ("Scan QR Code"),
         activeColorPrimary: CupertinoColors.white,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
