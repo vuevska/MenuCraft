@@ -10,7 +10,7 @@ class LocationService extends ChangeNotifier {
 
   String get currentAddress => _currentAddress;
 
-  static getAddress(double latitude, double longitude) async {
+  static Future<String> getAddress(double latitude, double longitude) async {
     var placemarks = await placemarkFromCoordinates(latitude, longitude);
     return "${placemarks[0].street} ${placemarks[0].administrativeArea} ${placemarks[0].isoCountryCode}";
   }
