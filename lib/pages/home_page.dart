@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
-import 'package:menu_craft/pages/restaurant/add_restaurant.dart';
-import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/services/db_service.dart';
 import 'package:menu_craft/widgets/appbar/custom_appbar.dart';
 import 'package:menu_craft/widgets/home_page/expandable_card.dart';
@@ -49,27 +47,6 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: AuthService.isUserLoggedIn()
-          ? FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.of(context).push(
-                  CupertinoPageRoute(
-                    builder: (BuildContext context) {
-                      return const AddRestaurantPage();
-                    },
-                  ),
-                );
-              },
-              icon: const Icon(
-                CupertinoIcons.add,
-                color: Colors.white,
-              ),
-              label: const Text(
-                "Add Restaurant",
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          : null, // If user is not logged in, don't show the button
     );
   }
 }
