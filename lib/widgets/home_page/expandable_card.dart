@@ -61,7 +61,9 @@ class _ExpandableCardState extends State<ExpandableCard> {
                     ),
                     const SizedBox(width: 4.0),
                     Text(
-                      widget.restaurant.location,
+                      widget.restaurant.latitude.toString() +
+                          ", " +
+                          widget.restaurant.longitude.toString(), //TODO: fix
                       style: const TextStyle(fontSize: 16.0),
                     ),
                   ],

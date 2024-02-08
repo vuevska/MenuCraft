@@ -1,11 +1,17 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
+import 'package:menu_craft/utils/location_services.dart';
 
-class AddRestaurantForm extends StatelessWidget {
+import 'pick_location.dart';
+import '../../utils/data_upward.dart';
+
+class AddRestaurantForm extends StatefulWidget {
   final TextEditingController nameController;
-  final TextEditingController locationController;
+  final Data<PickedData>? locationController;
   final File? pickedImage;
   final Function(ImageSource) pickImage;
   final Function() onPressed;
@@ -18,6 +24,15 @@ class AddRestaurantForm extends StatelessWidget {
     required this.pickImage,
     required this.onPressed,
   }) : super(key: key);
+
+  @override
+  State<AddRestaurantForm> createState() => _AddRestaurantFormState();
+}
+
+class _AddRestaurantFormState extends State<AddRestaurantForm> {
+  void refresh() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +53,7 @@ class AddRestaurantForm extends StatelessWidget {
                 Column(
                   children: [
                     TextFormField(
-                      controller: nameController,
+                      controller: widget.nameController,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         labelText: 'Name',
@@ -52,30 +67,88 @@ class AddRestaurantForm extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20.0),
-                    TextFormField(
-                      controller: locationController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Location',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
+                    // TextFormField(
+                    //   controller: locationController,
+                    //   style: const TextStyle(color: Colors.white),
+                    //   decoration: const InputDecoration(
+                    //     labelText: 'Location',
+                    //     labelStyle: TextStyle(color: Colors.white),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(color: Colors.white),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(color: Colors.grey),
+                    //     ),
+                    //   ),
+                    // ),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),//TODO: mora da go smenime ova
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (BuildContext context) {
+                                return LocationPickPage(
+                                  locationController: widget.locationController,
+                                  refresh: refresh,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                         child: Text('Pick Location', style: TextStyle(color: Colors.white)),
                       ),
                     ),
+                    widget.locationController?.data?.latLong != null
+                        ? FutureBuilder(
+                            future: LocationService.getAddress(
+                              widget.locationController?.data?.latLong
+                                      .latitude ??
+                                  0.0,
+                              widget.locationController?.data?.latLong
+                                      .longitude ??
+                                  0.0,
+                            ),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Text("Finding location...",
+                                    style: const TextStyle(color: Colors.white,
+                                        fontSize: 20.0));
+                              }
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+                              if (snapshot.hasData) {
+                                return Text(
+                                  'Location: ${snapshot.data}',
+                                  style: const TextStyle(color: Colors.white,
+                                      fontSize: 20.0,),
+                                  textAlign: TextAlign.center,
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            })
+                        : const SizedBox.shrink(),
                     const SizedBox(height: 15.0),
-                    pickedImage != null
+                    widget.pickedImage != null
                         ? Column(
                             children: [
                               SizedBox(
-                                  height: 260, child: Image.file(pickedImage!)),
-                              const SizedBox(height: 10.0),
+                                  height: 220,
+                                  child: Image.file(widget.pickedImage!)),
+                              const SizedBox(height: 5.0),
                               TextButton.icon(
                                 onPressed: () async {
-                                  await pickImage(ImageSource.gallery);
+                                  await widget.pickImage(ImageSource.gallery);
                                 },
                                 icon: const Icon(Icons.image,
                                     color: Colors.white),
@@ -88,14 +161,14 @@ class AddRestaurantForm extends StatelessWidget {
                           )
                         : TextButton.icon(
                             onPressed: () async {
-                              await pickImage(ImageSource.gallery);
+                              await widget.pickImage(ImageSource.gallery);
                             },
                             icon: const Icon(Icons.image, color: Colors.white),
                             label: const Text(
                               'Pick an Image',
                               style: TextStyle(color: Colors.white),
                             ),
-                          ),
+                          ), //TODO: Loading screen
                   ],
                 ),
                 ElevatedButton(
@@ -104,10 +177,10 @@ class AddRestaurantForm extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  onPressed: onPressed,
+                  onPressed: widget.onPressed,
                   child: const Text('Add Restaurant',
                       style: TextStyle(color: Colors.white)),
                 ),

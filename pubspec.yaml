@@ -53,6 +53,7 @@ dependencies:
   image_picker: ^1.0.7
   firebase_storage: ^11.6.5
   uuid: ^4.3.3
+  location_picker_flutter_map: ^3.0.0
 
 dev_dependencies:
   flutter_test:

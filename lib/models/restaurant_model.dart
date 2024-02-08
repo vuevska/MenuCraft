@@ -1,22 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RestaurantModel {
   late String restaurantId;
   late String name;
-  late String location;
+  late double latitude;
+  late double longitude;
   late String imageUrl;
+  late String owningUserID;
 
   RestaurantModel({
     required this.restaurantId,
     required this.name,
-    required this.location,
+    required this.latitude,
+    required this.longitude,
     required this.imageUrl,
+    required this.owningUserID,
   });
 
   factory RestaurantModel.fromMap(Map<String, dynamic> data) {
+
     return RestaurantModel(
       restaurantId: data['restaurantId'],
       name: data['name'],
-      location: data['location'],
+      latitude: data['geoPoint'].latitude ?? 34.000,
+      longitude: data['geoPoint'].longitude ??  32.000,
       imageUrl: data['imageUrl'] ?? "",
+      owningUserID: data['owningUserID'] ?? "",
     );
   }
 
@@ -24,8 +33,9 @@ class RestaurantModel {
     return {
       'restaurantId': restaurantId,
       'name': name,
-      'location': location,
+      'geoPoint': GeoPoint(latitude, longitude),
       'imageUrl': imageUrl,
+      'owningUserID': owningUserID,
     };
   }
 }

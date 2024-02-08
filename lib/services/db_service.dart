@@ -69,15 +69,19 @@ class DbAuthService {
 
   Future<void> addRestaurant({
     required String name,
-    required String location,
+    required double latitude,
+    required double longitude,
     required String imageUrl,
     required String restaurantId,
+    required String owningUserID,
   }) async {
     final restaurant = RestaurantModel(
       name: name,
-      location: location,
+      latitude: latitude,
+      longitude: longitude,
       imageUrl: imageUrl,
       restaurantId: restaurantId,
+      owningUserID: owningUserID,
     );
     await _db
         .collection('restaurants')
@@ -117,17 +121,17 @@ class DbAuthService {
     return imageUrl;
   }
 
-  // Future<void> addRestaurantToFavorites(
-  //     String userId, String restaurantId) async {
-  //   await _db.collection('users').doc(userId).update({
-  //     'favoriteRestaurants': FieldValue.arrayUnion([restaurantId]),
-  //   });
-  // }
+// Future<void> addRestaurantToFavorites(
+//     String userId, String restaurantId) async {
+//   await _db.collection('users').doc(userId).update({
+//     'favoriteRestaurants': FieldValue.arrayUnion([restaurantId]),
+//   });
+// }
 
-  // Future<void> removeRestaurantFromFavorites(
-  //     String userId, String restaurantId) async {
-  //   await _db.collection('users').doc(userId).update({
-  //     'favoriteRestaurants': FieldValue.arrayRemove([restaurantId]),
-  //   });
-  // }
+// Future<void> removeRestaurantFromFavorites(
+//     String userId, String restaurantId) async {
+//   await _db.collection('users').doc(userId).update({
+//     'favoriteRestaurants': FieldValue.arrayRemove([restaurantId]),
+//   });
+// }
 }

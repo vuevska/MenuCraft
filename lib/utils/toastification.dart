@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
@@ -18,23 +19,25 @@ class InterfaceUtils {
     overlayEntry = OverlayEntry(
       // Create a new OverlayEntry.
       builder: (BuildContext context) {
-        return const Material(
-          color: Colors.transparent,
-          child: Center(
-            child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Uploading your image... Please wait!",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+        return FadeIn(
+          child: const Material(
+            color: Colors.black54,
+            child: Center(
+              child: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Uploading your image... Please wait!",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10), // Adding some space between text and CircularProgressIndicator
-                  CircularProgressIndicator(color: Colors.white),
-                ],
+                    SizedBox(height: 10), // Adding some space between text and CircularProgressIndicator
+                    CircularProgressIndicator(color: Colors.white),
+                  ],
+                ),
               ),
             ),
           ),
