@@ -28,27 +28,35 @@ class _ProfileInformationState extends State<ProfileInformation> {
                 style: const TextStyle(fontSize: 20, color: Colors.white),
               ),
               Consumer<LocationService>(
-                  builder: (context, LocationService location, child) {
-                if (location.currentPosition == null) {
-                  return const SizedBox(
-                    height: 20,
-                  );
-                }
+                builder: (context, LocationService location, child) {
+                  if (location.currentPosition == null) {
+                    return const SizedBox(
+                      height: 20,
+                    );
+                  }
 
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.pin_drop_rounded,
-                      color: Colors.green,
+                  return Container(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.pin_drop_rounded,
+                          color: Colors.green,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            location.currentAddress,
+                            style: const TextStyle(color: Colors.white),
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      location.currentAddress,
-                      style: const TextStyle(color: Colors.white),
-                    )
-                  ],
-                );
-              }),
+                  );
+                },
+              ),
             ],
           );
         },
