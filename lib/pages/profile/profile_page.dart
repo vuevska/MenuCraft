@@ -5,8 +5,6 @@ import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/widgets/profile/profile.dart';
 import 'package:provider/provider.dart';
 
-
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key});
 
@@ -15,7 +13,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   void refresh() {
     setState(() {});
   }
@@ -23,8 +20,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     if (AuthService.isUserLoggedIn()) {
-
-      context.read<LocationService>().determinePosition();
+      context.read<LocationService>().determinePosition().catchError((onError) {
+        //TODO: mozebi i ovde error code
+      });
       return Profile(refresh: refresh);
     } else {
       return LoginPage(refresh: refresh);

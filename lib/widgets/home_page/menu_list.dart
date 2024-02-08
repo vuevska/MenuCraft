@@ -5,7 +5,6 @@ import '../../services/db_service.dart';
 import '../../utils/location_services.dart';
 import 'expandable_card.dart';
 
-
 class ListRestaurants extends StatefulWidget {
   const ListRestaurants({super.key});
 
@@ -18,7 +17,6 @@ class _ListRestaurntsState extends State<ListRestaurants> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       color: Colors.purple,
-
       onRefresh: () async {
         setState(() {});
       },
@@ -26,10 +24,12 @@ class _ListRestaurntsState extends State<ListRestaurants> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 10.0),
-
           Expanded(
             child: FutureBuilder<List<RestaurantModel>>(
-              future: LocationService.checkPermission() ? DbAuthService().getLocalRestoraunts(LocationService.getLastKnownPosition()) : DbAuthService().getAllRestaurants(),
+              future: LocationService.checkPermission()
+                  ? DbAuthService().getLocalRestoraunts(
+                      LocationService.getLastKnownPosition())
+                  : DbAuthService().getAllRestaurants(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(

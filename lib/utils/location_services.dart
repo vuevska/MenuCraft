@@ -26,7 +26,7 @@ class LocationService extends ChangeNotifier {
 
   }
 
-  void determinePosition() async {
+  Future<void> determinePosition() async {
     if (_currentPosition != null) {
       return;
     }
