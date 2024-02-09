@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/pages/authentication/log_in.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/utils/location_services.dart';
@@ -19,13 +20,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (AuthService.isUserLoggedIn()) {
-      context.read<LocationService>().determinePosition().catchError((onError) {
-        //TODO: mozebi i ovde error code
-      });
-      return Profile(refresh: refresh);
-    } else {
-      return LoginPage(refresh: refresh);
-    }
+    return Consumer<UserProvider>(
+        builder: (context, userProvider, child) {
+          if (AuthService.isUserLoggedIn() && userProvider.user != null) {
+            context.read<LocationService>().determinePosition().catchError((
+                onError) {
+              //TODO: mozebi i ovde error code
+            });
+            return Profile(refresh: refresh);
+          } else {
+            return LoginPage(refresh: refresh);
+          }
+        }
+    );
   }
 }

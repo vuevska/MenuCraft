@@ -18,6 +18,7 @@ class LocationService extends ChangeNotifier {
   }
 
   static bool checkPermission() {
+    print(locationPermission);
     return locationPermission == LocationPermission.always || locationPermission == LocationPermission.whileInUse;
   }
 
