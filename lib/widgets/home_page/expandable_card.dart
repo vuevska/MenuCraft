@@ -8,7 +8,7 @@ import 'package:menu_craft/widgets/home_page/favorite_button.dart';
 class ExpandableCard extends StatefulWidget {
   final RestaurantModel restaurant;
 
-  const ExpandableCard({Key? key, required this.restaurant}) : super(key: key);
+  const ExpandableCard({super.key, required this.restaurant});
 
   @override
   _ExpandableCardState createState() => _ExpandableCardState();
@@ -93,7 +93,8 @@ class _ExpandableCardState extends State<ExpandableCard> {
                             Navigator.of(context).push(
                               CupertinoPageRoute(
                                 builder: (BuildContext context) {
-                                  return const ViewMenuPage();
+                                  return ViewMenuPage(
+                                      restaurant: widget.restaurant);
                                 },
                               ),
                             );

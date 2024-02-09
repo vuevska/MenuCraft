@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
 class ViewMenuPage extends StatefulWidget {
-  const ViewMenuPage({super.key});
+  final RestaurantModel restaurant;
+  const ViewMenuPage({super.key, required this.restaurant});
 
   @override
   State<ViewMenuPage> createState() => _ViewMenuPageState();
@@ -15,14 +17,14 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
       backgroundColor: Theme.of(context).primaryColor,
       body: Container(
         padding: const EdgeInsets.only(top: 60.0),
-        child: const Column(
+        child: Column(
           children: [
-            SecondaryCustomAppBar(title: "View Menu Details"),
-            SizedBox(height: 20.0),
+            const SecondaryCustomAppBar(title: "View Menu Details"),
+            const SizedBox(height: 20.0),
             Text(
-              "Pregled na meni tuka",
-              style: TextStyle(color: Colors.white),
-            )
+              "Ime na restoranot: ${widget.restaurant.name}",
+              style: const TextStyle(color: Colors.white),
+            ),
           ],
         ),
       ),
