@@ -118,7 +118,7 @@ class DbAuthService {
   //   });
   // }
 
-  Future<List<RestaurantModel>> getLocalRestoraunts(
+  Future<List<RestaurantModel>> getLocalRestaurants(
       Future<Position?> lastLocation) async {
     Position? lastKnownPosition = await lastLocation;
 

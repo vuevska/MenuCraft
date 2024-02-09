@@ -28,7 +28,7 @@ class _ListRestaurntsState extends State<ListRestaurants> {
             builder: (_, location, child) => Expanded(
               child: FutureBuilder<List<RestaurantModel>>(
                 future: LocationService.checkPermission()
-                    ? DbAuthService().getLocalRestoraunts(
+                    ? DbAuthService().getLocalRestaurants(
                         LocationService.getLastKnownPosition())
                     : DbAuthService().getAllRestaurants(),
                 builder: (context, snapshot) {

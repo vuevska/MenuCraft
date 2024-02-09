@@ -52,7 +52,7 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
               _focusNode.requestFocus();
             },
             onChanged: (value) {
-              //TODO: Implement filtering logic here
+              setState(() {});
             },
             decoration: const InputDecoration(
               prefixIcon: Icon(Icons.search),
@@ -73,10 +73,13 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.purple.shade50.withOpacity(0.0),
             ),
-            child: const FilterRestaurants(),
+            // child: const FilterRestaurants(),
+            child: FilterRestaurants(searchQuery: _searchController.text),
           ),
         ),
       ],
     );
   }
 }
+
+
