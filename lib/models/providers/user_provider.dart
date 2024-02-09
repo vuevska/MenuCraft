@@ -20,6 +20,7 @@ class UserProvider extends ChangeNotifier {
 
   List<RestaurantModel> get favoriteRestaurants {
     if (_user != null) {
+
       return _user!.ownRestaurants.map((restaurantId) {
         // TODO: get actual restaurants here
 

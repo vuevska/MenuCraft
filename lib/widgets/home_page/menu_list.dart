@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/restaurant_model.dart';
 import '../../services/db_service.dart';
@@ -24,34 +25,36 @@ class _ListRestaurntsState extends State<ListRestaurants> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 10.0),
-          Expanded(
-            child: FutureBuilder<List<RestaurantModel>>(
-              future: LocationService.checkPermission()
-                  ? DbAuthService().getLocalRestoraunts(
-                      LocationService.getLastKnownPosition())
-                  : DbAuthService().getAllRestaurants(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else {
-                  final restaurants = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: restaurants.length,
-                    itemBuilder: (context, index) {
-                      final restaurant = restaurants[index];
-                      return ExpandableCard(
-                        restaurant: restaurant,
-                      );
-                    },
-                  );
-                }
-              },
+          Consumer<LocationService>(
+            builder: (_, location, child) => Expanded(
+              child: FutureBuilder<List<RestaurantModel>>(
+                future: LocationService.checkPermission()
+                    ? DbAuthService().getLocalRestoraunts(
+                        LocationService.getLastKnownPosition())
+                    : DbAuthService().getAllRestaurants(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    final restaurants = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: restaurants.length,
+                      itemBuilder: (context, index) {
+                        final restaurant = restaurants[index];
+                        return ExpandableCard(
+                          restaurant: restaurant,
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],

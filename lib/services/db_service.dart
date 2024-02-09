@@ -146,6 +146,17 @@ class DbAuthService {
     return restaurants;
   }
 
+  Future<List<RestaurantModel>> getAllRestaurauntsFromList(
+      List<String> ids) async {
+    return await Future.wait(ids.map((id) => getRestaurant(id)));
+  }
+
+  Future<RestaurantModel> getRestaurant(String id) {
+    return _db.collection('restaurants').doc(id).get().then((doc) {
+      return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
+    });
+  }
+
   Future<String> uploadRestaurantImage(String restaurantId, File file) async {
     final firebaseStorageRef =
         _storage.ref().child('restaurants/$restaurantId.png');
@@ -156,6 +167,49 @@ class DbAuthService {
     final imageUrl = await taskSnapshot.ref.getDownloadURL();
 
     return imageUrl;
+  }
+
+  Future<void> toggleFavorite(
+      String restaurantId, String userId, bool favorite) async {
+    await _db
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+        .doc(restaurantId)
+        .set({
+      'id': restaurantId,
+      'userId': userId,
+      'favorite': favorite,
+    });
+  }
+
+  Future<bool> isFavorite(String restaurantId, String userId) async {
+    final favorites = await _db
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+        .doc(restaurantId)
+        .get();
+
+    if (favorites.data() == null) return false;
+    return favorites['favorite'];
+  }
+
+  Future<List<RestaurantModel>> getFavorites(String userId) async {
+    final favorites =
+        await _db.collection('users').doc(userId).collection("favorites").get();
+    List<String> restIDs = [];
+
+    print(favorites.docs.map((e) => e.data()));
+
+    favorites.docs.forEach(
+        (e) => {if (e.data()['favorite'] == true) restIDs.add(e.data()['id'])});
+    // favorites?.forEach((key, value) {
+    //   if (value['favorite'] == true) {
+    //     restIDs.add(value['id']);
+    //   }
+    // });
+    return await getAllRestaurauntsFromList(restIDs);
   }
 
 // Future<void> addRestaurantToFavorites(

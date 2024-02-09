@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/constants/routes.dart';
+import 'package:menu_craft/models/providers/favorite_provider.dart';
 import 'package:menu_craft/pages/restaurant/add_menu.dart';
 import 'package:menu_craft/pages/favourites_page.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => LocationService(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => FavoriteProvider(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
