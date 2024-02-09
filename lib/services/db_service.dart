@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 
@@ -89,6 +90,7 @@ class DbAuthService {
     required String imageUrl,
     required String restaurantId,
     required String owningUserID,
+    required List<CategoryModel> categories,
   }) async {
     String hash =
         _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
@@ -102,10 +104,13 @@ class DbAuthService {
       owningUserID: owningUserID,
     );
 
-    await _db
-        .collection('restaurants')
-        .doc(restaurantId)
-        .set(restaurant.toMap());
+    final List<Map<String, dynamic>> categoriesData =
+        categories.map((category) => category.toMap()).toList();
+
+    final Map<String, dynamic> restaurantData = restaurant.toMap();
+    restaurantData['categories'] = categoriesData;
+
+    await _db.collection('restaurants').doc(restaurantId).set(restaurantData);
   }
 
   //TODO: razgledaj go ova
@@ -182,6 +187,65 @@ class DbAuthService {
       return restaurants;
     } catch (error) {
       print('Error getting restaurants by user ID: $error');
+      return [];
+    }
+  }
+
+  Future<void> addCategory(CategoryModel category) async {
+    try {
+      await _db
+          .collection('categories')
+          .doc(category.categoryId)
+          .set(category.toMap());
+    } catch (e) {
+      print('Error adding category: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> addCategoryToRestaurant(
+      String restaurantId, String categoryId) async {
+    try {
+      await _db.collection('restaurants').doc(restaurantId).update({
+        'categories': FieldValue.arrayUnion([categoryId]),
+      });
+    } catch (e) {
+      print('Error adding category to restaurant: $e');
+      throw e;
+    }
+  }
+
+  Future<List<CategoryModel>> getAllCategories() async {
+    try {
+      QuerySnapshot categorySnapshot = await _db.collection('categories').get();
+
+      List<CategoryModel> categories = categorySnapshot.docs.map((doc) {
+        return CategoryModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      return categories;
+    } catch (error) {
+      print('Error getting all categories: $error');
+      return [];
+    }
+  }
+
+  Future<List<CategoryModel>> getCategoriesForRestaurant(
+      String restaurantId) async {
+    try {
+      QuerySnapshot categorySnapshot = await _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .get();
+
+      List<CategoryModel> categories = categorySnapshot.docs.map((doc) {
+        return CategoryModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      return categories;
+    } catch (error) {
+      print('Error getting categories for restaurant: $error');
       return [];
     }
   }

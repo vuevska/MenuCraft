@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_craft/pages/restaurant/add_menu.dart';
+import 'package:menu_craft/pages/restaurant/add_menu_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:menu_craft/widgets/profile/list_owner_restaurants.dart';

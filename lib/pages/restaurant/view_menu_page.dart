@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
+import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/pages/restaurant/add_category_page.dart';
+import 'package:menu_craft/services/auth_service.dart';
+import 'package:menu_craft/services/db_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
 class ViewMenuPage extends StatefulWidget {
@@ -11,6 +16,24 @@ class ViewMenuPage extends StatefulWidget {
 }
 
 class _ViewMenuPageState extends State<ViewMenuPage> {
+  bool isCurrentUserOwner = false;
+  final DbAuthService _db = DbAuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    checkOwnership();
+  }
+
+  void checkOwnership() {
+    String? loggedInUserId = AuthService.getCurrentUser()?.uid;
+    if (loggedInUserId == widget.restaurant.owningUserID) {
+      setState(() {
+        isCurrentUserOwner = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,16 +41,77 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
       body: Container(
         padding: const EdgeInsets.only(top: 60.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SecondaryCustomAppBar(title: "View Menu Details"),
+            SecondaryCustomAppBar(title: widget.restaurant.name),
             const SizedBox(height: 20.0),
-            Text(
-              "Ime na restoranot: ${widget.restaurant.name}",
-              style: const TextStyle(color: Colors.white),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Categories:',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder<List<CategoryModel>>(
+                future: _db
+                    .getCategoriesForRestaurant(widget.restaurant.restaurantId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    final categories = snapshot.data ?? [];
+                    return ListView.builder(
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        final category = categories[index];
+                        return ListTile(
+                          title: Text(
+                            category.name,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),
       ),
+      floatingActionButton: isCurrentUserOwner
+          ? FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (BuildContext context) {
+                      return AddCategoryPage(restaurant: widget.restaurant);
+                    },
+                  ),
+                );
+              },
+              icon: const Icon(
+                CupertinoIcons.add,
+                color: Colors.white,
+              ),
+              label: const Text(
+                "Create a New Category",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            )
+          : null,
     );
   }
 }
