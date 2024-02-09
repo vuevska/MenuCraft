@@ -19,12 +19,6 @@ class LocalStorageService {
       'favorite': favorite,
     });
 
-    print(await localDB
-        .collection('favorites')
-        .doc(userId)
-        .collection('restaurant')
-        .doc(restaurantId)
-        .get());
   }
 
   static Future<bool> isFavorite(String restaurantId, String userId) async {
