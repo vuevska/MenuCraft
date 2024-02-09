@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../models/restaurant_model.dart';
 import '../../services/db_service.dart';
 import '../../utils/location_services.dart';
@@ -29,7 +28,7 @@ class _ListRestaurntsState extends State<ListRestaurants> {
             builder: (_, location, child) => Expanded(
               child: FutureBuilder<List<RestaurantModel>>(
                 future: LocationService.checkPermission()
-                    ? DbAuthService().getLocalRestoraunts(
+                    ? DbAuthService().getLocalRestaurants(
                         LocationService.getLastKnownPosition())
                     : DbAuthService().getAllRestaurants(),
                 builder: (context, snapshot) {
