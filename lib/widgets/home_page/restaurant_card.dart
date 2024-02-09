@@ -5,16 +5,16 @@ import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
 import 'package:menu_craft/widgets/home_page/favorite_button.dart';
 
-class ExpandableCard extends StatefulWidget {
+class RestaurantCard extends StatefulWidget {
   final RestaurantModel restaurant;
 
-  const ExpandableCard({super.key, required this.restaurant});
+  const RestaurantCard({super.key, required this.restaurant});
 
   @override
-  _ExpandableCardState createState() => _ExpandableCardState();
+  _RestaurantCardState createState() => _RestaurantCardState();
 }
 
-class _ExpandableCardState extends State<ExpandableCard> {
+class _RestaurantCardState extends State<RestaurantCard> {
   bool _expanded = false;
 
   @override

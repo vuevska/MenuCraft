@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../models/restaurant_model.dart';
 import '../../services/db_service.dart';
 import '../../utils/location_services.dart';
-import 'expandable_card.dart';
+import 'restaurant_card.dart';
 
 class ListRestaurants extends StatefulWidget {
   const ListRestaurants({super.key});
@@ -47,7 +47,7 @@ class _ListRestaurntsState extends State<ListRestaurants> {
                       itemCount: restaurants.length,
                       itemBuilder: (context, index) {
                         final restaurant = restaurants[index];
-                        return ExpandableCard(
+                        return RestaurantCard(
                           restaurant: restaurant,
                         );
                       },

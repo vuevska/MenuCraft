@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/services/db_service.dart';
-import 'package:menu_craft/widgets/home_page/expandable_card.dart';
+import 'package:menu_craft/widgets/home_page/restaurant_card.dart';
+import 'package:menu_craft/widgets/profile/restaurant_owner_card.dart';
 import 'package:provider/provider.dart';
 
 class ListOwnerRestaurants extends StatelessWidget {
@@ -31,7 +32,7 @@ class ListOwnerRestaurants extends StatelessWidget {
                 itemCount: restaurants.length,
                 itemBuilder: (context, index) {
                   final restaurant = restaurants[index];
-                  return ExpandableCard(
+                  return RestaurantOwnerCard(
                     restaurant: restaurant,
                   );
                 },
