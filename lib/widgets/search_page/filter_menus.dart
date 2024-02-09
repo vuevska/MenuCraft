@@ -4,6 +4,7 @@ import 'package:menu_craft/widgets/search_page/restaurant_card.dart';
 import '../../models/restaurant_model.dart';
 import '../../services/db_service.dart';
 import '../../utils/location_services.dart';
+import '../home_page/expandable_card.dart';
 
 
 class FilterRestaurants extends StatefulWidget {
@@ -33,7 +34,7 @@ class _FilterRestaurantsState extends State<FilterRestaurants> {
         } else {
           final restaurants = snapshot.data!;
           return ListView.builder(
-            itemCount: restaurants.length > 4 ? 4 : restaurants.length,
+            itemCount: restaurants.length > 5 ? 5 : restaurants.length,
             itemBuilder: (context, index) {
               final restaurant = restaurants[index];
               return RestaurantNameCard(name: restaurant.name);
@@ -44,3 +45,5 @@ class _FilterRestaurantsState extends State<FilterRestaurants> {
     );
   }
 }
+
+
