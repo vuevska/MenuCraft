@@ -31,13 +31,12 @@ class DbAuthService {
   Future<void> deleteUser(String uid) async {
     await _db.collection('users').doc(uid).get().then((doc) async {
       final imageLink = doc.data()?['imageUrl'] ?? "no link";
-      if(imageLink != "no link"){
+      if (imageLink != "no link") {
         await _storage.refFromURL(imageLink).delete();
       }
     });
 
     await _db.collection('users').doc(uid).delete();
-
   }
 
   Future<void> addNetworkImageToUser(
@@ -167,6 +166,24 @@ class DbAuthService {
     return _db.collection('restaurants').doc(id).get().then((doc) {
       return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
     });
+  }
+
+  Future<List<RestaurantModel>> getRestaurantsByUserId(String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection('restaurants')
+          .where('owningUserID', isEqualTo: userId)
+          .get();
+
+      List<RestaurantModel> restaurants = querySnapshot.docs.map((doc) {
+        return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      return restaurants;
+    } catch (error) {
+      print('Error getting restaurants by user ID: $error');
+      return [];
+    }
   }
 
   Future<String> uploadRestaurantImage(String restaurantId, File file) async {

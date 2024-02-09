@@ -41,7 +41,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
             padding: const EdgeInsets.only(top: 60.0),
             child: Column(
               children: [
-                const SecondaryCustomAppBar(title: "Add a new Menu"),
+                const SecondaryCustomAppBar(title: "Create Menu"),
                 const SizedBox(height: 15.0),
                 AddMenuForm(
                   nameController: _nameController,

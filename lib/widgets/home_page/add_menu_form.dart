@@ -180,7 +180,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                     minimumSize: const Size(double.infinity, 50),
                   ),
                   onPressed: widget.onPressed,
-                  child: const Text('Add Menu',
+                  child: const Text('Create',
                       style: TextStyle(color: Colors.white)),
                 ),
               ],
