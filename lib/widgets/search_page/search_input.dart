@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import '../appbar/custom_appbar.dart';
+import 'filter_menus.dart';
 
 // class SearchBarCustom extends StatefulWidget {
 //   const SearchBarCustom({super.key});
@@ -47,6 +48,7 @@ import '../appbar/custom_appbar.dart';
 // }
 
 
+
 class SearchBarCustom extends StatefulWidget {
   const SearchBarCustom({Key? key});
 
@@ -55,18 +57,18 @@ class SearchBarCustom extends StatefulWidget {
 }
 
 class _SearchBarCustomState extends State<SearchBarCustom> {
+  late TextEditingController _searchController;
   bool _isListVisible = false;
-  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode();
+    _searchController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -75,29 +77,28 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _isListVisible = !_isListVisible;
-            });
-            if (_isListVisible) {
-              Future.delayed(Duration(milliseconds: 100), () {
-                FocusScope.of(context).requestFocus(_focusNode);
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.purple.shade50,
+          ),
+          child: TextField(
+            controller: _searchController,
+            onTap: () {
+              setState(() {
+                _isListVisible = true;
               });
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0), // Adjust the value to change the roundness
-              color: Colors.purple.shade50,
-            ),
-            child: Row(
-              children: const [
-                Icon(Icons.search),
-                SizedBox(width: 8.0),
-                Text('Search...'),
-              ],
+            },
+            onChanged: (value) {
+              // Implement filtering logic here
+              // You can filter restaurants by name using the value entered in the TextField
+              // You may need to update the ListRestaurants widget with the filtered list
+            },
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Search by name...',
+              border: InputBorder.none,
             ),
           ),
         ),
@@ -105,36 +106,27 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
         Visibility(
           visible: _isListVisible,
           child: Container(
-            height: 300, // Adjust height according to your need
-            padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5.0),
+            height: 300,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0), // Adjust the value to change the roundness
+              borderRadius: BorderRadius.circular(20.0),
               color: Colors.purple.shade50,
             ),
-            child: ListView.builder(
-              itemCount: 10, // Adjust itemCount according to your list
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Item $index'),
-                  onTap: () {
-                    // Handle item tap
-                  },
-                );
-              },
-            ),
+            child: FilterRestaurants(),
           ),
         ),
-        // Hidden text field used for opening the keyboard
-        // when the search bar is tapped
+        // Hidden text field used for opening the keyboard when the search bar is tapped
         Opacity(
           opacity: 0.0,
           child: TextField(
-            focusNode: _focusNode,
+            controller: _searchController,
           ),
         ),
       ],
     );
   }
 }
+
+
 
 
