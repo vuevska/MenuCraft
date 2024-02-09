@@ -117,6 +117,10 @@ class AuthService {
     return await _db.getUser(user!.uid);
   }
 
+  static Future<void> deleteAccount() async {
+    await user?.delete();
+
+  }
   static Future<void> signOut() async {
     await _auth.signOut();
 
