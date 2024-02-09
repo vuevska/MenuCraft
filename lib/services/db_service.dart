@@ -28,6 +28,18 @@ class DbAuthService {
     });
   }
 
+  Future<void> deleteUser(String uid) async {
+    await _db.collection('users').doc(uid).get().then((doc) async {
+      final imageLink = doc.data()?['imageUrl'] ?? "no link";
+      if(imageLink != "no link"){
+        await _storage.refFromURL(imageLink).delete();
+      }
+    });
+
+    await _db.collection('users').doc(uid).delete();
+
+  }
+
   Future<void> addNetworkImageToUser(
     String uid,
     String imageUrl,

@@ -8,6 +8,8 @@ import 'package:menu_craft/pages/profile/profile_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
+import 'package:menu_craft/widgets/profile/settings/delete_modal.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
@@ -86,6 +88,19 @@ class _EditProfileSettingsPageState extends State<EditProfileSettingsPage> {
                           }
                         },
                       ),
+                      ProfileSettingRow(
+                        title: "Delete Profile",
+                        onTap: () async {
+                          PersistentNavBarNavigator.pushDynamicScreen(
+                            context,
+                            screen: CupertinoPageRoute(
+                                builder: (context) =>
+                                    DeleteAccountModal(db: _db)),
+                            withNavBar: true,
+                          );
+                        },
+                        logout: true,
+                      )
                     ],
                   ),
                 )),
