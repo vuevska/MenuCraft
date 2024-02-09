@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/utils/location_services.dart';
+import 'package:menu_craft/widgets/home_page/favorite_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExpandableCard extends StatefulWidget {
@@ -143,28 +144,8 @@ class _ExpandableCardState extends State<ExpandableCard> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                            backgroundColor: Colors.purple[50],
-                          ),
-                          onPressed: () {
-                            // TODO: Dodadi funkcija tuka
-                          },
-                          icon: const Icon(
-                            Icons.favorite,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            "Add to Favorites",
-                            style: TextStyle(fontSize: 10, color: Colors.black),
-                          ),
-                        ),
-                      ),
+                      FavoriteButton(
+                          restaurantId: widget.restaurant.restaurantId),
                     ],
                   ),
                 ],

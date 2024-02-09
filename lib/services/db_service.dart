@@ -146,6 +146,15 @@ class DbAuthService {
     return restaurants;
   }
 
+  Future<List<RestaurantModel>> getAllRestaurauntsFromList(List<String> ids) async {
+    return await Future.wait(ids.map((id) => getRestaurant(id)));
+  }
+  Future<RestaurantModel> getRestaurant(String id) {
+    return _db.collection('restaurants').doc(id).get().then((doc) {
+      return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
+    });
+  }
+
   Future<String> uploadRestaurantImage(String restaurantId, File file) async {
     final firebaseStorageRef =
         _storage.ref().child('restaurants/$restaurantId.png');
@@ -157,6 +166,7 @@ class DbAuthService {
 
     return imageUrl;
   }
+
 
 // Future<void> addRestaurantToFavorites(
 //     String userId, String restaurantId) async {
