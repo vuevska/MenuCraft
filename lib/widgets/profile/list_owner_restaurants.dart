@@ -26,16 +26,14 @@ class ListOwnerRestaurants extends StatelessWidget {
               );
             } else {
               final List<RestaurantModel> restaurants = snapshot.data!;
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: restaurants.length,
-                itemBuilder: (context, index) {
-                  final RestaurantModel restaurant = restaurants[index];
-                  return RestaurantOwnerCard(
-                    restaurant: restaurant,
-                  );
-                },
+              return SingleChildScrollView(
+                child: Column(
+                  children: restaurants.map((restaurant) {
+                    return RestaurantOwnerCard(
+                      restaurant: restaurant,
+                    );
+                  }).toList(),
+                ),
               );
             }
           },

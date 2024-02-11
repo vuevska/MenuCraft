@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
+import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
@@ -108,10 +109,17 @@ class _AddMenuPageState extends State<AddMenuPage> {
       type: ToastificationType.success,
     );
     InterfaceUtils.removeOverlay(context);
-    Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute(builder: (context) => const ProfilePage()),
-      (route) => false,
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   CupertinoPageRoute(builder: (context) => const OwnerMenusPage()),
+    //   (route) => false,
+    // );
+    Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (BuildContext context) {
+          return const OwnerMenusPage();
+        },
+      ),
     );
   }
 }

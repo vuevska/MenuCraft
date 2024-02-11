@@ -8,6 +8,7 @@ import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 
 class AddCategoryPage extends StatefulWidget {
   final RestaurantModel restaurant;
@@ -20,6 +21,15 @@ class AddCategoryPage extends StatefulWidget {
 class _AddCategoryPageState extends State<AddCategoryPage> {
   final TextEditingController _nameController = TextEditingController();
   final DbRestaurantService _db = DbRestaurantService();
+  late Icon _icon;
+
+  _pickIcon() async {
+    // IconData? icon = await FlutterIconPicker.showIconPicker(context,
+    //     iconPackModes: [IconPack.cupertino]);
+
+    // _icon = Icon(icon);
+    // setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {

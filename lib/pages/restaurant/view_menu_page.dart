@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/pages/restaurant/add_category_page.dart';
+import 'package:menu_craft/pages/restaurant/view_menu_items_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/generate_qr.dart';
@@ -49,17 +50,6 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
           children: [
             SecondaryCustomAppBar(title: widget.restaurant.name),
             const SizedBox(height: 20.0),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Categories:',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             Expanded(
               child: FutureBuilder<List<CategoryModel>>(
                 future: _db
@@ -75,10 +65,29 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                       itemCount: categories.length,
                       itemBuilder: (context, index) {
                         final category = categories[index];
-                        return ListTile(
-                          title: Text(
-                            category.name,
-                            style: const TextStyle(color: Colors.white),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return ViewMenuItemsPage(
+                                      category: category,
+                                      restaurant: widget.restaurant);
+                                },
+                              ),
+                            );
+                          },
+                          child: Card(
+                            child: ListTile(
+                              title: Text(
+                                category.name,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              leading: Icon(
+                                category.icon,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -93,9 +102,7 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                   overlay.showOverlay();
                 }
               },
-              child: const Text(
-                  //TODO: ce go premestime ama testiram
-                  "Generate QR Code for Menu"),
+              child: const Text("Generate QR Code for Menu"),
             ),
           ],
         ),
@@ -103,6 +110,14 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
       floatingActionButton: isCurrentUserOwner
           ? FloatingActionButton.extended(
               onPressed: () {
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   CupertinoPageRoute(
+                //       builder: (context) =>
+                //           AddCategoryPage(restaurant: widget.restaurant)),
+                //   (route) => false,
+                // );
+
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (BuildContext context) {
@@ -112,7 +127,7 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                 );
               },
               icon: const Icon(
-                CupertinoIcons.add,
+                Icons.add,
                 color: Colors.white,
               ),
               label: const Text(

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/models/menu_item_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 
@@ -170,11 +171,13 @@ class DbRestaurantService {
           .collection('categories')
           .get();
 
+      // proverka dali categoryId e prazno
       List<CategoryModel> categories = [];
       for (var doc in categorySnapshot.docs) {
-        final data = doc.data();
-        if (data != null) {
-          final category = CategoryModel.fromMap(data as Map<String, dynamic>);
+        final data = doc.data() as Map<String, dynamic>;
+        final categoryId = data['categoryId'] as String?;
+        if (categoryId != null && categoryId.isNotEmpty) {
+          final category = CategoryModel.fromMap(data);
           categories.add(category);
         }
       }
@@ -239,5 +242,88 @@ class DbRestaurantService {
     //   }
     // });
     return await getAllRestaurauntsFromList(restIDs);
+  }
+
+  Future<void> addMenuItem({
+    required String name,
+    required double price,
+    required String description,
+    required String menuItemId,
+    required String owningUserID,
+    required String categoryId,
+  }) async {
+    try {
+      final menuItem = MenuItemModel(
+        menuItemId: menuItemId,
+        name: name,
+        price: price,
+        description: description,
+      );
+
+      final Map<String, dynamic> menuItemData = menuItem.toMap();
+
+      await _db
+          .collection('restaurants')
+          .doc(categoryId)
+          .collection('menu_items')
+          .doc(menuItemId)
+          .set(menuItemData);
+    } catch (e) {
+      print('Error adding menu item: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> addMenuItemToCategory(
+      String restaurantId, String categoryId, MenuItemModel menuItem) async {
+    try {
+      final categoryRef = _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .doc(categoryId);
+
+      final menuItemsCollectionRef = categoryRef.collection('menuItems');
+      final menuItemsSnapshot = await menuItemsCollectionRef.get();
+      if (menuItemsSnapshot.docs.isEmpty) {
+        await menuItemsCollectionRef.doc().set({
+          'menuItemId': '',
+          'name': '',
+          'price': 0,
+          'description': '',
+        });
+      }
+
+      await menuItemsCollectionRef.add(menuItem.toMap());
+    } catch (e) {
+      print('Error adding menu item to category: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<MenuItemModel>> getMenuItemsInCategory(
+      String restaurantId, String categoryId) async {
+    try {
+      final categoryRef = _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .doc(categoryId);
+      final menuItemsSnapshot = await categoryRef.collection('menuItems').get();
+
+      List<MenuItemModel> menuItems = [];
+      for (var doc in menuItemsSnapshot.docs) {
+        final menuItemData = doc.data();
+        final menuItem = MenuItemModel.fromMap(menuItemData);
+        if (menuItem.menuItemId.isNotEmpty) {
+          menuItems.add(menuItem);
+        }
+      }
+
+      return menuItems;
+    } catch (e) {
+      print('Error getting menu items in category: $e');
+      return [];
+    }
   }
 }
