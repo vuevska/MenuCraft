@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
 import '../models/providers/user_provider.dart';
-import '../services/db_service.dart';
+import '../services/db_auth_service.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -78,8 +78,9 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<LocationService>().determinePosition().catchError((onError){
-      InterfaceUtils.show(context, onError.toString(), type:ToastificationType.error);
+    context.read<LocationService>().determinePosition().catchError((onError) {
+      InterfaceUtils.show(context, onError.toString(),
+          type: ToastificationType.error);
     });
     if (AuthService.isUserLoggedIn()) {
       if (context.read<UserProvider>().user == null) {

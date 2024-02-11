@@ -13,7 +13,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../../services/db_service.dart';
+import '../../../services/db_auth_service.dart';
 import '../../../widgets/profile/settings/profile_setting_row.dart';
 
 class EditProfileSettingsPage extends StatefulWidget {

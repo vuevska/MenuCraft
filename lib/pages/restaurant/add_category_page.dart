@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
-import 'package:menu_craft/services/db_service.dart';
+import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:toastification/toastification.dart';
@@ -19,7 +19,7 @@ class AddCategoryPage extends StatefulWidget {
 
 class _AddCategoryPageState extends State<AddCategoryPage> {
   final TextEditingController _nameController = TextEditingController();
-  final DbAuthService _db = DbAuthService();
+  final DbRestaurantService _db = DbRestaurantService();
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +61,12 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     );
 
     try {
-      await _db.addCategory(newCategory);
+      // await _db.addCategory(newCategory);
 
-      String categoryId = newCategory.categoryId;
+      Map<String, dynamic> categoryMap = newCategory.toMap();
 
       await _db.addCategoryToRestaurant(
-          widget.restaurant.restaurantId, categoryId);
+          widget.restaurant.restaurantId, categoryMap);
 
       InterfaceUtils.show(
         context,

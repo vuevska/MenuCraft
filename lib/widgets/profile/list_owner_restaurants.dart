@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
-import 'package:menu_craft/services/db_service.dart';
-import 'package:menu_craft/widgets/home_page/restaurant_card.dart';
+import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/widgets/profile/restaurant_owner_card.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +13,8 @@ class ListOwnerRestaurants extends StatelessWidget {
     return Consumer<UserProvider>(
       builder: (context, user, child) {
         return FutureBuilder<List<RestaurantModel>>(
-          future: DbAuthService().getRestaurantsByUserId(user.user!.userId),
+          future:
+              DbRestaurantService().getRestaurantsByUserId(user.user!.userId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -25,13 +25,13 @@ class ListOwnerRestaurants extends StatelessWidget {
                 child: Text('Error: ${snapshot.error}'),
               );
             } else {
-              final restaurants = snapshot.data!;
+              final List<RestaurantModel> restaurants = snapshot.data!;
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: restaurants.length,
                 itemBuilder: (context, index) {
-                  final restaurant = restaurants[index];
+                  final RestaurantModel restaurant = restaurants[index];
                   return RestaurantOwnerCard(
                     restaurant: restaurant,
                   );

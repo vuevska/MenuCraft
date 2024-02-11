@@ -7,81 +7,11 @@ import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 
-import '../models/user_model.dart';
-
-class DbAuthService {
+class DbRestaurantService {
   final _db = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
 
   final _geo = GeoFlutterFire();
-
-  Future<void> addUserEmail(
-    String uid,
-    String email,
-    String name,
-    String surname,
-  ) async {
-    await _db.collection('users').doc(uid).set({
-      'email': email,
-      'name': name,
-      'surname': surname,
-      'uid': uid,
-    });
-  }
-
-  Future<void> deleteUser(String uid) async {
-    await _db.collection('users').doc(uid).get().then((doc) async {
-      final imageLink = doc.data()?['imageUrl'] ?? "no link";
-      if (imageLink != "no link") {
-        await _storage.refFromURL(imageLink).delete();
-      }
-    });
-
-    await _db.collection('users').doc(uid).delete();
-  }
-
-  Future<void> addNetworkImageToUser(
-    String uid,
-    String imageUrl,
-  ) async {
-    await _db.collection('users').doc(uid).update({
-      'imageUrl': imageUrl,
-    });
-  }
-
-  Future<String> addLocalImageToUser(
-    String uid,
-    File file,
-  ) async {
-    final firebaseStorageRef = _storage.ref().child('$uid/$uid.png');
-
-    final uploadTask = firebaseStorageRef.putFile(file);
-    final taskSnapshot = await uploadTask.whenComplete(() => null);
-
-    final fileURL = await taskSnapshot.ref.getDownloadURL();
-
-    await _db.collection('users').doc(uid).update({'imageUrl': fileURL});
-
-    return fileURL;
-  }
-
-  Future<void> addGoogleAccount(
-    String uid,
-    String email,
-    String name,
-  ) async {
-    await _db.collection("users").doc(uid).set({
-      'email': email,
-      'name': name,
-      'uid': uid,
-    });
-  }
-
-  Future<UserModel> getUser(String uid) async {
-    DocumentSnapshot user = await _db.collection('users').doc(uid).get();
-
-    return UserModel.fromMap(user.data() as Map<String, dynamic>);
-  }
 
   Future<void> addRestaurant({
     required String name,
@@ -94,33 +24,32 @@ class DbAuthService {
   }) async {
     String hash =
         _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
+
     final restaurant = RestaurantModel(
+      restaurantId: restaurantId,
       name: name,
       geoHash: hash,
       latitude: latitude,
       longitude: longitude,
       imageUrl: imageUrl,
-      restaurantId: restaurantId,
       owningUserID: owningUserID,
     );
 
-    final List<Map<String, dynamic>> categoriesData =
-        categories.map((category) => category.toMap()).toList();
-
     final Map<String, dynamic> restaurantData = restaurant.toMap();
-    restaurantData['categories'] = categoriesData;
 
     await _db.collection('restaurants').doc(restaurantId).set(restaurantData);
-  }
 
-  //TODO: razgledaj go ova
-  // Future<void> addRestaurantToUser(String uid, String restaurantId) async {
-  //   final userDocRef = _db.collection('users').doc(uid);
-  //
-  //   await userDocRef.update({
-  //     'ownRestaurants': FieldValue.arrayUnion([restaurantId])
-  //   });
-  // }
+    // Ova gi zacuvuva categoriite vo subcollection
+    final categoryCollectionRef = _db
+        .collection('restaurants')
+        .doc(restaurantId)
+        .collection('categories');
+    for (var category in categories) {
+      await categoryCollectionRef
+          .doc(category.categoryId)
+          .set(category.toMap());
+    }
+  }
 
   Future<List<RestaurantModel>> getLocalRestaurants(
       Future<Position?> lastLocation) async {
@@ -132,8 +61,9 @@ class DbAuthService {
     }
 
     GeoFirePoint center = _geo.point(
-        latitude: lastKnownPosition.latitude,
-        longitude: lastKnownPosition.longitude);
+      latitude: lastKnownPosition.latitude,
+      longitude: lastKnownPosition.longitude,
+    );
 
     var collectionReference = _db.collection('restaurants');
 
@@ -141,13 +71,19 @@ class DbAuthService {
     String field = 'geoPoint';
     List<DocumentSnapshot> documentList = await _geo
         .collection(collectionRef: collectionReference)
-        .within(center: center, radius: radius, field: field, strictMode: false)
+        .within(
+          center: center,
+          radius: radius,
+          field: field,
+          strictMode: false,
+        )
         .first;
 
-    List<RestaurantModel> restaurants = documentList
-        .map((doc) =>
-            RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
-        .toList();
+    List<RestaurantModel> restaurants = [];
+    for (var doc in documentList) {
+      final dynamic data = doc.data();
+      restaurants.add(RestaurantModel.fromMap(data as Map<String, dynamic>));
+    }
     return restaurants;
   }
 
@@ -155,10 +91,11 @@ class DbAuthService {
     QuerySnapshot restaurantSnapshot =
         await _db.collection('restaurants').get();
 
-    List<RestaurantModel> restaurants = restaurantSnapshot.docs
-        .map((doc) =>
-            RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
-        .toList();
+    List<RestaurantModel> restaurants = [];
+    for (var doc in restaurantSnapshot.docs) {
+      final dynamic data = doc.data();
+      restaurants.add(RestaurantModel.fromMap(data as Map<String, dynamic>));
+    }
     return restaurants;
   }
 
@@ -167,66 +104,50 @@ class DbAuthService {
     return await Future.wait(ids.map((id) => getRestaurant(id)));
   }
 
-  Future<RestaurantModel> getRestaurant(String id) {
-    return _db.collection('restaurants').doc(id).get().then((doc) {
-      return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
-    });
+  Future<RestaurantModel> getRestaurant(String id) async {
+    DocumentSnapshot restaurantDoc =
+        await _db.collection('restaurants').doc(id).get();
+
+    final dynamic data = restaurantDoc.data();
+    return RestaurantModel.fromMap(data as Map<String, dynamic>);
   }
 
   Future<List<RestaurantModel>> getRestaurantsByUserId(String userId) async {
     try {
-      QuerySnapshot querySnapshot = await _db
+      final QuerySnapshot querySnapshot = await _db
           .collection('restaurants')
           .where('owningUserID', isEqualTo: userId)
           .get();
 
-      List<RestaurantModel> restaurants = querySnapshot.docs.map((doc) {
-        return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<RestaurantModel> restaurants = [];
+      for (var doc in querySnapshot.docs) {
+        final restaurantData = doc.data() as Map<String, dynamic>;
+        restaurants.add(RestaurantModel.fromMap(restaurantData));
+      }
 
       return restaurants;
-    } catch (error) {
-      print('Error getting restaurants by user ID: $error');
-      return [];
-    }
-  }
-
-  Future<void> addCategory(CategoryModel category) async {
-    try {
-      await _db
-          .collection('categories')
-          .doc(category.categoryId)
-          .set(category.toMap());
     } catch (e) {
-      print('Error adding category: $e');
+      print('Error getting restaurants by user ID: $e');
       rethrow;
     }
   }
 
   Future<void> addCategoryToRestaurant(
-      String restaurantId, String categoryId) async {
+      String restaurantId, Map<String, dynamic> category) async {
     try {
-      await _db.collection('restaurants').doc(restaurantId).update({
-        'categories': FieldValue.arrayUnion([categoryId]),
-      });
+      final restaurantRef = _db.collection('restaurants').doc(restaurantId);
+
+      // dokolku nema categories subcollection, ja kreira pa posle dodava
+      final categoriesSnapshot =
+          await restaurantRef.collection('categories').get();
+      if (categoriesSnapshot.docs.isEmpty) {
+        await restaurantRef.collection('categories').doc().set({});
+      }
+
+      await restaurantRef.collection('categories').add(category);
     } catch (e) {
       print('Error adding category to restaurant: $e');
-      throw e;
-    }
-  }
-
-  Future<List<CategoryModel>> getAllCategories() async {
-    try {
-      QuerySnapshot categorySnapshot = await _db.collection('categories').get();
-
-      List<CategoryModel> categories = categorySnapshot.docs.map((doc) {
-        return CategoryModel.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
-
-      return categories;
-    } catch (error) {
-      print('Error getting all categories: $error');
-      return [];
+      rethrow;
     }
   }
 
@@ -304,18 +225,4 @@ class DbAuthService {
     // });
     return await getAllRestaurauntsFromList(restIDs);
   }
-
-// Future<void> addRestaurantToFavorites(
-//     String userId, String restaurantId) async {
-//   await _db.collection('users').doc(userId).update({
-//     'favoriteRestaurants': FieldValue.arrayUnion([restaurantId]),
-//   });
-// }
-
-// Future<void> removeRestaurantFromFavorites(
-//     String userId, String restaurantId) async {
-//   await _db.collection('users').doc(userId).update({
-//     'favoriteRestaurants': FieldValue.arrayRemove([restaurantId]),
-//   });
-// }
 }

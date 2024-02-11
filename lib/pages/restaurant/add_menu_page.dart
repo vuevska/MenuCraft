@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:menu_craft/services/db_service.dart';
+import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:menu_craft/widgets/home_page/add_menu_form.dart';
@@ -16,7 +16,7 @@ import '../../utils/data_upward.dart';
 import '../profile/profile_page.dart';
 
 class AddMenuPage extends StatefulWidget {
-  const AddMenuPage({Key? key}) : super(key: key);
+  const AddMenuPage({super.key});
 
   @override
   State<AddMenuPage> createState() => _AddMenuPageState();
@@ -26,7 +26,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
   final TextEditingController _nameController = TextEditingController();
   final Data<PickedData> _locationController = Data<PickedData>();
   final _picker = ImagePicker();
-  final _db = DbAuthService();
+  final _db = DbRestaurantService();
 
   File? _pickedImage;
 

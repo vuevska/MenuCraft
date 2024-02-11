@@ -9,7 +9,7 @@ class FavoriteRestaurantCard extends StatelessWidget {
   final Function onDelete;
   late AnimationController animationController;
 
-   FavoriteRestaurantCard({
+  FavoriteRestaurantCard({
     super.key,
     required this.restaurant,
     required this.onDelete,
@@ -80,8 +80,9 @@ class FavoriteRestaurantCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       animationController.reset();
-                      animationController.forward().then((value) => onDelete(index));
-
+                      animationController
+                          .forward()
+                          .then((value) => onDelete(index));
                     },
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,

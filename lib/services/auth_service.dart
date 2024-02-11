@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user_model.dart';
-import 'db_service.dart';
+import 'db_auth_service.dart';
 
 class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,6 +20,7 @@ class AuthService {
   static bool isGoogleUser() {
     return user?.providerData[0].providerId == "google.com";
   }
+
   static bool isEmailUser() {
     return user?.providerData[0].providerId == "password";
   }
@@ -119,8 +120,8 @@ class AuthService {
 
   static Future<void> deleteAccount() async {
     await user?.delete();
-
   }
+
   static Future<void> signOut() async {
     await _auth.signOut();
 

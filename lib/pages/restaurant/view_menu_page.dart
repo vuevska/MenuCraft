@@ -4,7 +4,7 @@ import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/pages/restaurant/add_category_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
-import 'package:menu_craft/services/db_service.dart';
+import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
 class ViewMenuPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class ViewMenuPage extends StatefulWidget {
 
 class _ViewMenuPageState extends State<ViewMenuPage> {
   bool isCurrentUserOwner = false;
-  final DbAuthService _db = DbAuthService();
+  final DbRestaurantService _db = DbRestaurantService();
 
   @override
   void initState() {
