@@ -1,5 +1,14 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
+import "package:menu_craft/pages/restaurant/view_menu_page.dart";
+import "package:menu_craft/services/db_restaurant_service.dart";
+import "package:menu_craft/utils/toastification.dart";
 import "package:mobile_scanner/mobile_scanner.dart";
+import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
+import "package:toastification/toastification.dart";
+
+import "../models/restaurant_model.dart";
 
 class QrScanner extends StatefulWidget {
   const QrScanner({super.key});
@@ -9,12 +18,17 @@ class QrScanner extends StatefulWidget {
 }
 
 class QrScannerState extends State<QrScanner> {
+  final _db = DbRestaurantService();
   String overlayText = "Please scan QR Code";
   bool camStarted = true;
+
+  String? lastScannedBarcode;
 
   final MobileScannerController controller = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
     autoStart: true,
+    detectionSpeed: DetectionSpeed.normal,
+    detectionTimeoutMs: 250,
   );
 
   @override
@@ -52,16 +66,49 @@ class QrScannerState extends State<QrScanner> {
     });
   }
 
-  void onBarcodeDetect(BarcodeCapture barcodeCapture) {
+  void onBarcodeDetect(BarcodeCapture barcodeCapture) async {
     final barcode = barcodeCapture.barcodes.last;
+    if (lastScannedBarcode != null) {
+      return;
+    }
+    lastScannedBarcode = barcode.rawValue;
     setState(() {
       overlayText = barcodeCapture.barcodes.last.displayValue ??
           barcode.rawValue ??
           'Barcode has no displayable value';
       camStarted = false;
     });
+    print(barcode.rawValue);
+    //TODO: mozebi ovde podobro ce bidi da klajme link pa ce mozi i bez app da se vidi restorano
+    final restaurantId = barcode.rawValue;
 
-    Navigator.maybePop(context);
+    RestaurantModel? restaurant = await _db
+        .checkAndGetRestauraunt(restaurantId ?? '')
+        .catchError((onError) {
+      InterfaceUtils.show(context, "The QR Code is not valid!",
+          type: ToastificationType.error);
+
+      Timer(const Duration(seconds: 5), () {
+        lastScannedBarcode = null;
+      });
+      return Future<RestaurantModel?>.value(null);
+    });
+    if (restaurant == null || !context.mounted) {
+      return;
+    }
+
+    controller.stop();
+
+    lastScannedBarcode = null;
+
+    PersistentNavBarNavigator.pushNewScreen(
+      context,
+      screen: ViewMenuPage(restaurant: restaurant),
+      withNavBar: true, // OPTIONAL VALUE. True by default.
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+    ).then((value) {
+      controller.start();
+    });
     // widget.action();
   }
 

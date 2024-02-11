@@ -112,6 +112,12 @@ class DbRestaurantService {
     return RestaurantModel.fromMap(data as Map<String, dynamic>);
   }
 
+  Future<RestaurantModel?> checkAndGetRestauraunt(String id) {
+    return _db.collection('restaurants').doc(id).get().then((doc) {
+      return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
+    });
+  }
+
   Future<List<RestaurantModel>> getRestaurantsByUserId(String userId) async {
     try {
       final QuerySnapshot querySnapshot = await _db
@@ -141,7 +147,11 @@ class DbRestaurantService {
       final categoriesSnapshot =
           await restaurantRef.collection('categories').get();
       if (categoriesSnapshot.docs.isEmpty) {
-        await restaurantRef.collection('categories').doc().set({});
+        await restaurantRef.collection('categories').add({
+          'categoryId': '',
+          'name': '',
+          'icon': 0,
+        });
       }
 
       await restaurantRef.collection('categories').add(category);
@@ -160,9 +170,14 @@ class DbRestaurantService {
           .collection('categories')
           .get();
 
-      List<CategoryModel> categories = categorySnapshot.docs.map((doc) {
-        return CategoryModel.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
+      List<CategoryModel> categories = [];
+      for (var doc in categorySnapshot.docs) {
+        final data = doc.data();
+        if (data != null) {
+          final category = CategoryModel.fromMap(data as Map<String, dynamic>);
+          categories.add(category);
+        }
+      }
 
       return categories;
     } catch (error) {
