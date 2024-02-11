@@ -173,6 +173,11 @@ class DbAuthService {
     });
   }
 
+  Future<RestaurantModel?> checkAndGetRestauraunt(String id) {
+    return _db.collection('restaurants').doc(id).get().then((doc) {
+      return RestaurantModel.fromMap(doc.data() as Map<String, dynamic>);
+    });
+  }
   Future<List<RestaurantModel>> getRestaurantsByUserId(String userId) async {
     try {
       QuerySnapshot querySnapshot = await _db

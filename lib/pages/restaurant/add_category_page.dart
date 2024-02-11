@@ -67,7 +67,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
       await _db.addCategoryToRestaurant(
           widget.restaurant.restaurantId, categoryId);
-
+      if(!context.mounted){
+        return;
+      }
       InterfaceUtils.show(
         context,
         'Category added successfully!',

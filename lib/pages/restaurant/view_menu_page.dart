@@ -5,10 +5,12 @@ import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/pages/restaurant/add_category_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/services/db_service.dart';
+import 'package:menu_craft/utils/generate_qr.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
 class ViewMenuPage extends StatefulWidget {
   final RestaurantModel restaurant;
+
   const ViewMenuPage({super.key, required this.restaurant});
 
   @override
@@ -36,6 +38,7 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    final QRGenOverlay overlay = QRGenOverlay(context, widget.restaurant.restaurantId, widget.restaurant.name);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Container(
@@ -82,6 +85,15 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                   }
                 },
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (!overlay.isShowing()) {
+                  overlay.showOverlay();
+                }
+              },
+              child: Text(
+                  "Generate QR Code for Menu"), //TODO: ce go premestime ama testiram
             ),
           ],
         ),
