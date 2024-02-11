@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../pages/restaurant/view_menu_page.dart';
 
 
 class RestaurantNameCard extends StatelessWidget {
@@ -19,6 +22,13 @@ class RestaurantNameCard extends StatelessWidget {
       ),
       onTap: () {
         //TODO: open menu (restaurant)
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (BuildContext context) {
+              return const ViewMenuPage();
+            },
+          ),
+        );
       },
     );
   }

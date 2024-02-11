@@ -3,8 +3,6 @@ import 'package:menu_craft/widgets/search_page/restaurant_card.dart';
 
 import '../../models/restaurant_model.dart';
 import '../../services/db_service.dart';
-import '../../utils/location_services.dart';
-
 
 
 
