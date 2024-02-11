@@ -2,25 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../../widgets/profile/settings/privacy_policy/category_text.dart';
 
-class PrivacyPolicyPage extends StatefulWidget {
+class AboutPage extends StatefulWidget {
   @override
-  _PrivacyPolicyPageState createState() => _PrivacyPolicyPageState();
+  _AboutPageState createState() => _AboutPageState();
 }
 
-class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
+class _AboutPageState extends State<AboutPage> {
   // Define a map to store category and its corresponding text
   Map<String, Widget> categories = {
-    'Privacy Policy': const CategoryTextWidget(category: 'Privacy Policy'),
-    'Definitions': const CategoryTextWidget(category: 'Definitions'),
-    'Personal Data': const CategoryTextWidget(category: 'Personal Data'),
-    'Usage Data': const CategoryTextWidget(category: 'Usage Data'),
-    'Information from Third-Party Social Media Services': const CategoryTextWidget(category: 'Information from Third-Party Social Media Services'),
-    'Information Collected while Using the Application': const CategoryTextWidget(category: 'Information Collected while Using the Application'),
-    'Use of Your Personal Data': const CategoryTextWidget(category: 'Use of Your Personal Data'),
-    'Retention of Your Personal Data': const CategoryTextWidget(category: 'Retention of Your Personal Data'),
-    'Delete Your Personal Data': const CategoryTextWidget(category: 'Delete Your Personal Data'),
-    'Security of Your Personal Data': const CategoryTextWidget(category: 'Security of Your Personal Data'),
-    'Changes to this Privacy Policy': const CategoryTextWidget(category: 'Changes to this Privacy Policy'),
+    'About Us': const CategoryTextWidget(category: 'About Us'),
+    'Core values': const CategoryTextWidget(category: 'Core values'),
+    'Contact': const CategoryTextWidget(category: 'Contact'),
   };
 
   Map<String, bool> categoryExpanded = {};
@@ -31,10 +23,10 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text(
-            'Privacy and Security',
-            style: TextStyle(
-                fontWeight: FontWeight.w600
-            ),
+          'About',
+          style: TextStyle(
+              fontWeight: FontWeight.w600
+          ),
         ),
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.purple.shade50,
