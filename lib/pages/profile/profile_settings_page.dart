@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_craft/pages/profile/settings/about.dart';
 import 'package:menu_craft/pages/profile/settings/change_password.dart';
 import 'package:menu_craft/pages/profile/settings/edit_profile.dart';
 import 'package:menu_craft/pages/profile/settings/privacy_policy.dart';
@@ -79,10 +80,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       ProfileSettingRow(
                         title: "Privacy and Security",
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => PrivacyPolicyPage()),
-                          // );
                           Navigator.of(context).push(
                               CupertinoPageRoute(
                                 builder: (BuildContext context) {
@@ -96,7 +93,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       ProfileSettingRow(
                         title: "About",
                         onTap: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (BuildContext context) {
+                                return AboutPage();
+                              },
+                            ),
+                          );
                         },
                       ),
                       const SizedBox(height: 10.0),

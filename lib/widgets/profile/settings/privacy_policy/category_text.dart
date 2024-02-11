@@ -153,6 +153,31 @@ We will let You know via email and/or a prominent notice on Our Service, prior t
 
 You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.''';
 
+      case 'About Us':
+        return
+          '''
+MenuCraft is a revolutionary app designed to simplify the process of creating and saving menus. Our user-friendly platform allows individuals and businesses to effortlessly craft menus for various occasions, from everyday meals to special events. With MenuCraft, you can explore a vast array of recipes, customize menus to suit your preferences, and save them for future reference. We believe that everyone should have access to a convenient tool that enhances their culinary experience.''';
+
+      case 'Core values':
+        return
+          '''
+1. Simplicity: We believe in creating a user-friendly platform that simplifies the menu planning process, ensuring that anyone can use MenuCraft with ease.
+
+2. Creativity: We encourage our users to unleash their culinary creativity by offering a wide range of recipes and customization options.
+
+3. Convenience: We value convenience and aim to provide a seamless experience for our users, allowing them to save time and effort in menu planning.
+
+4. Inspiration: We strive to inspire our users with exciting and innovative menu ideas, helping them discover new flavors and cuisines.
+
+5. Community: We foster a sense of community among our users, encouraging them to share their menu creations, exchange ideas, and support each other's culinary journeys.''';
+
+      case 'Contact':
+        return
+          '''
+If you have any questions or feedback, You can contact us:
+
+  - By email: info@menucraft.com''';
+
       default:
         return '';
     }
