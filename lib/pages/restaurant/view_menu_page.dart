@@ -78,15 +78,6 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                               ),
                             );
                           },
-                          child: Card(
-                            child: ListTile(
-                              title: Text(
-                                category.name,
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              leading: Icon(
-                                category.getIconData(),
-                                color: Colors.black,
                           child: FadeInUp(
                             duration: const Duration(milliseconds: 300),
                             from: 10,
@@ -100,7 +91,7 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                                     style: const TextStyle(color: Colors.black),
                                   ),
                                   leading: Icon(
-                                    category.icon,
+                                    category.getIconData(),
                                     color: Colors.black,
                                   ),
                                 ),

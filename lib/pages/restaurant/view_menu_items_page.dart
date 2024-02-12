@@ -61,7 +61,7 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      widget.category.icon,
+                      widget.category.getIconData(),
                       color: Colors.white,
                     ),
                     SizedBox(width: 10.0),
