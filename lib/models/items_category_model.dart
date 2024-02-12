@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ItemsCategoryModel {
   late String categoryId;
   late String name;
-  late IconData icon;
+  late int icon;
 
   ItemsCategoryModel({
     required this.categoryId,
@@ -15,7 +15,7 @@ class ItemsCategoryModel {
     return {
       'categoryId': categoryId,
       'name': name,
-      'icon': icon.codePoint,
+      'iconCodePoint': icon,
     };
   }
 
@@ -23,7 +23,11 @@ class ItemsCategoryModel {
     return ItemsCategoryModel(
       categoryId: data['categoryId'],
       name: data['name'],
-      icon: IconData(data['icon'], fontFamily: 'MaterialIcons'),
+      icon: data['iconCodePoint'],
     );
+  }
+
+  IconData getIconData() {
+    return IconData(icon, fontFamily: 'MaterialIcons');
   }
 }

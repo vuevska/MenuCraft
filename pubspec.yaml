@@ -62,7 +62,7 @@ dependencies:
   localstore: ^1.3.5
   audioplayers: ^5.2.1
   qr_flutter: ^4.1.0
-  flutter_iconpicker: ^3.3.0
+  flutter_iconpicker_plus: ^3.2.3
   introduction_screen: ^3.1.12
 
 dev_dependencies:

@@ -342,4 +342,16 @@ class DbRestaurantService {
       return [];
     }
   }
+
+  Future<void> deleteRestaurant(String restaurantId) async {
+    try {
+      // Delete the restaurant document
+      await _db.collection('restaurants').doc(restaurantId).delete();
+
+
+    } catch (e) {
+      print('Error deleting restaurant: $e');
+      rethrow;
+    }
+  }
 }

@@ -3,13 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/restaurant_category_model.dart';
 import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/widgets/menu/menu_input.dart';
 
-import 'pick_location.dart';
-import '../../utils/data_upward.dart';
+import '../widgets/home_page/pick_location.dart';
+import '../utils/data_upward.dart';
 
 class AddMenuForm extends StatefulWidget {
   final TextEditingController nameController;
@@ -22,15 +21,14 @@ class AddMenuForm extends StatefulWidget {
   final Function(RestaurantCategoryModel?) onCategorySelected;
 
   const AddMenuForm(
-      {Key? key,
+      {super.key,
       required this.nameController,
       required this.locationController,
       required this.pickedImage,
       required this.pickImage,
       required this.onPressed,
       required this.categories,
-      required this.onCategorySelected})
-      : super(key: key);
+      required this.onCategorySelected});
 
   @override
   State<AddMenuForm> createState() => _AddMenuFormState();
@@ -42,13 +40,6 @@ class _AddMenuFormState extends State<AddMenuForm> {
   }
 
   RestaurantCategoryModel? _selectedCategory;
-
-  void _onCategorySelected(RestaurantCategoryModel? category) {
-    setState(() {
-      _selectedCategory = category; // Update selected category
-    });
-    widget.onCategorySelected(category); // Trigger parent callback
-  }
 
   @override
   Widget build(BuildContext context) {

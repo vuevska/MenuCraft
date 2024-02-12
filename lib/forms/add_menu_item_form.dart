@@ -7,12 +7,12 @@ class AddMenuItemForm extends StatelessWidget {
   final Function() onPressed;
 
   const AddMenuItemForm({
-    Key? key,
+    super.key,
     required this.nameController,
     required this.priceController,
     required this.descriptionController,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

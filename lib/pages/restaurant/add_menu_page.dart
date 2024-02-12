@@ -9,7 +9,7 @@ import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
-import 'package:menu_craft/widgets/home_page/add_menu_form.dart';
+import 'package:menu_craft/forms/add_menu_form.dart';
 import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
 
@@ -47,7 +47,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
         _categories = categories;
       });
     } catch (e) {
-      print('Error fetching categories: $e');
+      debugPrint('Error fetching categories: $e');
     }
   }
 
@@ -142,7 +142,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
     Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(builder: (context) => const OwnerMenusPage()),
-      (route) => false,
+      (route) => route.isFirst,
     );
   }
 }
