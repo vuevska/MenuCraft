@@ -8,7 +8,7 @@ import 'package:menu_craft/pages/restaurant/view_menu_items_page.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
-import 'package:menu_craft/widgets/menu/add_menu_item_form.dart';
+import 'package:menu_craft/forms/add_menu_item_form.dart';
 import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
 
