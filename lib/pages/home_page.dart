@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
       appBar: const CustomAppBar(),
       backgroundColor: Theme.of(context).primaryColor,
       body: const Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -45,3 +45,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
