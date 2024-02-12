@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 
+import '../models/category_model.dart';
 import '../models/user_model.dart';
 
 class DbAuthService {
@@ -14,12 +15,10 @@ class DbAuthService {
 
   final _geo = GeoFlutterFire();
 
-  Future<void> addUserEmail(
-    String uid,
-    String email,
-    String name,
-    String surname,
-  ) async {
+  Future<void> addUserEmail(String uid,
+      String email,
+      String name,
+      String surname,) async {
     await _db.collection('users').doc(uid).set({
       'email': email,
       'name': name,
@@ -31,28 +30,23 @@ class DbAuthService {
   Future<void> deleteUser(String uid) async {
     await _db.collection('users').doc(uid).get().then((doc) async {
       final imageLink = doc.data()?['imageUrl'] ?? "no link";
-      if(imageLink != "no link"){
+      if (imageLink != "no link") {
         await _storage.refFromURL(imageLink).delete();
       }
     });
 
     await _db.collection('users').doc(uid).delete();
-
   }
 
-  Future<void> addNetworkImageToUser(
-    String uid,
-    String imageUrl,
-  ) async {
+  Future<void> addNetworkImageToUser(String uid,
+      String imageUrl,) async {
     await _db.collection('users').doc(uid).update({
       'imageUrl': imageUrl,
     });
   }
 
-  Future<String> addLocalImageToUser(
-    String uid,
-    File file,
-  ) async {
+  Future<String> addLocalImageToUser(String uid,
+      File file,) async {
     final firebaseStorageRef = _storage.ref().child('$uid/$uid.png');
 
     final uploadTask = firebaseStorageRef.putFile(file);
@@ -65,11 +59,9 @@ class DbAuthService {
     return fileURL;
   }
 
-  Future<void> addGoogleAccount(
-    String uid,
-    String email,
-    String name,
-  ) async {
+  Future<void> addGoogleAccount(String uid,
+      String email,
+      String name,) async {
     await _db.collection("users").doc(uid).set({
       'email': email,
       'name': name,
@@ -90,9 +82,12 @@ class DbAuthService {
     required String imageUrl,
     required String restaurantId,
     required String owningUserID,
+    required String category
   }) async {
     String hash =
-        _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
+    _geo
+        .point(latitude: latitude, longitude: longitude)
+        .data['geohash'];
     final restaurant = RestaurantModel(
       name: name,
       geoHash: hash,
@@ -101,6 +96,7 @@ class DbAuthService {
       imageUrl: imageUrl,
       restaurantId: restaurantId,
       owningUserID: owningUserID,
+      category: category,
     );
 
     await _db
@@ -142,18 +138,18 @@ class DbAuthService {
 
     List<RestaurantModel> restaurants = documentList
         .map((doc) =>
-            RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
+        RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
         .toList();
     return restaurants;
   }
 
   Future<List<RestaurantModel>> getAllRestaurants() async {
     QuerySnapshot restaurantSnapshot =
-        await _db.collection('restaurants').get();
+    await _db.collection('restaurants').get();
 
     List<RestaurantModel> restaurants = restaurantSnapshot.docs
         .map((doc) =>
-            RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
+        RestaurantModel.fromMap(doc.data() as Map<String, dynamic>))
         .toList();
     return restaurants;
   }
@@ -171,7 +167,7 @@ class DbAuthService {
 
   Future<String> uploadRestaurantImage(String restaurantId, File file) async {
     final firebaseStorageRef =
-        _storage.ref().child('restaurants/$restaurantId.png');
+    _storage.ref().child('restaurants/$restaurantId.png');
 
     final uploadTask = firebaseStorageRef.putFile(file);
     final taskSnapshot = await uploadTask.whenComplete(() => null);
@@ -181,8 +177,8 @@ class DbAuthService {
     return imageUrl;
   }
 
-  Future<void> toggleFavorite(
-      String restaurantId, String userId, bool favorite) async {
+  Future<void> toggleFavorite(String restaurantId, String userId,
+      bool favorite) async {
     await _db
         .collection('users')
         .doc(userId)
@@ -209,13 +205,16 @@ class DbAuthService {
 
   Future<List<RestaurantModel>> getFavorites(String userId) async {
     final favorites =
-        await _db.collection('users').doc(userId).collection("favorites").get();
+    await _db.collection('users').doc(userId).collection("favorites").get();
     List<String> restIDs = [];
 
     print(favorites.docs.map((e) => e.data()));
 
     favorites.docs.forEach(
-        (e) => {if (e.data()['favorite'] == true) restIDs.add(e.data()['id'])});
+            (e) =>
+        {
+          if (e.data()['favorite'] == true) restIDs.add(e.data()['id'])
+        });
     // favorites?.forEach((key, value) {
     //   if (value['favorite'] == true) {
     //     restIDs.add(value['id']);
@@ -237,4 +236,40 @@ class DbAuthService {
 //     'favoriteRestaurants': FieldValue.arrayRemove([restaurantId]),
 //   });
 // }
+
+
+// Function to retrieve category data from Firestore
+  Future<CategoryModel?> getCategory(String categoryId) async {
+    try {
+      DocumentSnapshot categories =
+      await _db.collection('restaurant_categories').doc(categoryId).get();
+      if (categories.exists) {
+        return CategoryModel.fromMap(categories.data()! as Map<String, dynamic>);
+      } else {
+        print('Category does not exist');
+        return null;
+      }
+    } catch (error) {
+      print('Error getting category: $error');
+      return null;
+    }
+  }
+
+  Future<List<CategoryModel>> getAllCategories() async {
+    try {
+      QuerySnapshot categorySnapshot =
+      await _db.collection('restaurant_categories').get();
+
+      List<CategoryModel> categories = categorySnapshot.docs
+          .map((doc) => CategoryModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+      return categories;
+    } catch (error) {
+      print('Error getting categories: $error');
+      return [];
+    }
+  }
+
 }
+
+

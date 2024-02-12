@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
+import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/widgets/menu/menu_input.dart';
 
@@ -15,6 +16,9 @@ class AddMenuForm extends StatefulWidget {
   final File? pickedImage;
   final Function(ImageSource) pickImage;
   final Function() onPressed;
+  final List<CategoryModel> categories;
+
+  final Function(CategoryModel?) onCategorySelected;
 
   const AddMenuForm({
     Key? key,
@@ -23,6 +27,8 @@ class AddMenuForm extends StatefulWidget {
     required this.pickedImage,
     required this.pickImage,
     required this.onPressed,
+    required this.categories,
+    required this.onCategorySelected
   }) : super(key: key);
 
   @override
@@ -32,6 +38,15 @@ class AddMenuForm extends StatefulWidget {
 class _AddMenuFormState extends State<AddMenuForm> {
   void refresh() {
     setState(() {});
+  }
+
+  CategoryModel? _selectedCategory;
+
+  void _onCategorySelected(CategoryModel? category) {
+    setState(() {
+      _selectedCategory = category; // Update selected category
+    });
+    widget.onCategorySelected(category); // Trigger parent callback
   }
 
   @override
@@ -75,6 +90,40 @@ class _AddMenuFormState extends State<AddMenuForm> {
                     //   ),
                     // ),
 
+                    DropdownButton<CategoryModel>(
+                      borderRadius: BorderRadius.circular(8.0),
+                      value: _selectedCategory,
+                      onChanged: (CategoryModel? newValue) {
+                        setState(() {
+                          _selectedCategory = newValue;
+                        });
+                        widget.onCategorySelected(newValue);
+                      },
+                      items: [
+                        const DropdownMenuItem<CategoryModel>(
+                          value: null, // Set the value to null to represent no selection
+                          child: Text(
+                            'Choose category',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                        ...widget.categories.map<DropdownMenuItem<CategoryModel>>((CategoryModel value) {
+                          return DropdownMenuItem<CategoryModel>(
+                            value: value,
+                            child: Text(
+                              value.name,
+                              style: const TextStyle(
+                                  color: Colors.white
+                              ),
+                            ), // Assuming CategoryModel has a 'name' property
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
                     SizedBox(
                       width: double.infinity,
                       height: 50,

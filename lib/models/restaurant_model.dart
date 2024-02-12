@@ -9,6 +9,7 @@ class RestaurantModel {
   late double longitude;
   late String imageUrl;
   late String owningUserID;
+  late String category;
 
   final _geo = GeoFlutterFire();
 
@@ -20,6 +21,7 @@ class RestaurantModel {
     required this.longitude,
     required this.imageUrl,
     required this.owningUserID,
+    required this.category
   });
 
   factory RestaurantModel.fromMap(Map<String, dynamic> data) {
@@ -37,8 +39,10 @@ class RestaurantModel {
       longitude: longitude,
       imageUrl: data['imageUrl'] ?? "",
       owningUserID: data['owningUserID'] ?? "",
+      category: data['category'] ?? "",
     );//TODO: akop nema nekoe pole da ne eksplodira cela aplikacija
   }
+
 
   Map<String, dynamic> toMap() {
     return {
@@ -47,6 +51,7 @@ class RestaurantModel {
       'geoPoint': _geo.point(latitude:latitude, longitude: longitude).data,
       'imageUrl': imageUrl,
       'owningUserID': owningUserID,
+      'category' : category,
     };
   }
 }
