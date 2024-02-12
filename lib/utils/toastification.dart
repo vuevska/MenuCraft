@@ -28,7 +28,7 @@ class InterfaceUtils {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Uploading your image... Please wait!",
+                      "Uploading... Please wait!",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

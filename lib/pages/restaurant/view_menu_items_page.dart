@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/items_category_model.dart';
@@ -48,81 +49,127 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
       body: Container(
         padding: const EdgeInsets.only(top: 60.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SecondaryCustomAppBar(title: widget.restaurant.name),
             Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                'Category Name: ${widget.category.name}',
-                style: const TextStyle(color: Colors.white, fontSize: 20.0),
+              padding: const EdgeInsets.all(20.0),
+              child: FadeInUp(
+                duration: const Duration(milliseconds: 500),
+                from: 30,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      widget.category.icon,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 10.0),
+                    Text(
+                      widget.category.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.all(12),
                 child: Container(
-                  color: Colors.grey[900],
-                  child: FutureBuilder<List<MenuItemModel>>(
-                    future: _db.getMenuItemsInCategory(
-                        widget.restaurant.restaurantId,
-                        widget.category.categoryId),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (snapshot.data == null ||
-                          snapshot.data!.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'No menu items available',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        );
-                      } else {
-                        return ListView.separated(
-                          itemCount: snapshot.data!.length,
-                          separatorBuilder: (context, index) =>
-                              Divider(color: Colors.grey[800]),
-                          itemBuilder: (context, index) {
-                            MenuItemModel menuItem = snapshot.data![index];
-                            return Container(
-                              color: Colors.grey[900],
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(0.0),
+                    color: Colors.grey[900],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: FutureBuilder<List<MenuItemModel>>(
+                      future: _db.getMenuItemsInCategory(
+                          widget.restaurant.restaurantId,
+                          widget.category.categoryId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ));
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (snapshot.data == null ||
+                            snapshot.data!.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              'No menu items available',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView.separated(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
-                              child: ListTile(
-                                title: Text(
-                                  menuItem.name,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(height: 4.0),
-                                    Text(
-                                      menuItem.description,
-                                      style:
-                                          const TextStyle(color: Colors.white),
+                                  vertical: 10.0, horizontal: 0.0),
+                              itemCount: snapshot.data!.length,
+                              separatorBuilder: (context, index) =>
+                                  Divider(color: Colors.grey[800]),
+                              itemBuilder: (context, index) {
+                                MenuItemModel menuItem = snapshot.data![index];
+                                return FadeInUp(
+                                  duration: Duration(
+                                      milliseconds: (300 + (index * 200))),
+                                  from: 20,
+                                  child: Container(
+                                    color: Colors.grey[900],
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 0.0, horizontal: 16.0),
+                                    child: ListTile(
+                                      title: Text(
+                                        menuItem.name,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(height: 4.0),
+                                          Text(
+                                            menuItem.description,
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(height: 4.0),
+                                        ],
+                                      ),
+                                      trailing: Dance(
+                                        duration: Duration(
+                                            milliseconds: 50 + (index * 200)),
+                                        child: Text(
+                                          '\$${menuItem.price.toString()}',
+                                          style: const TextStyle(
+                                              color: Colors.greenAccent,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0),
+                                        ),
+                                      ),
                                     ),
-                                    const SizedBox(height: 4.0),
-                                  ],
-                                ),
-                                trailing: Text(
-                                  '\$${menuItem.price.toString()}',
-                                  style: const TextStyle(
-                                      color: Colors.greenAccent,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.0),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),
