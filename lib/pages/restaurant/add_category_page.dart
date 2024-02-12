@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_craft/forms/add_category_form.dart';
 import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
@@ -8,7 +9,6 @@ import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 
 class AddCategoryPage extends StatefulWidget {
   final RestaurantModel restaurant;
@@ -21,15 +21,7 @@ class AddCategoryPage extends StatefulWidget {
 class _AddCategoryPageState extends State<AddCategoryPage> {
   final TextEditingController _nameController = TextEditingController();
   final DbRestaurantService _db = DbRestaurantService();
-  late Icon _icon;
-
-  _pickIcon() async {
-    // IconData? icon = await FlutterIconPicker.showIconPicker(context,
-    //     iconPackModes: [IconPack.cupertino]);
-
-    // _icon = Icon(icon);
-    // setState(() {});
-  }
+  IconData? _selectedIconData;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +38,11 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 const SizedBox(height: 15.0),
                 AddCategoryForm(
                   nameController: _nameController,
+                  onIconSelected: (icon) {
+                    setState(() {
+                      _selectedIconData = icon?.icon;
+                    });
+                  },
                   onPressed: _onPressed,
                 ),
               ],
@@ -61,13 +58,17 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       InterfaceUtils.show(context, 'Please fill category name.');
       return;
     }
+    if (_selectedIconData == null) {
+      InterfaceUtils.show(context, 'Please pick an icon.');
+      return;
+    }
     InterfaceUtils.loadingOverlay(context);
 
     const uuid = Uuid();
     ItemsCategoryModel newCategory = ItemsCategoryModel(
       categoryId: uuid.v4(),
       name: _nameController.text,
-      icon: Icons.restaurant,
+      icon: _selectedIconData?.codePoint ?? 0,
     );
 
     try {
@@ -90,10 +91,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
         context,
         CupertinoPageRoute(
             builder: (context) => ViewMenuPage(restaurant: widget.restaurant)),
-        (route) => false,
+        (route) => route.isFirst,
       );
     } catch (e) {
-      print('Error adding category: $e');
+      debugPrint('Error adding category: $e');
       InterfaceUtils.show(
         context,
         'An error occurred while adding the category. Please try again later.',
@@ -101,100 +102,5 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       );
       InterfaceUtils.removeOverlay(context);
     }
-  }
-}
-
-class AddCategoryForm extends StatefulWidget {
-  final TextEditingController nameController;
-  final Function() onPressed;
-
-  const AddCategoryForm({
-    super.key,
-    required this.nameController,
-    required this.onPressed,
-  });
-
-  @override
-  State<AddCategoryForm> createState() => _AddCategoryFormState();
-}
-
-class _AddCategoryFormState extends State<AddCategoryForm> {
-  void refresh() {
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
-        child: Container(
-          width: MediaQuery.of(context).size.width - 30,
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(29, 27, 32, 1),
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    TextFormField(
-                      controller: widget.nameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Category Name',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          // TODO: izberi ikoni
-                        },
-                        child: const Text(
-                          'Pick Icon',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                  onPressed: widget.onPressed,
-                  child: const Text('Create',
-                      style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
