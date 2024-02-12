@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
+import 'package:menu_craft/models/category_model.dart';
 import 'package:menu_craft/services/db_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
@@ -30,6 +31,25 @@ class _AddMenuPageState extends State<AddMenuPage> {
 
   File? _pickedImage;
 
+  List<CategoryModel> _categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      final categories = await DbAuthService().getAllCategories();
+      setState(() {
+        _categories = categories;
+      });
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +69,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
                   pickedImage: _pickedImage,
                   pickImage: _pickImage,
                   onPressed: _onPressed,
+                  categories: _categories,
                 ),
               ],
             ),
