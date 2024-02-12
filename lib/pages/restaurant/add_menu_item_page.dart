@@ -97,7 +97,7 @@ class _AddMenuItemPageState extends State<AddMenuItemPage> {
           builder: (context) => ViewMenuItemsPage(
             category: ItemsCategoryModel(
               categoryId: widget.categoryId,
-              name: "",
+              name: _nameController.text,
               icon: Icons.restaurant.codePoint,
             ),
             restaurant: widget.restaurant,

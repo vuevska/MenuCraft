@@ -7,10 +7,13 @@ import 'package:menu_craft/widgets/profile/restaurant/delete_restaurant_modal.da
 
 import 'package:menu_craft/services/db_restaurant_service.dart';
 
+import '../../utils/toastification.dart';
+
 class RestaurantOwnerCard extends StatefulWidget {
   final RestaurantModel restaurant;
+  final Function refresh;
 
-  const RestaurantOwnerCard({super.key, required this.restaurant});
+  const RestaurantOwnerCard({super.key, required this.restaurant, required this.refresh});
 
   @override
   _RestaurantOwnerCardState createState() => _RestaurantOwnerCardState();
@@ -149,7 +152,13 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                                   onConfirm: () async {
                                     try {
                                       // Call the deleteRestaurant function from DbRestaurantService
-                                      await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId);
+                                      await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId).catchError((onError){
+                                        InterfaceUtils.show(context, onError.toString());
+                                      });
+                                      widget.refresh();
+                                      if(!context.mounted){
+                                        return;
+                                      }
                                       Navigator.of(context).pop(); // Close the dialog
                                     } catch (e) {
                                       print('Error deleting restaurant: $e');

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/constants/routes.dart';
 import 'package:menu_craft/models/providers/favorite_provider.dart';
+import 'package:menu_craft/pages/introduction_scene.dart';
 import 'package:menu_craft/pages/restaurant/add_menu_page.dart';
 import 'package:menu_craft/pages/favourites_page.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
@@ -12,6 +13,8 @@ import 'package:menu_craft/pages/scan_qr_page.dart';
 import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/pages/search_page.dart';
 import 'package:provider/provider.dart';
+import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 
@@ -27,6 +30,13 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  bool getFirstTime() {
+    SharedPreferences.getInstance().then((value) {
+      return value.getBool("intro") ?? true;
+    });
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +74,7 @@ class MyApp extends StatelessWidget {
           profileOwnerMenus: (context) => const OwnerMenusPage(),
           addMenu: (context) => const AddMenuPage(),
         },
-        home: const RootPage(),
+        home: getFirstTime() ? const FirstTimeWidget() : const RootPage(),
       ),
     );
   }
