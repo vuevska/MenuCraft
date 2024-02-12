@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
+import 'package:menu_craft/widgets/profile/restaurant/delete_restaurant_modal.dart';
+
+import 'package:menu_craft/services/db_restaurant_service.dart';
 
 class RestaurantOwnerCard extends StatefulWidget {
   final RestaurantModel restaurant;
@@ -80,7 +83,7 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             shape: const RoundedRectangleBorder(
@@ -103,14 +106,14 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                             color: Colors.black,
                           ),
                           label: const Text(
-                            "View Menu",
+                            "View",
                             style: TextStyle(fontSize: 10, color: Colors.black),
                           ),
                         ),
                       ),
                       // TODO: za Maria ova za promena na restoranot
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             shape: const RoundedRectangleBorder(
@@ -124,7 +127,47 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                             color: Colors.black,
                           ),
                           label: const Text(
-                            "Edit Restaurant",
+                            "Edit",
+                            style: TextStyle(fontSize: 10, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                            backgroundColor: Colors.purple[50],
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DeleteConfirmationDialog(
+                                  onConfirm: () async {
+                                    try {
+                                      // Call the deleteRestaurant function from DbRestaurantService
+                                      await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId);
+                                      Navigator.of(context).pop(); // Close the dialog
+                                    } catch (e) {
+                                      print('Error deleting restaurant: $e');
+                                      // Handle error if needed
+                                    }
+
+
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete_rounded,
+                            color: Colors.black,
+                          ),
+                          label: const Text(
+                            "Delete",
                             style: TextStyle(fontSize: 10, color: Colors.black),
                           ),
                         ),
