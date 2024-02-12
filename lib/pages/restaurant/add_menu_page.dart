@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
+import 'package:menu_craft/models/restaurant_category_model.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
@@ -14,7 +15,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../services/auth_service.dart';
 import '../../utils/data_upward.dart';
-import '../profile/profile_page.dart';
 
 class AddMenuPage extends StatefulWidget {
   const AddMenuPage({super.key});
@@ -30,6 +30,32 @@ class _AddMenuPageState extends State<AddMenuPage> {
   final _db = DbRestaurantService();
 
   File? _pickedImage;
+  RestaurantCategoryModel? _selectedCategory;
+
+  List<RestaurantCategoryModel> _categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      final categories = await DbRestaurantService().getAllCategories();
+      setState(() {
+        _categories = categories;
+      });
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+  }
+
+  void _onCategorySelected(RestaurantCategoryModel? category) {
+    setState(() {
+      _selectedCategory = category;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +68,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
             padding: const EdgeInsets.only(top: 60.0),
             child: Column(
               children: [
-                const SecondaryCustomAppBar(title: "Create Menu"),
+                const SecondaryCustomAppBar(title: "Add a new Menu"),
                 const SizedBox(height: 15.0),
                 AddMenuForm(
                   nameController: _nameController,
@@ -50,6 +76,8 @@ class _AddMenuPageState extends State<AddMenuPage> {
                   pickedImage: _pickedImage,
                   pickImage: _pickImage,
                   onPressed: _onPressed,
+                  categories: _categories,
+                  onCategorySelected: _onCategorySelected,
                 ),
               ],
             ),
@@ -76,7 +104,8 @@ class _AddMenuPageState extends State<AddMenuPage> {
     if (_nameController.text.isEmpty ||
         _locationController.data == null ||
         _locationController.data?.latLong == null ||
-        _pickedImage == null) {
+        _pickedImage == null ||
+        _selectedCategory == null) {
       InterfaceUtils.show(
         context,
         'Please fill all fields and pick an image.',
@@ -97,7 +126,8 @@ class _AddMenuPageState extends State<AddMenuPage> {
       imageUrl: imageUrl,
       restaurantId: uuid.v4(),
       owningUserID: AuthService.user!.uid,
-      categories: [],
+      category: _selectedCategory!.name,
+      //categories: _categories,
     );
 
     if (!context.mounted) {
@@ -109,17 +139,10 @@ class _AddMenuPageState extends State<AddMenuPage> {
       type: ToastificationType.success,
     );
     InterfaceUtils.removeOverlay(context);
-    // Navigator.pushAndRemoveUntil(
-    //   context,
-    //   CupertinoPageRoute(builder: (context) => const OwnerMenusPage()),
-    //   (route) => false,
-    // );
-    Navigator.of(context).push(
-      CupertinoPageRoute(
-        builder: (BuildContext context) {
-          return const OwnerMenusPage();
-        },
-      ),
+    Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute(builder: (context) => const OwnerMenusPage()),
+      (route) => false,
     );
   }
 }

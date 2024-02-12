@@ -28,6 +28,7 @@ class UserProvider extends ChangeNotifier {
           imageUrl: 'images/restaurant.jpg',
           restaurantId: '',
           owningUserID: '',
+          category: '',
         );
       }).toList();
     } else {

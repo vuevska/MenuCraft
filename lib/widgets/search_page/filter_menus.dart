@@ -7,8 +7,7 @@ import '../../models/restaurant_model.dart';
 class FilterRestaurants extends StatefulWidget {
   final String searchQuery;
 
-  const FilterRestaurants({Key? key, required this.searchQuery})
-      : super(key: key);
+  const FilterRestaurants({super.key, required this.searchQuery});
 
   @override
   State<FilterRestaurants> createState() => _FilterRestaurantsState();
@@ -49,7 +48,7 @@ class _FilterRestaurantsState extends State<FilterRestaurants> {
             itemCount: filteredRestaurants.length,
             itemBuilder: (context, index) {
               final restaurant = filteredRestaurants[index];
-              return RestaurantNameCard(name: restaurant.name);
+              return RestaurantNameCard(restaurant: restaurant);
             },
           );
         }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/menu_item_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/add_menu_item_page.dart';
@@ -9,7 +9,7 @@ import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
 class ViewMenuItemsPage extends StatefulWidget {
-  final CategoryModel category;
+  final ItemsCategoryModel category;
   final RestaurantModel restaurant;
 
   const ViewMenuItemsPage({

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CategoryModel {
+class ItemsCategoryModel {
   late String categoryId;
   late String name;
   late IconData icon;
 
-  CategoryModel({
+  ItemsCategoryModel({
     required this.categoryId,
     required this.name,
     required this.icon,
@@ -19,8 +19,8 @@ class CategoryModel {
     };
   }
 
-  factory CategoryModel.fromMap(Map<String, dynamic> data) {
-    return CategoryModel(
+  factory ItemsCategoryModel.fromMap(Map<String, dynamic> data) {
+    return ItemsCategoryModel(
       categoryId: data['categoryId'],
       name: data['name'],
       icon: IconData(data['icon'], fontFamily: 'MaterialIcons'),

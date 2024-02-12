@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
-import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/pages/restaurant/add_category_page.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_items_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
@@ -51,9 +51,9 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
             SecondaryCustomAppBar(title: widget.restaurant.name),
             const SizedBox(height: 20.0),
             Expanded(
-              child: FutureBuilder<List<CategoryModel>>(
-                future: _db
-                    .getCategoriesForRestaurant(widget.restaurant.restaurantId),
+              child: FutureBuilder<List<ItemsCategoryModel>>(
+                future: _db.getItemsCategoriesForRestaurant(
+                    widget.restaurant.restaurantId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

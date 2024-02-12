@@ -81,7 +81,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.35,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             shape: const RoundedRectangleBorder(

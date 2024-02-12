@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/menu_item_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_items_page.dart';
@@ -94,7 +94,7 @@ class _AddMenuItemPageState extends State<AddMenuItemPage> {
         context,
         MaterialPageRoute(
           builder: (context) => ViewMenuItemsPage(
-            category: CategoryModel(
+            category: ItemsCategoryModel(
               categoryId: widget.categoryId,
               name: "",
               icon: Icons.restaurant,

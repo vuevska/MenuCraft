@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
@@ -64,7 +64,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     InterfaceUtils.loadingOverlay(context);
 
     const uuid = Uuid();
-    CategoryModel newCategory = CategoryModel(
+    ItemsCategoryModel newCategory = ItemsCategoryModel(
       categoryId: uuid.v4(),
       name: _nameController.text,
       icon: Icons.restaurant,
@@ -75,7 +75,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
       Map<String, dynamic> categoryMap = newCategory.toMap();
 
-      await _db.addCategoryToRestaurant(
+      await _db.addItemsCategoryToRestaurant(
           widget.restaurant.restaurantId, categoryMap);
       if (!context.mounted) {
         return;

@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/menu_item_model.dart';
+import 'package:menu_craft/models/restaurant_category_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 
@@ -21,35 +22,34 @@ class DbRestaurantService {
     required String imageUrl,
     required String restaurantId,
     required String owningUserID,
-    required List<CategoryModel> categories,
+    //required List<RestaurantCategoryModel> categories,
+    required String category,
   }) async {
     String hash =
         _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
 
     final restaurant = RestaurantModel(
-      restaurantId: restaurantId,
-      name: name,
-      geoHash: hash,
-      latitude: latitude,
-      longitude: longitude,
-      imageUrl: imageUrl,
-      owningUserID: owningUserID,
-    );
+        restaurantId: restaurantId,
+        name: name,
+        geoHash: hash,
+        latitude: latitude,
+        longitude: longitude,
+        imageUrl: imageUrl,
+        owningUserID: owningUserID,
+        category: category);
 
     final Map<String, dynamic> restaurantData = restaurant.toMap();
 
     await _db.collection('restaurants').doc(restaurantId).set(restaurantData);
 
     // Ova gi zacuvuva categoriite vo subcollection
-    final categoryCollectionRef = _db
-        .collection('restaurants')
-        .doc(restaurantId)
-        .collection('categories');
-    for (var category in categories) {
-      await categoryCollectionRef
-          .doc(category.categoryId)
-          .set(category.toMap());
-    }
+    // final categoryCollectionRef = _db
+    //     .collection('restaurants')
+    //     .doc(restaurantId)
+    //     .collection('items_categories');
+    // for (var cat in categories) {
+    //   await categoryCollectionRef.doc(cat.categoryId).set(cat.toMap());
+    // }
   }
 
   Future<List<RestaurantModel>> getLocalRestaurants(
@@ -139,7 +139,7 @@ class DbRestaurantService {
     }
   }
 
-  Future<void> addCategoryToRestaurant(
+  Future<void> addItemsCategoryToRestaurant(
       String restaurantId, Map<String, dynamic> category) async {
     try {
       final restaurantRef = _db.collection('restaurants').doc(restaurantId);
@@ -162,7 +162,7 @@ class DbRestaurantService {
     }
   }
 
-  Future<List<CategoryModel>> getCategoriesForRestaurant(
+  Future<List<ItemsCategoryModel>> getItemsCategoriesForRestaurant(
       String restaurantId) async {
     try {
       QuerySnapshot categorySnapshot = await _db
@@ -172,12 +172,12 @@ class DbRestaurantService {
           .get();
 
       // proverka dali categoryId e prazno
-      List<CategoryModel> categories = [];
+      List<ItemsCategoryModel> categories = [];
       for (var doc in categorySnapshot.docs) {
         final data = doc.data() as Map<String, dynamic>;
         final categoryId = data['categoryId'] as String?;
         if (categoryId != null && categoryId.isNotEmpty) {
-          final category = CategoryModel.fromMap(data);
+          final category = ItemsCategoryModel.fromMap(data);
           categories.add(category);
         }
       }
@@ -323,6 +323,22 @@ class DbRestaurantService {
       return menuItems;
     } catch (e) {
       print('Error getting menu items in category: $e');
+      return [];
+    }
+  }
+
+  Future<List<RestaurantCategoryModel>> getAllCategories() async {
+    try {
+      QuerySnapshot categorySnapshot =
+          await _db.collection('restaurant_categories').get();
+
+      List<RestaurantCategoryModel> categories = categorySnapshot.docs
+          .map((doc) => RestaurantCategoryModel.fromMap(
+              doc.data() as Map<String, dynamic>))
+          .toList();
+      return categories;
+    } catch (error) {
+      print('Error getting categories: $error');
       return [];
     }
   }
