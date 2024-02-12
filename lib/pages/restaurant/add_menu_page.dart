@@ -9,7 +9,7 @@ import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
-import 'package:menu_craft/widgets/home_page/add_menu_form.dart';
+import 'package:menu_craft/forms/add_menu_form.dart';
 import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
 
