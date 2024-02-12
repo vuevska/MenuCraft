@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:menu_craft/models/category_model.dart';
+import 'package:menu_craft/models/items_category_model.dart';
+import 'package:menu_craft/models/restaurant_category_model.dart';
 import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/widgets/menu/menu_input.dart';
 
@@ -16,20 +17,20 @@ class AddMenuForm extends StatefulWidget {
   final File? pickedImage;
   final Function(ImageSource) pickImage;
   final Function() onPressed;
-  final List<CategoryModel> categories;
+  final List<RestaurantCategoryModel> categories;
 
-  final Function(CategoryModel?) onCategorySelected;
+  final Function(RestaurantCategoryModel?) onCategorySelected;
 
-  const AddMenuForm({
-    Key? key,
-    required this.nameController,
-    required this.locationController,
-    required this.pickedImage,
-    required this.pickImage,
-    required this.onPressed,
-    required this.categories,
-    required this.onCategorySelected
-  }) : super(key: key);
+  const AddMenuForm(
+      {Key? key,
+      required this.nameController,
+      required this.locationController,
+      required this.pickedImage,
+      required this.pickImage,
+      required this.onPressed,
+      required this.categories,
+      required this.onCategorySelected})
+      : super(key: key);
 
   @override
   State<AddMenuForm> createState() => _AddMenuFormState();
@@ -40,9 +41,9 @@ class _AddMenuFormState extends State<AddMenuForm> {
     setState(() {});
   }
 
-  CategoryModel? _selectedCategory;
+  RestaurantCategoryModel? _selectedCategory;
 
-  void _onCategorySelected(CategoryModel? category) {
+  void _onCategorySelected(RestaurantCategoryModel? category) {
     setState(() {
       _selectedCategory = category; // Update selected category
     });
@@ -90,18 +91,19 @@ class _AddMenuFormState extends State<AddMenuForm> {
                     //   ),
                     // ),
 
-                    DropdownButton<CategoryModel>(
+                    DropdownButton<RestaurantCategoryModel>(
                       borderRadius: BorderRadius.circular(8.0),
                       value: _selectedCategory,
-                      onChanged: (CategoryModel? newValue) {
+                      onChanged: (RestaurantCategoryModel? newValue) {
                         setState(() {
                           _selectedCategory = newValue;
                         });
                         widget.onCategorySelected(newValue);
                       },
                       items: [
-                        const DropdownMenuItem<CategoryModel>(
-                          value: null, // Set the value to null to represent no selection
+                        const DropdownMenuItem<RestaurantCategoryModel>(
+                          value:
+                              null, // Set the value to null to represent no selection
                           child: Text(
                             'Choose category',
                             style: TextStyle(
@@ -110,14 +112,14 @@ class _AddMenuFormState extends State<AddMenuForm> {
                             ),
                           ),
                         ),
-                        ...widget.categories.map<DropdownMenuItem<CategoryModel>>((CategoryModel value) {
-                          return DropdownMenuItem<CategoryModel>(
+                        ...widget.categories
+                            .map<DropdownMenuItem<RestaurantCategoryModel>>(
+                                (RestaurantCategoryModel value) {
+                          return DropdownMenuItem<RestaurantCategoryModel>(
                             value: value,
                             child: Text(
                               value.name,
-                              style: const TextStyle(
-                                  color: Colors.white
-                              ),
+                              style: const TextStyle(color: Colors.white),
                             ), // Assuming CategoryModel has a 'name' property
                           );
                         }).toList(),
@@ -191,7 +193,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                         ? Column(
                             children: [
                               SizedBox(
-                                  height: 220,
+                                  height: 200,
                                   child: Image.file(widget.pickedImage!)),
                               const SizedBox(height: 5.0),
                               TextButton.icon(
@@ -229,7 +231,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                     minimumSize: const Size(double.infinity, 50),
                   ),
                   onPressed: widget.onPressed,
-                  child: const Text('Add Menu',
+                  child: const Text('Create',
                       style: TextStyle(color: Colors.white)),
                 ),
               ],

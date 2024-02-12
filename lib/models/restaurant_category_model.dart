@@ -1,18 +1,16 @@
-import 'package:flutter/cupertino.dart';
-
-class CategoryModel {
+class RestaurantCategoryModel {
   late String categoryId;
   late String name;
   late String iconImage;
 
-  CategoryModel({
+  RestaurantCategoryModel({
     required this.categoryId,
     required this.name,
     required this.iconImage,
   });
 
-  factory CategoryModel.fromMap(Map<String, dynamic> data) {
-    return CategoryModel(
+  factory RestaurantCategoryModel.fromMap(Map<String, dynamic> data) {
+    return RestaurantCategoryModel(
       categoryId: data['categoryId'],
       name: data['name'],
       iconImage: data['iconImage'],
@@ -26,6 +24,4 @@ class CategoryModel {
       'iconImage': iconImage,
     };
   }
-
-
 }

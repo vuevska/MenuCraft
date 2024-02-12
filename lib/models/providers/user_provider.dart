@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/models/user_model.dart';
 
-
 class UserProvider extends ChangeNotifier {
   UserModel? _user;
 
@@ -20,10 +19,7 @@ class UserProvider extends ChangeNotifier {
 
   List<RestaurantModel> get favoriteRestaurants {
     if (_user != null) {
-
       return _user!.ownRestaurants.map((restaurantId) {
-        // TODO: get actual restaurants here
-
         return RestaurantModel(
           name: 'Restaurant $restaurantId',
           geoHash: '',

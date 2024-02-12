@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:menu_craft/models/category_model.dart';
-import 'package:menu_craft/services/db_service.dart';
+import 'package:menu_craft/models/restaurant_category_model.dart';
+import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/widgets/home_page/restaurant_categories/restaurant_category_card.dart';
 
 class CategoryGrid extends StatelessWidget {
-  const CategoryGrid({Key? key}) : super(key: key);
+  const CategoryGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CategoryModel>>(
-      future: DbAuthService().getAllCategories(),
+    return FutureBuilder<List<RestaurantCategoryModel>>(
+      future: DbRestaurantService().getAllCategories(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -39,5 +39,3 @@ class CategoryGrid extends StatelessWidget {
     );
   }
 }
-
-

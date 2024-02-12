@@ -1,10 +1,10 @@
 import 'package:localstore/localstore.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
-import 'package:menu_craft/services/db_service.dart';
+import 'package:menu_craft/services/db_restaurant_service.dart';
 
 class LocalStorageService {
   static final localDB = Localstore.instance;
-  static final _firebaseDb = DbAuthService();
+  static final _firebaseDb = DbRestaurantService();
 
   static Future<void> toggleFavorite(
       String restaurantId, String userId, bool favorite) async {
@@ -18,7 +18,6 @@ class LocalStorageService {
       'userId': userId,
       'favorite': favorite,
     });
-
   }
 
   static Future<bool> isFavorite(String restaurantId, String userId) async {

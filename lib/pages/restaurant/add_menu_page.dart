@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:menu_craft/models/category_model.dart';
-import 'package:menu_craft/services/db_service.dart';
+import 'package:menu_craft/models/restaurant_category_model.dart';
+import 'package:menu_craft/pages/profile/owner_menus.dart';
+import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:menu_craft/widgets/home_page/add_menu_form.dart';
@@ -14,10 +15,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../services/auth_service.dart';
 import '../../utils/data_upward.dart';
-import '../profile/profile_page.dart';
 
 class AddMenuPage extends StatefulWidget {
-  const AddMenuPage({Key? key}) : super(key: key);
+  const AddMenuPage({super.key});
 
   @override
   State<AddMenuPage> createState() => _AddMenuPageState();
@@ -27,12 +27,12 @@ class _AddMenuPageState extends State<AddMenuPage> {
   final TextEditingController _nameController = TextEditingController();
   final Data<PickedData> _locationController = Data<PickedData>();
   final _picker = ImagePicker();
-  final _db = DbAuthService();
+  final _db = DbRestaurantService();
 
   File? _pickedImage;
-  CategoryModel? _selectedCategory;
+  RestaurantCategoryModel? _selectedCategory;
 
-  List<CategoryModel> _categories = [];
+  List<RestaurantCategoryModel> _categories = [];
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
 
   Future<void> _fetchCategories() async {
     try {
-      final categories = await DbAuthService().getAllCategories();
+      final categories = await DbRestaurantService().getAllCategories();
       setState(() {
         _categories = categories;
       });
@@ -51,7 +51,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
     }
   }
 
-  void _onCategorySelected(CategoryModel? category) {
+  void _onCategorySelected(RestaurantCategoryModel? category) {
     setState(() {
       _selectedCategory = category;
     });
@@ -127,6 +127,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
       restaurantId: uuid.v4(),
       owningUserID: AuthService.user!.uid,
       category: _selectedCategory!.name,
+      //categories: _categories,
     );
 
     if (!context.mounted) {
@@ -140,7 +141,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
     InterfaceUtils.removeOverlay(context);
     Navigator.pushAndRemoveUntil(
       context,
-      CupertinoPageRoute(builder: (context) => const ProfilePage()),
+      CupertinoPageRoute(builder: (context) => const OwnerMenusPage()),
       (route) => false,
     );
   }

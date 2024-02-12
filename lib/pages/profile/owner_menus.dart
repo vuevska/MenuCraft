@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:menu_craft/pages/restaurant/add_menu.dart';
+import 'package:menu_craft/pages/restaurant/add_menu_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
+import 'package:menu_craft/widgets/profile/list_owner_restaurants.dart';
 
 class OwnerMenusPage extends StatefulWidget {
   const OwnerMenusPage({super.key});
@@ -18,11 +19,12 @@ class _OwnerMenusPageState extends State<OwnerMenusPage> {
       backgroundColor: Theme.of(context).primaryColor,
       body: Container(
         padding: const EdgeInsets.only(top: 60.0),
-        child: Column(
+        child: const Column(
           children: [
-            const SecondaryCustomAppBar(title: "Your Menus"),
-            const SizedBox(height: 20.0),
-            Container(),
+            SecondaryCustomAppBar(title: "Your Menus"),
+            Expanded(
+              child: ListOwnerRestaurants(),
+            ),
           ],
         ),
       ),
@@ -42,7 +44,7 @@ class _OwnerMenusPageState extends State<OwnerMenusPage> {
                 color: Colors.white,
               ),
               label: const Text(
-                "Add Menu",
+                "Create Menu",
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -51,7 +53,7 @@ class _OwnerMenusPageState extends State<OwnerMenusPage> {
                 borderRadius: BorderRadius.circular(30.0),
               ),
             )
-          : null, // If user is not logged in, don't show the button
+          : null,
     );
   }
 }

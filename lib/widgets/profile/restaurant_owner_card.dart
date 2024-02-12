@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
-import 'package:menu_craft/widgets/home_page/favorite_button.dart';
 
-class ExpandableCard extends StatefulWidget {
+class RestaurantOwnerCard extends StatefulWidget {
   final RestaurantModel restaurant;
 
-  const ExpandableCard({Key? key, required this.restaurant}) : super(key: key);
+  const RestaurantOwnerCard({super.key, required this.restaurant});
 
   @override
-  _ExpandableCardState createState() => _ExpandableCardState();
+  _RestaurantOwnerCardState createState() => _RestaurantOwnerCardState();
 }
 
-class _ExpandableCardState extends State<ExpandableCard> {
+class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
   bool _expanded = false;
 
   @override
@@ -81,7 +80,7 @@ class _ExpandableCardState extends State<ExpandableCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             shape: const RoundedRectangleBorder(
@@ -93,7 +92,8 @@ class _ExpandableCardState extends State<ExpandableCard> {
                             Navigator.of(context).push(
                               CupertinoPageRoute(
                                 builder: (BuildContext context) {
-                                  return const ViewMenuPage();
+                                  return ViewMenuPage(
+                                      restaurant: widget.restaurant);
                                 },
                               ),
                             );
@@ -108,8 +108,27 @@ class _ExpandableCardState extends State<ExpandableCard> {
                           ),
                         ),
                       ),
-                      FavoriteButton(
-                          restaurantId: widget.restaurant.restaurantId),
+                      // TODO: za Maria ova za promena na restoranot
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                            backgroundColor: Colors.purple[50],
+                          ),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.mode_edit_sharp,
+                            color: Colors.black,
+                          ),
+                          label: const Text(
+                            "Edit Restaurant",
+                            style: TextStyle(fontSize: 10, color: Colors.black),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
