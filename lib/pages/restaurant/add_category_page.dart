@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker_plus/flutter_iconpicker.dart';
+import 'package:menu_craft/constants/routes.dart';
 import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
@@ -8,7 +10,6 @@ import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 
 class AddCategoryPage extends StatefulWidget {
   final RestaurantModel restaurant;
@@ -21,15 +22,7 @@ class AddCategoryPage extends StatefulWidget {
 class _AddCategoryPageState extends State<AddCategoryPage> {
   final TextEditingController _nameController = TextEditingController();
   final DbRestaurantService _db = DbRestaurantService();
-  late Icon _icon;
-
-  _pickIcon() async {
-    // IconData? icon = await FlutterIconPicker.showIconPicker(context,
-    //     iconPackModes: [IconPack.cupertino]);
-
-    // _icon = Icon(icon);
-    // setState(() {});
-  }
+  IconData? _selectedIconData;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +39,11 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 const SizedBox(height: 15.0),
                 AddCategoryForm(
                   nameController: _nameController,
+                  onIconSelected: (icon) {
+                    setState(() {
+                      _selectedIconData = icon?.icon;
+                    });
+                  },
                   onPressed: _onPressed,
                 ),
               ],
@@ -61,13 +59,17 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       InterfaceUtils.show(context, 'Please fill category name.');
       return;
     }
+    if (_selectedIconData == null) {
+      InterfaceUtils.show(context, 'Please pick an icon.');
+      return;
+    }
     InterfaceUtils.loadingOverlay(context);
 
     const uuid = Uuid();
     ItemsCategoryModel newCategory = ItemsCategoryModel(
       categoryId: uuid.v4(),
       name: _nameController.text,
-      icon: Icons.restaurant,
+      icon: _selectedIconData?.codePoint ?? 0,
     );
 
     try {
@@ -90,10 +92,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
         context,
         CupertinoPageRoute(
             builder: (context) => ViewMenuPage(restaurant: widget.restaurant)),
-        (route) => false,
+        (route) => route.isFirst,
       );
     } catch (e) {
-      print('Error adding category: $e');
+      debugPrint('Error adding category: $e');
       InterfaceUtils.show(
         context,
         'An error occurred while adding the category. Please try again later.',
@@ -106,11 +108,13 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
 class AddCategoryForm extends StatefulWidget {
   final TextEditingController nameController;
+  final Function(Icon?) onIconSelected;
   final Function() onPressed;
 
   const AddCategoryForm({
     super.key,
     required this.nameController,
+    required this.onIconSelected,
     required this.onPressed,
   });
 
@@ -119,8 +123,19 @@ class AddCategoryForm extends StatefulWidget {
 }
 
 class _AddCategoryFormState extends State<AddCategoryForm> {
-  void refresh() {
-    setState(() {});
+  Icon? _icon;
+
+  _pickIcon() async {
+    IconData? icon = await FlutterIconPicker.showIconPicker(context,
+        iconPackModes: [IconPack.material]);
+
+    if (icon != null) {
+      _icon = Icon(icon);
+      widget.onIconSelected(_icon);
+      setState(() {});
+    }
+
+    debugPrint('Picked Icon:  $icon');
   }
 
   @override
@@ -156,24 +171,27 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                       ),
                     ),
                     const SizedBox(height: 20.0),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (_icon != null) Icon(_icon!.icon, size: 50),
+                        const SizedBox(width: 20),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 20),
+                            backgroundColor: Colors.purple,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          onPressed: _pickIcon,
+                          child: const Text(
+                            'Pick Icon',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
-                        onPressed: () {
-                          // TODO: izberi ikoni
-                        },
-                        child: const Text(
-                          'Pick Icon',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),

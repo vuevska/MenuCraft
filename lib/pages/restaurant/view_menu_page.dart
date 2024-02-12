@@ -84,7 +84,7 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                                 style: const TextStyle(color: Colors.black),
                               ),
                               leading: Icon(
-                                category.icon,
+                                category.getIconData(),
                                 color: Colors.black,
                               ),
                             ),

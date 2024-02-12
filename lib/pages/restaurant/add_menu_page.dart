@@ -47,7 +47,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
         _categories = categories;
       });
     } catch (e) {
-      print('Error fetching categories: $e');
+      debugPrint('Error fetching categories: $e');
     }
   }
 
@@ -142,7 +142,7 @@ class _AddMenuPageState extends State<AddMenuPage> {
     Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(builder: (context) => const OwnerMenusPage()),
-      (route) => false,
+      (route) => route.isFirst,
     );
   }
 }

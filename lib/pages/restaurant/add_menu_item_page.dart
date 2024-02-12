@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/menu_item_model.dart';
@@ -82,14 +84,13 @@ class _AddMenuItemPageState extends State<AddMenuItemPage> {
         menuItem,
       );
 
-      // TODO: da se izbira ikona
-
       InterfaceUtils.show(
         context,
         'Menu item added successfully!',
         type: ToastificationType.success,
       );
       InterfaceUtils.removeOverlay(context);
+
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -97,15 +98,15 @@ class _AddMenuItemPageState extends State<AddMenuItemPage> {
             category: ItemsCategoryModel(
               categoryId: widget.categoryId,
               name: "",
-              icon: Icons.restaurant,
+              icon: Icons.restaurant.codePoint,
             ),
             restaurant: widget.restaurant,
           ),
         ),
-        (route) => false,
+        (route) => route.isFirst,
       );
     } catch (e) {
-      print('Error adding menu item: $e');
+      debugPrint('Error adding menu item: $e');
       InterfaceUtils.show(
         context,
         'Failed to add menu item. Please try again.',
