@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/widgets/appbar/custom_appbar.dart';
 import 'package:menu_craft/widgets/home_page/menu_list.dart';
 
-import '../widgets/home_page/restaurant_category_card.dart';
+import '../widgets/home_page/restaurant_categories/restaurant_category_card.dart';
+import '../widgets/home_page/restaurant_categories/restaurant_category_grid.dart';
 
 // class HomePage extends StatelessWidget {
 //   const HomePage({Key? key});
