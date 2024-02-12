@@ -18,6 +18,8 @@ class AddMenuForm extends StatefulWidget {
   final Function() onPressed;
   final List<CategoryModel> categories;
 
+  final Function(CategoryModel?) onCategorySelected;
+
   const AddMenuForm({
     Key? key,
     required this.nameController,
@@ -26,6 +28,7 @@ class AddMenuForm extends StatefulWidget {
     required this.pickImage,
     required this.onPressed,
     required this.categories,
+    required this.onCategorySelected
   }) : super(key: key);
 
   @override
@@ -38,6 +41,13 @@ class _AddMenuFormState extends State<AddMenuForm> {
   }
 
   CategoryModel? _selectedCategory;
+
+  void _onCategorySelected(CategoryModel? category) {
+    setState(() {
+      _selectedCategory = category; // Update selected category
+    });
+    widget.onCategorySelected(category); // Trigger parent callback
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,27 +89,15 @@ class _AddMenuFormState extends State<AddMenuForm> {
                     //     ),
                     //   ),
                     // ),
-                    // DropdownButton<String>(
-                    //   value: _selectedCategory,
-                    //   onChanged: (String? newValue) {
-                    //     setState(() {
-                    //       _selectedCategory = newValue;
-                    //     });
-                    //   },
-                    //   items: widget.categories
-                    //       .map<DropdownMenuItem<String>>((CategoryModel value) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: value.name,
-                    //       child: Text(value.name),
-                    //     );
-                    //   }).toList(),
-                    // ),
+
                     DropdownButton<CategoryModel>(
+                      borderRadius: BorderRadius.circular(8.0),
                       value: _selectedCategory,
                       onChanged: (CategoryModel? newValue) {
                         setState(() {
                           _selectedCategory = newValue;
                         });
+                        widget.onCategorySelected(newValue);
                       },
                       items: [
                         const DropdownMenuItem<CategoryModel>(

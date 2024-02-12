@@ -24,8 +24,8 @@ class CategoryGrid extends StatelessWidget {
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
-              mainAxisSpacing: 9.0,
-              crossAxisSpacing: 9.0,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
               childAspectRatio: 1.0,
             ),
             itemCount: categories.length,
@@ -39,3 +39,5 @@ class CategoryGrid extends StatelessWidget {
     );
   }
 }
+
+

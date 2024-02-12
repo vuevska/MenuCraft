@@ -82,6 +82,7 @@ class DbAuthService {
     required String imageUrl,
     required String restaurantId,
     required String owningUserID,
+    required String category
   }) async {
     String hash =
     _geo
@@ -95,6 +96,7 @@ class DbAuthService {
       imageUrl: imageUrl,
       restaurantId: restaurantId,
       owningUserID: owningUserID,
+      category: category,
     );
 
     await _db
