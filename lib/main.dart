@@ -7,13 +7,12 @@ import 'package:menu_craft/pages/restaurant/add_menu_page.dart';
 import 'package:menu_craft/pages/favourites_page.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/pages/profile/profile_page.dart';
-import 'package:menu_craft/pages/root_page.dart';
 import 'package:menu_craft/models/providers/user_provider.dart';
 import 'package:menu_craft/pages/scan_qr_page.dart';
 import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/pages/search_page.dart';
+import 'package:menu_craft/widgets/init_load_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
@@ -74,7 +73,7 @@ class MyApp extends StatelessWidget {
           profileOwnerMenus: (context) => const OwnerMenusPage(),
           addMenu: (context) => const AddMenuPage(),
         },
-        home: getFirstTime() ? const FirstTimeWidget() : const RootPage(),
+        home: getFirstTime() ? const FirstTimeWidget() : const LoadHomeScreen(),
       ),
     );
   }
