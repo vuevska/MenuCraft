@@ -17,11 +17,16 @@ Widget menuInput({
           controller: controller,
           obscureText: obscureText,
           style: const TextStyle(color: Colors.white),
+          cursorColor: Colors.white54,
           decoration: InputDecoration(
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+
             labelText: label,
             labelStyle: const TextStyle(color: Colors.white),
             enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: Colors.white),
             ),
             border: InputBorder.none,
           ),

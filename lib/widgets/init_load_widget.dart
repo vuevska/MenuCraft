@@ -54,17 +54,32 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
             if (!context.mounted) {
               return;
             }
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const RootPage()));
+
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) => const RootPage()),
+                (route) {
+              return false;
+            });
           });
         }
+      } else {
+        Future.delayed(Duration(seconds: 1)).whenComplete(() {
+          if (!context.mounted) {
+            return;
+          }
+
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) => const RootPage()),
+              (route) {
+            return false;
+          }); //TODO: sigurno postoj podobar nacin
+        });
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print("eve");
     return isDebug
         ? RootPage()
         : Scaffold(
