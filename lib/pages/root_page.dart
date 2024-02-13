@@ -80,7 +80,7 @@ class _RootPageState extends State<RootPage> {
       confineInSafeArea: true,
       backgroundColor: const Color.fromRGBO(29, 27, 32, 1),
       handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       stateManagement: true,
       hideNavigationBarWhenKeyboardShows: true,
       decoration: NavBarDecoration(

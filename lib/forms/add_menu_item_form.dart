@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/widgets/profile/restaurant/input_restaurant.dart';
 
 class AddMenuItemForm extends StatelessWidget {
   final TextEditingController nameController;
@@ -32,51 +33,43 @@ class AddMenuItemForm extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    TextFormField(
+                    // TextFormField(
+                    //   controller: nameController,
+                    //   style: const TextStyle(color: Colors.white),
+                    //   decoration: const InputDecoration(
+                    //     labelText: 'Name',
+                    //     labelStyle: TextStyle(color: Colors.white),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(color: Colors.white),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(color: Colors.grey),
+                    //     ),
+                    //   ),
+                    // ),
+                    textInputRest(
+                      label: "Name",
                       controller: nameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
+                      icon: Icons.drive_file_rename_outline,
+                      pass: false,
+                      context: context,
                     ),
                     const SizedBox(height: 15.0),
-                    TextFormField(
+                    textInputRest(
+                      label: "Price",
                       controller: priceController,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Price',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
+                      icon: Icons.attach_money,
+                      pass: false,
+                      context: context,
                     ),
                     const SizedBox(height: 15.0),
-                    TextFormField(
+                    textInputRest(
+                      label: "Description",
                       controller: descriptionController,
-                      maxLines: 5,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Description',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
+                      icon: Icons.description,
+                      pass: false,
+                      context: context,
+                      lines: 5,
                     ),
                   ],
                 ),
