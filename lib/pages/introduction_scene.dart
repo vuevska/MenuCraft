@@ -55,11 +55,11 @@ class FirstTimeWidget extends StatelessWidget {
             ),
           ],
           onDone: () async {
-            print("done");
+
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
 
-            await prefs.setBool("intro", false);
+            await prefs.setBool("shouldIntro", false);
             if (!context.mounted) {
               return;
             }

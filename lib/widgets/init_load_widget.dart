@@ -20,6 +20,8 @@ class LoadHomeScreen extends StatefulWidget {
 }
 
 class _LoadHomeScreenState extends State<LoadHomeScreen> {
+  final bool isDebug = false; // TODO: poprajte go ova ama ce vi treba
+
   final DbAuthService _db = DbAuthService();
   Color currentColor = Colors.white;
 
@@ -34,11 +36,13 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
       InterfaceUtils.show(context, onError.toString(),
           type: ToastificationType.error);
     }).whenComplete(() {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         currentColor = const Color.fromRGBO(16, 20, 24, 1);
         opacity = 0.0;
         animationController.value = 1.0;
-        print(MediaQuery.of(context).size.height / 4 - 100);
       });
 
       if (AuthService.isUserLoggedIn()) {
@@ -60,58 +64,61 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FadeInUp(
-        duration: const Duration(seconds: 1),
-        child: AnimatedContainer(
-          color: currentColor,
-          curve: Curves.easeInOut,
-          duration: const Duration(seconds: 1),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Column(
-                children: [
-                  AnimatedOpacity(
-                    duration: const Duration(seconds: 1),
-                    opacity: opacity,
-                    child: Image.asset(
-                      "images/intro_splash/logoGif.gif",
-                      filterQuality: FilterQuality.high,
+    print("eve");
+    return isDebug
+        ? RootPage()
+        : Scaffold(
+            body: FadeInUp(
+              duration: const Duration(seconds: 1),
+              child: AnimatedContainer(
+                color: currentColor,
+                curve: Curves.easeInOut,
+                duration: const Duration(seconds: 1),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Column(
+                      children: [
+                        AnimatedOpacity(
+                          duration: const Duration(seconds: 1),
+                          opacity: opacity,
+                          child: Image.asset(
+                            "images/intro_splash/logoGif.gif",
+                            filterQuality: FilterQuality.high,
+                          ),
+                        ),
+                        const Text(
+                          "MenuCraft",
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                            .animate(
+                              adapter: animationController,
+                              autoPlay: false,
+                            )
+                            .tint(
+                              duration: const Duration(milliseconds: 300),
+                              color: Colors.white,
+                            )
+                            .then(
+                              delay: const Duration(milliseconds: 500),
+                            )
+                            .fadeOut(
+                                duration: const Duration(milliseconds: 500)),
+                        SizedBox(height: 20),
+                        AnimatedOpacity(
+                          duration: const Duration(seconds: 1),
+                          opacity: opacity,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
                     ),
                   ),
-                  const Text(
-                    "MenuCraft",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                      .animate(
-                        adapter: animationController,
-                        autoPlay: false,
-                      )
-                      .tint(
-                        duration: const Duration(milliseconds: 300),
-                        color: Colors.white,
-                      )
-                      .then(
-                        delay: const Duration(milliseconds: 500),
-                      )
-
-                      .fadeOut(duration: const Duration(milliseconds: 500)),
-                  SizedBox(height: 20),
-                  AnimatedOpacity(
-                    duration: const Duration(seconds: 1),
-                    opacity: opacity,
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }

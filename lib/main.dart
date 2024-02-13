@@ -12,6 +12,7 @@ import 'package:menu_craft/pages/scan_qr_page.dart';
 import 'package:menu_craft/utils/location_services.dart';
 import 'package:menu_craft/pages/search_page.dart';
 import 'package:menu_craft/widgets/init_load_widget.dart';
+import 'package:menu_craft/widgets/static_load.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,11 +31,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  bool getFirstTime() {
-    SharedPreferences.getInstance().then((value) {
-      return value.getBool("intro") ?? true;
-    });
-    return true;
+  Future<bool> getFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getBool("shouldIntro") ?? true;
   }
 
   @override
@@ -73,7 +73,20 @@ class MyApp extends StatelessWidget {
           profileOwnerMenus: (context) => const OwnerMenusPage(),
           addMenu: (context) => const AddMenuPage(),
         },
-        home: getFirstTime() ? const FirstTimeWidget() : const LoadHomeScreen(),
+        home: FutureBuilder<bool>(
+          future: getFirstTime(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const StaticLoadPage();
+            } else {
+              print("snapshot");
+              print(snapshot.data);
+              return snapshot.data!
+                  ? const FirstTimeWidget()
+                  : const LoadHomeScreen();
+            }
+          },
+        ),
       ),
     );
   }
