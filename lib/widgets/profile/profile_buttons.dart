@@ -20,63 +20,72 @@ class ProfileButtons extends StatefulWidget {
 class _ProfileButtonsState extends State<ProfileButtons> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width - 30,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.0),
-        color: const Color.fromRGBO(29, 27, 32, 1),
-      ),
-      margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.all(18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ProfileMenuItem(
-            title: "Your Menus",
-            onTap: () {
-              Navigator.of(context).push(
-                CupertinoPageRoute(
-                  builder: (BuildContext context) {
-                    return const OwnerMenusPage();
-                  },
-                ),
-              );
-            },
-          ),
-          ProfileMenuItem(
-            title: "Profile Settings",
-            onTap: () {
-              Navigator.of(context).push(
-                CupertinoPageRoute(
-                  builder: (BuildContext context) {
-                    return ProfileSettingsPage(
-                      refresh: widget.refresh,
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 40),
-          ElevatedButton(
-            onPressed: () {
-              AuthService.signOut().then((value) {
-                InterfaceUtils.show(context, "Successfully Logged Out!");
-                context.read<UserProvider>().setUser(null);
-                widget.refresh();
-              }).catchError((error) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(error.toString()),
-                ));
-              });
-            },
-            child: const Text(
-              'Log Out',
-              style: TextStyle(fontSize: 16),
+    return DefaultTextStyle(
+      style: const TextStyle(fontWeight: FontWeight.w300),
+      child: Container(
+        width: MediaQuery.of(context).size.width - 30,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          color: const Color.fromRGBO(29, 27, 32, 1),
+        ),
+        margin: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ProfileMenuItem(
+              title: "Your Menus",
+              onTap: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (BuildContext context) {
+                      return const OwnerMenusPage();
+                    },
+                  ),
+                );
+              },
             ),
-          )
-        ],
+            ProfileMenuItem(
+              title: "Profile Settings",
+              onTap: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (BuildContext context) {
+                      return ProfileSettingsPage(
+                        refresh: widget.refresh,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.red)),
+              onPressed: () {
+                AuthService.signOut().then((value) {
+                  InterfaceUtils.show(context, "Successfully Logged Out!");
+                  context.read<UserProvider>().setUser(null);
+                  widget.refresh();
+                }).catchError((error) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(error.toString()),
+                  ));
+                });
+              },
+              child: const Text(
+                'Log Out',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
