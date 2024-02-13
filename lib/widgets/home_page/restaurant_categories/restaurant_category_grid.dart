@@ -8,18 +8,21 @@ class CategoryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder<List<RestaurantCategoryModel>>(
       future: DbRestaurantService().getAllCategories(),
       builder: (context, snapshot) {
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
           return Center(
-            child: Text('Error: ${snapshot.error}'),
+            child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white)),
           );
         } else {
+
           final categories = snapshot.data!;
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

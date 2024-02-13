@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
@@ -56,7 +57,7 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                     widget.restaurant.restaurantId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator(color: Colors.white,));
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else {
@@ -77,15 +78,23 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                               ),
                             );
                           },
-                          child: Card(
-                            child: ListTile(
-                              title: Text(
-                                category.name,
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              leading: Icon(
-                                category.getIconData(),
-                                color: Colors.black,
+                          child: FadeInUp(
+                            duration: const Duration(milliseconds: 300),
+                            from: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                              child: Card(
+                                child: ListTile(
+
+                                  title: Text(
+                                    category.name,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  leading: Icon(
+                                    category.getIconData(),
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
