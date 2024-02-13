@@ -33,6 +33,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
           vertical: 4.0,
         ),
         child: Card(
+
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

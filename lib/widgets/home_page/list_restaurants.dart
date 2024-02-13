@@ -13,51 +13,42 @@ class ListRestaurants extends StatefulWidget {
 }
 
 class _ListRestaurntsState extends State<ListRestaurants> {
+
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      color: Colors.purple,
-      onRefresh: () async {
-        setState(() {});
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 10.0),
-          Consumer<LocationService>(
-            builder: (_, location, child) => Expanded(
-              child: FutureBuilder<List<RestaurantModel>>(
-                future: LocationService.checkPermission()
-                    ? DbRestaurantService().getLocalRestaurants(
-                        LocationService.getLastKnownPosition())
-                    : DbRestaurantService().getAllRestaurants(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('Error: ${snapshot.error}'),
-                    );
-                  } else {
-                    final restaurants = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: restaurants.length,
-                      itemBuilder: (context, index) {
-                        final restaurant = restaurants[index];
-                        return RestaurantCard(
-                          restaurant: restaurant,
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 10.0),
+        Consumer<LocationService>(
+          builder: (_, location, child) => FutureBuilder<List<RestaurantModel>>(
+            future: LocationService.checkPermission()
+                ? DbRestaurantService().getLocalRestaurants(
+                    LocationService.getLastKnownPosition())
+                : DbRestaurantService().getAllRestaurants(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                final restaurants = snapshot.data!;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 10.0),
+                    for (final restaurant in restaurants)
+                      RestaurantCard(restaurant: restaurant),
+                  ],
+                );                }
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
