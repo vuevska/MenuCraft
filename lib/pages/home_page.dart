@@ -31,16 +31,15 @@ class _HomePageState extends State<HomePage> {
       appBar: const CustomAppBar(),
       backgroundColor: Theme.of(context).primaryColor,
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
         child: RefreshIndicator(
           color: Colors.purple,
-          onRefresh: () async{
-            setState(() {
-            });
+          onRefresh: () async {
+            setState(() {});
           },
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+            children: const [
               // Category Cards
               SizedBox(
                 height: 200, // Define the height for the category cards

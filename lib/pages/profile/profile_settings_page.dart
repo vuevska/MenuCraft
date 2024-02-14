@@ -93,13 +93,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       ProfileSettingRow(
                         title: "About",
                         onTap: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (BuildContext context) {
-                                return AboutPage();
-                              },
-                            ),
-                          );
+                         //  Navigator.of(context).push(
+                         //    CupertinoPageRoute(
+                         //      builder: (BuildContext context) {
+                         //        return AboutPage();
+                         //      },
+                         //    ),
+                         // );
                         },
                       ),
                       const SizedBox(height: 10.0),

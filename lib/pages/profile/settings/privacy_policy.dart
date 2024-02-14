@@ -10,38 +10,47 @@ class PrivacyPolicyPage extends StatefulWidget {
 }
 
 class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
-  // Define a map to store category and its corresponding text
-  Map<String, Widget> categories = {
-    'Privacy Policy': const CategoryTextWidget(category: 'Privacy Policy'),
-    'Definitions': const CategoryTextWidget(category: 'Definitions'),
-    'Personal Data': const CategoryTextWidget(category: 'Personal Data'),
-    'Usage Data': const CategoryTextWidget(category: 'Usage Data'),
+  Map<String, String> categoryFilePaths = {
+    'Privacy Policy': 'assets/privacy_policy.txt',
+    'Definitions': 'assets/definitions.txt',
+    'Personal Data': 'assets/personal_data.txt',
+    'Usage Data': 'assets/usage_data.txt',
     'Information from Third-Party Social Media Services':
-        const CategoryTextWidget(
-            category: 'Information from Third-Party Social Media Services'),
+        'assets/information_from_third_party_social_media_services.txt',
     'Information Collected while Using the Application':
-        const CategoryTextWidget(
-            category: 'Information Collected while Using the Application'),
-    'Use of Your Personal Data':
-        const CategoryTextWidget(category: 'Use of Your Personal Data'),
+        'assets/information_collected_while_using_the_application.txt',
+    'Use of Your Personal Data': 'assets/use_of_your_personal_data.txt',
     'Retention of Your Personal Data':
-        const CategoryTextWidget(category: 'Retention of Your Personal Data'),
-    'Delete Your Personal Data':
-        const CategoryTextWidget(category: 'Delete Your Personal Data'),
+        'assets/retention_of_your_personal_data.txt',
+    'Delete Your Personal Data': 'assets/delete_your_personal_data.txt',
     'Security of Your Personal Data':
-        const CategoryTextWidget(category: 'Security of Your Personal Data'),
+        'assets/security_of_your_personal_data.txt',
     'Changes to this Privacy Policy':
-        const CategoryTextWidget(category: 'Changes to this Privacy Policy'),
+        'assets/changes_to_this_privacy_policy.txt',
   };
 
+  Map<String, Widget> categories = {};
+
   Map<String, bool> categoryExpanded = {};
+
+  @override
+  void initState() {
+    super.initState();
+    categoryFilePaths.forEach((category, filePath) {
+      categories[category] = CategoryTextWidget(
+          filePath: filePath); // Pass file paths to CategoryTextWidget
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        title: const Text('Privacy and Security'),
+        title: const Text(
+          'Privacy and Security',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.purple.shade50,
       ),

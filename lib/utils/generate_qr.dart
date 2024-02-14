@@ -14,6 +14,7 @@ class QRGenOverlay {
     _overlayEntry = _createOverlay();
     Overlay.of(context).insert(_overlayEntry!);
   }
+
   bool isShowing() {
     return _overlayEntry != null;
   }
@@ -38,9 +39,11 @@ class QRGenOverlay {
                     0.6, // Adjust size as needed
 
                 child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0),bottomRight: Radius.circular(16.0)),
-                    color: const Color.fromRGBO(60, 45, 68, 1.0),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16.0),
+                        bottomRight: Radius.circular(16.0)),
+                    color: Color.fromRGBO(60, 45, 68, 1.0),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -51,15 +54,18 @@ class QRGenOverlay {
                         size: MediaQuery.of(context).size.width * 0.70,
                         padding: const EdgeInsets.all(30),
                         backgroundColor: Colors.white,
-                        embeddedImage: AssetImage('images/logo.jpg'),
-
+                        embeddedImage: const AssetImage('images/logo.jpg'),
                       ),
-                      Text(restaurantName, style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold)), //TODO: ovde eden jak font i prejako ce lici
-                      SizedBox(height: 20),
+                      Text(restaurantName,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 36,
+                              fontWeight: FontWeight
+                                  .bold)), //TODO: ovde eden jak font i prejako ce lici
+                      const SizedBox(height: 20),
                       ElevatedButton(
-
                         onPressed: removeOverlay,
-                        child: Text('Close Overlay'),
+                        child: const Text('Close Overlay'),
                       ),
                     ],
                   ),

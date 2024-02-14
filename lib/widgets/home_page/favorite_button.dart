@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/services/auth_service.dart';
+import 'package:menu_craft/utils/toastification.dart';
 import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../models/providers/favorite_provider.dart';
 
@@ -64,9 +66,13 @@ class _FavoriteButtonState extends State<FavoriteButton> {
       _controller2.reset();
       _controller1.forward();
       _controller2.forward();
+      InterfaceUtils.show(context, "Menu added to favorites!",
+          type: ToastificationType.success);
     } else {
       _controller1.reverse(from: _controller1.upperBound);
       _controller2.reverse(from: _controller2.upperBound);
+      InterfaceUtils.show(context, "Menu removed from favorites!",
+          type: ToastificationType.info);
     }
 
     await context.read<FavoriteProvider>().toggleFavorite(

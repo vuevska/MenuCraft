@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:menu_craft/utils/toastification.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../models/providers/favorite_provider.dart';
 import '../../models/restaurant_model.dart';
@@ -14,7 +16,6 @@ class FavoriteList extends StatefulWidget {
 }
 
 class _FavoriteListState extends State<FavoriteList> {
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -23,7 +24,7 @@ class _FavoriteListState extends State<FavoriteList> {
       itemBuilder: (BuildContext context, int index) {
         return FavoriteRestaurantCard(
           restaurant: widget.favoriteRestaurants[index],
-          index:index,
+          index: index,
           onDelete: (i) {
             setState(() {
               print(widget.favoriteRestaurants.length);
@@ -33,7 +34,8 @@ class _FavoriteListState extends State<FavoriteList> {
                   AuthService.user?.uid ?? 'local',
                   true);
               widget.favoriteRestaurants.removeAt(i);
-
+              InterfaceUtils.show(context, "Menu removed from favorites!",
+                  type: ToastificationType.info);
             });
           },
         );
