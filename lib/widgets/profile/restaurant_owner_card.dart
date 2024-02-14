@@ -86,7 +86,7 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             shape: const RoundedRectangleBorder(
@@ -109,40 +109,42 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                             color: Colors.black,
                           ),
                           label: const Text(
-                            "View",
+                            "View Menu",
                             style: TextStyle(fontSize: 10, color: Colors.black),
                           ),
                         ),
                       ),
                       // TODO: za Maria ova za promena na restoranot
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        child: ElevatedButton.icon(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
-                            backgroundColor: Colors.purple[50],
+                            primary: Colors.purple[50],
                           ),
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.mode_edit_sharp,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            "Edit",
-                            style: TextStyle(fontSize: 10, color: Colors.black),
+                          onPressed: () {
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.mode_edit_sharp,
+                                color: Colors.black,
+                              ),
+                            ],
                           ),
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        child: ElevatedButton.icon(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
-                            backgroundColor: Colors.purple[50],
+                            primary: Colors.purple[50],
                           ),
                           onPressed: () {
                             showDialog(
@@ -164,23 +166,23 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                                       print('Error deleting restaurant: $e');
                                       // Handle error if needed
                                     }
-
-
                                   },
                                 );
                               },
                             );
                           },
-                          icon: const Icon(
-                            Icons.delete_rounded,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            "Delete",
-                            style: TextStyle(fontSize: 10, color: Colors.black),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.delete_rounded,
+                                color: Colors.black,
+                              ),
+                            ],
                           ),
                         ),
                       ),
+
                     ],
                   ),
                 ],

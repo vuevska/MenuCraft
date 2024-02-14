@@ -4,19 +4,6 @@ import 'package:menu_craft/widgets/home_page/list_restaurants.dart';
 
 import '../widgets/home_page/restaurant_categories/restaurant_category_grid.dart';
 
-// class HomePage extends StatelessWidget {
-//   const HomePage({Key? key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: const CustomAppBar(),
-//       backgroundColor: Theme.of(context).primaryColor,
-//       body: const ListRestaurants(),
-//     );
-//   }
-// }
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
