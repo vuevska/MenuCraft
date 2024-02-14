@@ -4,14 +4,16 @@ import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
 import 'package:menu_craft/widgets/profile/restaurant/delete_restaurant_modal.dart';
-
 import 'package:menu_craft/services/db_restaurant_service.dart';
 
+
+import '../../pages/restaurant/edit_menu_page.dart';
 import '../../utils/toastification.dart';
 
 class RestaurantOwnerCard extends StatefulWidget {
   final RestaurantModel restaurant;
   final Function refresh;
+
 
   const RestaurantOwnerCard({super.key, required this.restaurant, required this.refresh});
 
@@ -124,7 +126,14 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                             ),
                             primary: Colors.purple[50],
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditMenuPage(
+                                    restaurantId: widget.restaurant.restaurantId),
+                              ),
+                            );
                           },
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -153,7 +162,7 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                                 return DeleteConfirmationDialog(
                                   onConfirm: () async {
                                     try {
-                                      // Call the deleteRestaurant function from DbRestaurantService
+
                                       await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId).catchError((onError){
                                         InterfaceUtils.show(context, onError.toString());
                                       });

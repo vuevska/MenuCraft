@@ -364,4 +364,45 @@ class DbRestaurantService {
       rethrow;
     }
   }
+
+  // Function to update the restaurant data
+  // Future<void> updateRestaurant(String restaurantId, Map<String, dynamic> updatedData) async {
+  //   try {
+  //     await _db.collection('restaurants').doc(restaurantId).update(updatedData);
+  //   } catch (e) {
+  //     print('Error updating restaurant: $e');
+  //     rethrow;
+  //   }
+  // }
+
+  Future<void> updateRestaurant({
+    required String name,
+    required double latitude,
+    required double longitude,
+    required String imageUrl,
+    required String restaurantId,
+    required String owningUserID,
+    //required List<RestaurantCategoryModel> categories,
+    required String category,
+  }) async {
+    String hash =
+    _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
+
+    final restaurant = RestaurantModel(
+        restaurantId: restaurantId,
+        name: name,
+        geoHash: hash,
+        latitude: latitude,
+        longitude: longitude,
+        imageUrl: imageUrl,
+        owningUserID: owningUserID,
+        category: category);
+
+    final Map<String, dynamic> restaurantData = restaurant.toMap();
+
+    await _db.collection('restaurants').doc(restaurantId).update(restaurantData);
+
+  }
+
+
 }
