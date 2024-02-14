@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'filter_menus.dart';
 
-
-
 class SearchBarCustom extends StatefulWidget {
-   const SearchBarCustom({Key? key});
+  const SearchBarCustom({super.key});
 
   @override
   State<SearchBarCustom> createState() => _SearchBarCustomState();
@@ -59,7 +57,7 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
               hintText: 'Search by name...',
               border: InputBorder.none,
               // Style customization for the text field
-              hintStyle: TextStyle(color: Colors.black54),
+              hintStyle: TextStyle(color: Colors.grey),
             ),
           ),
         ),
@@ -68,7 +66,8 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
           visible: _isListVisible,
           child: Container(
             height: 300,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.purple.shade50.withOpacity(0.0),
@@ -81,5 +80,3 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
     );
   }
 }
-
-

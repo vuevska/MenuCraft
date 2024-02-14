@@ -21,9 +21,8 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
         child: RefreshIndicator(
           color: Colors.purple,
-          onRefresh: () async{
-            setState(() {
-            });
+          onRefresh: () async {
+            setState(() {});
           },
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.stretch,

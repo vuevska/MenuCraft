@@ -4,200 +4,137 @@ import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
 import 'package:menu_craft/widgets/profile/restaurant/delete_restaurant_modal.dart';
-import 'package:menu_craft/services/db_restaurant_service.dart';
 
-
-import '../../pages/restaurant/edit_menu_page.dart';
+import '../../services/db_restaurant_service.dart';
 import '../../utils/toastification.dart';
 
 class RestaurantOwnerCard extends StatefulWidget {
   final RestaurantModel restaurant;
   final Function refresh;
 
-
-  const RestaurantOwnerCard({super.key, required this.restaurant, required this.refresh});
+  const RestaurantOwnerCard({
+    Key? key,
+    required this.restaurant,
+    required this.refresh,
+  }) : super(key: key);
 
   @override
-  _RestaurantOwnerCardState createState() => _RestaurantOwnerCardState();
+  State<RestaurantOwnerCard> createState() => _RestaurantOwnerCardState();
 }
 
 class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
-  bool _expanded = false;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _expanded = !_expanded;
-        });
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (BuildContext context) {
+              return ViewMenuPage(restaurant: widget.restaurant);
+            },
+          ),
+        );
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        margin: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 4.0,
-        ),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 155.0,
-                  child: Image(
-                    image: NetworkImage(widget.restaurant.imageUrl),
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Center(
-                        child: Text("Error loading image"),
-                      );
-                    },
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  widget.restaurant.name,
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: Colors.green,
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 155.0,
+                    child: Image(
+                      image: NetworkImage(widget.restaurant.imageUrl),
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Text("Error loading image"),
+                        );
+                      },
+                      fit: BoxFit.cover,
                     ),
-                    const SizedBox(width: 4.0),
-                    Expanded(
-                      child: AddressWidget(
-                        latitude: widget.restaurant.latitude,
-                        longitude: widget.restaurant.longitude,
-                      ),
-                    ),
-                  ],
-                ),
-                if (_expanded) ...[
-                  const SizedBox(height: 8.0),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                            backgroundColor: Colors.purple[50],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          widget.restaurant.name,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            color: Colors.grey[700],
+                            onPressed: () {},
+                          ),
+                          const SizedBox(width: 8.0),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
                                 builder: (BuildContext context) {
-                                  return ViewMenuPage(
-                                      restaurant: widget.restaurant);
-                                },
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.restaurant_menu,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            "View Menu",
-                            style: TextStyle(fontSize: 10, color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      // TODO: za Maria ova za promena na restoranot
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                            primary: Colors.purple[50],
-                          ),
-                          onPressed: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditMenuPage(
-                                    restaurantId: widget.restaurant.restaurantId),
-                              ),
-                            );
-                          },
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.mode_edit_sharp,
-                                color: Colors.black,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                            primary: Colors.purple[50],
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DeleteConfirmationDialog(
-                                  onConfirm: () async {
-                                    try {
+                                  return DeleteConfirmationDialog(
+                                    onConfirm: () async {
+                                      try {
 
-                                      await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId).catchError((onError){
-                                        InterfaceUtils.show(context, onError.toString());
-                                      });
-                                      widget.refresh();
-                                      if(!context.mounted){
-                                        return;
+                                        await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId).catchError((onError){
+                                          InterfaceUtils.show(context, onError.toString());
+                                        });
+                                        widget.refresh();
+                                        if(!context.mounted){
+                                          return;
+                                        }
+                                        Navigator.of(context).pop(); // Close the dialog
+                                      } catch (e) {
+                                        print('Error deleting restaurant: $e');
+                                        // Handle error if needed
                                       }
-                                      Navigator.of(context).pop(); // Close the dialog
-                                    } catch (e) {
-                                      print('Error deleting restaurant: $e');
-                                      // Handle error if needed
-                                    }
-                                  },
-                                );
-                              },
-                            );
-                          },
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.delete_rounded,
-                                color: Colors.black,
-                              ),
-                            ],
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
-                        ),
+                        ],
                       ),
-
                     ],
                   ),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        color: Colors.green,
+                      ),
+                      Expanded(
+                        child: DefaultTextStyle(
+                          style: const TextStyle(color: Colors.grey),
+                          child: AddressWidget(
+                            latitude: widget.restaurant.latitude,
+                            longitude: widget.restaurant.longitude,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8.0),
                 ],
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

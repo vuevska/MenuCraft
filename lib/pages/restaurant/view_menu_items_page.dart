@@ -14,10 +14,10 @@ class ViewMenuItemsPage extends StatefulWidget {
   final RestaurantModel restaurant;
 
   const ViewMenuItemsPage({
-    super.key,
+    Key? key,
     required this.category,
     required this.restaurant,
-  });
+  }) : super(key: key);
 
   @override
   State<ViewMenuItemsPage> createState() => _ViewMenuItemsPageState();
@@ -64,12 +64,12 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                       widget.category.getIconData(),
                       color: Colors.white,
                     ),
-                    SizedBox(width: 10.0),
+                    const SizedBox(width: 10.0),
                     Text(
                       widget.category.name,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 24.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -134,7 +134,7 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                         menuItem.name,
                                         style: const TextStyle(
                                             color: Colors.white,
-                                            fontSize: 24,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Column(
@@ -145,21 +145,61 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                           Text(
                                             menuItem.description,
                                             style: const TextStyle(
-                                                color: Colors.white),
+                                                color: Colors.grey,
+                                                fontSize: 12),
                                           ),
                                           const SizedBox(height: 4.0),
                                         ],
                                       ),
-                                      trailing: Dance(
-                                        duration: Duration(
-                                            milliseconds: 50 + (index * 200)),
-                                        child: Text(
-                                          '\$${menuItem.price.toString()}',
-                                          style: const TextStyle(
-                                              color: Colors.greenAccent,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20.0),
-                                        ),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            '${menuItem.price.toString()} мкд',
+                                            style: const TextStyle(
+                                                color: Colors.greenAccent,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0),
+                                          ),
+                                          if (isCurrentUserOwner)
+                                            PopupMenuButton<String>(
+                                              itemBuilder: (context) =>
+                                                  <PopupMenuEntry<String>>[
+                                                const PopupMenuItem<String>(
+                                                  value: 'edit',
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.edit),
+                                                      SizedBox(width: 8),
+                                                      Text('Edit'),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const PopupMenuItem<String>(
+                                                  value: 'delete',
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.delete,
+                                                          color: Colors.red),
+                                                      SizedBox(width: 8),
+                                                      Text(
+                                                        'Delete',
+                                                        style: TextStyle(
+                                                            color: Colors.red),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                              onSelected: (value) {
+                                                if (value == 'edit') {
+                                                  // TODO: tuka da se nosi kon edit page
+                                                } else if (value == 'delete') {
+                                                  // TODO: kon delete page
+                                                }
+                                              },
+                                            ),
+                                        ],
                                       ),
                                     ),
                                   ),
