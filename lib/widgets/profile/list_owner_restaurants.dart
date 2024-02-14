@@ -13,7 +13,6 @@ class ListOwnerRestaurants extends StatefulWidget {
 }
 
 class _ListOwnerRestaurantsState extends State<ListOwnerRestaurants> {
-
   void refresh() {
     setState(() {});
   }
@@ -39,9 +38,13 @@ class _ListOwnerRestaurantsState extends State<ListOwnerRestaurants> {
               return SingleChildScrollView(
                 child: Column(
                   children: restaurants.map((restaurant) {
-                    return RestaurantOwnerCard(
-                      restaurant: restaurant,
-                      refresh:refresh,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0.0, horizontal: 20.0),
+                      child: RestaurantOwnerCard(
+                        restaurant: restaurant,
+                        refresh: refresh,
+                      ),
                     );
                   }).toList(),
                 ),
@@ -53,7 +56,3 @@ class _ListOwnerRestaurantsState extends State<ListOwnerRestaurants> {
     );
   }
 }
-
-
-
-

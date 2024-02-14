@@ -1,8 +1,8 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 import '../../models/providers/favorite_provider.dart';
 
@@ -23,7 +23,6 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _setFavorite();
     audioPlayer.audioCache = AudioCache(prefix: '');
@@ -31,60 +30,50 @@ class _FavoriteButtonState extends State<FavoriteButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
-          backgroundColor: Colors.purple[50],
-        ),
-        onPressed: () {
-          _toggleFavorite();
-        },
-        icon: Swing(
+    return IconButton(
+      onPressed: _toggleFavorite,
+      icon: Swing(
+        manualTrigger: true,
+        controller: (controller) => _controller1 = controller,
+        duration: const Duration(milliseconds: 700),
+        child: Pulse(
           manualTrigger: true,
-          controller: (controller) => _controller1 = controller,
-          duration: const Duration(milliseconds: 700),
-          child: Pulse(
-            manualTrigger: true,
-            controller: (controller) => _controller2 = controller,
-            duration: const Duration(milliseconds: 500),
-            child: Icon(
-              _isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: Colors.black,
-            ),
+          controller: (controller) => _controller2 = controller,
+          duration: const Duration(milliseconds: 500),
+          child: Icon(
+            _isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: _isFavorite ? Colors.red : Colors.white,
+            size: 40,
+            shadows: const [
+              BoxShadow(
+                color: Colors.white,
+                blurRadius: 15,
+                spreadRadius: 10,
+              )
+            ],
           ),
-        ),
-        label: const Text(
-          "Add to Favorites",
-          style: TextStyle(fontSize: 10, color: Colors.black),
         ),
       ),
     );
   }
 
   void _toggleFavorite() async {
-
-    if(!_isFavorite){
+    if (!_isFavorite) {
       audioPlayer.play(AssetSource("sounds/pop.mp3"));
       _controller1.reset();
       _controller2.reset();
       _controller1.forward();
       _controller2.forward();
-
-    }else{
-
-      _controller1.reverse(from:_controller1.upperBound);
-      _controller2.reverse(from:_controller2.upperBound);
+    } else {
+      _controller1.reverse(from: _controller1.upperBound);
+      _controller2.reverse(from: _controller2.upperBound);
     }
 
     await context.read<FavoriteProvider>().toggleFavorite(
         widget.restaurantId, AuthService.user?.uid ?? 'local', _isFavorite);
     setState(() {
-    _isFavorite = !_isFavorite;
-    }); //TODO: animacija na srceto
+      _isFavorite = !_isFavorite;
+    });
   }
 
   Future<void> _setFavorite() async {
@@ -100,7 +89,6 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   @override
   void dispose() {
     super.dispose();
-
     audioPlayer.dispose();
   }
 }
