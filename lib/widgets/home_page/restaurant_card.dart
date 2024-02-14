@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_craft/models/providers/favorite_provider.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
 import 'package:menu_craft/widgets/home_page/favorite_button.dart';
+import 'package:provider/provider.dart';
 
 class RestaurantCard extends StatefulWidget {
   final RestaurantModel restaurant;
