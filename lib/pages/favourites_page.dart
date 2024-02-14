@@ -9,14 +9,13 @@ import 'package:provider/provider.dart';
 import '../widgets/favorites/favorites_list.dart';
 
 class FavoritesPage extends StatefulWidget {
-  const FavoritesPage({Key? key});
+  const FavoritesPage({super.key});
 
   @override
   State<FavoritesPage> createState() => _FavoritesPageState();
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  // TODO: Change logic here
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +39,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           .read<FavoriteProvider>()
                           .getFavorites(AuthService.user?.uid ?? 'local'),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(
                               color: Colors.white,
@@ -48,9 +48,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           );
                         }
                         if (snapshot.hasError) {
-
                           return const Center(
-                            child: Text('An error occurred', style: TextStyle(color: Colors.white)),
+                            child: Text('An error occurred',
+                                style: TextStyle(color: Colors.white)),
                           );
                         }
                         final favoriteRestaurants =
