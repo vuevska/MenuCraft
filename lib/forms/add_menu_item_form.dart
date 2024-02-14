@@ -85,7 +85,10 @@ class AddMenuItemForm extends StatelessWidget {
                   onPressed: onPressed,
                   child: const Text(
                     'Create Menu Item',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ],
