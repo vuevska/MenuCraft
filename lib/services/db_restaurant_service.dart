@@ -102,7 +102,17 @@ class DbRestaurantService {
 
   Future<List<RestaurantModel>> getAllRestaurauntsFromList(
       List<String> ids) async {
-    return await Future.wait(ids.map((id) => getRestaurant(id)));
+    return await Future.wait(ids.map((id) async {
+      try {
+        return await getRestaurant(id);
+      } catch (e) {
+        // Handle the error (e.g., log it or return a default restaurant)
+        print('Error fetching restaurant with ID $id: $e');
+        return null; // Return a default restaurant or null
+      }
+    })).then((value){
+      return value.where((element) => element != null).map((e) => e!).toList();
+    });
   }
 
   Future<RestaurantModel> getRestaurant(String id) async {
