@@ -57,7 +57,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
                             snapshot.data as List<RestaurantModel>;
                         if (favoriteRestaurants.isEmpty) {
                           return const Center(
-                            child: Text('No favorite restaurants'),
+                            child: Text('No favorite restaurants',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                )),
                           );
                         }
                         return FavoriteList(

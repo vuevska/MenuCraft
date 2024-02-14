@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
 
     return prefs.getBool("shouldIntro") ?? true;
+
   }
 
   @override

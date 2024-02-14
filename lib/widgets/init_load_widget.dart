@@ -105,9 +105,9 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
                         const Text(
                           "MenuCraft",
                           style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 48,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Inter',
+                            fontFamily: 'Amatic',
                           ),
                         )
                             .animate(
