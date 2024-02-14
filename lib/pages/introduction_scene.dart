@@ -55,7 +55,6 @@ class FirstTimeWidget extends StatelessWidget {
             ),
           ],
           onDone: () async {
-
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
 
@@ -63,8 +62,10 @@ class FirstTimeWidget extends StatelessWidget {
             if (!context.mounted) {
               return;
             }
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const LoadHomeScreen()));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const LoadHomeScreen()));
           },
           //ClampingScrollPhysics prevent the scroll offset from exceeding the bounds of the content.
           // scrollPhysics: const ClampingScrollPhysics(),
@@ -84,26 +85,45 @@ class FirstTimeWidget extends StatelessWidget {
   Widget buildImage(BuildContext context, String imagePath) {
     return Center(
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: ClipRect(
-            clipper: MyCustomClipper(),
-            child: Image.asset(
+      borderRadius: BorderRadius.circular(30),
+      child: ClipRect(
+        clipper: MyCustomClipper(),
+        child: Image.asset(
           imagePath,
-
           height: 800,
         ),
-          ),
-        ));
+      ),
+    ));
   }
 
   //method to customise the page style
   PageDecoration getPageDecoration() {
     return const PageDecoration(
-      imagePadding: EdgeInsets.only(top: 30,left:30,right:30),
+      titleTextStyle: TextStyle(
+        fontFamily: 'Amatic',
+        color: Colors.black,
+        fontSize: 40,
+        fontWeight: FontWeight.bold,
+      ),
+      imagePadding: EdgeInsets.only(
+        top: 30,
+        left: 30,
+        right: 30,
+      ),
       pageColor: Colors.white,
-      bodyPadding: EdgeInsets.only(top: 8, left: 20, right: 20),
-      titlePadding: EdgeInsets.only(top: 50),
-      bodyTextStyle: TextStyle(color: Colors.black54, fontSize: 15),
+      bodyPadding: EdgeInsets.only(
+        top: 8,
+        left: 20,
+        right: 20,
+      ),
+      titlePadding: EdgeInsets.only(
+        top: 50,
+      ),
+      bodyTextStyle: TextStyle(
+        color: Colors.black54,
+        fontSize: 16,
+        fontFamily: 'Inter',
+      ),
     );
   }
 
