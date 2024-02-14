@@ -97,10 +97,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                               null, // Set the value to null to represent no selection
                           child: Text(
                             'Choose category',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                         ...widget.categories
@@ -113,7 +110,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                               style: const TextStyle(color: Colors.white),
                             ), // Assuming CategoryModel has a 'name' property
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                     const SizedBox(height: 20.0),

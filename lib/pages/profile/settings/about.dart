@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../widgets/profile/settings/privacy_policy/category_text.dart';
 
 class AboutPage extends StatefulWidget {
+  const AboutPage({super.key});
+
   @override
   _AboutPageState createState() => _AboutPageState();
 }
@@ -22,12 +24,7 @@ class _AboutPageState extends State<AboutPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        title: const Text(
-          'About',
-          style: TextStyle(
-              fontWeight: FontWeight.w600
-          ),
-        ),
+        title: const Text('About'),
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.purple.shade50,
       ),
@@ -39,10 +36,7 @@ class _AboutPageState extends State<AboutPage> {
               ListTile(
                 title: Text(
                   category,
-                  style: TextStyle(
-                      color: Colors.grey.shade50,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400),
+                  style: TextStyle(color: Colors.grey.shade50, fontSize: 18.0),
                 ),
                 trailing: Icon(
                   categoryExpanded[category] == true
@@ -53,13 +47,12 @@ class _AboutPageState extends State<AboutPage> {
                   setState(() {
                     // Toggle category expansion state
                     categoryExpanded[category] =
-                    !(categoryExpanded[category] ?? false);
+                        !(categoryExpanded[category] ?? false);
                   });
                 },
               ),
               // Display text if category is expanded
-              if (categoryExpanded[category] == true)
-                categories[category]!,
+              if (categoryExpanded[category] == true) categories[category]!,
               const Divider(),
             ],
           );
@@ -68,4 +61,3 @@ class _AboutPageState extends State<AboutPage> {
     );
   }
 }
-

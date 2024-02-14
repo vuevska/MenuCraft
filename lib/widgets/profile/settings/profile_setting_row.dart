@@ -41,11 +41,12 @@ class _ProfileSettingRowState extends State<ProfileSettingRow> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.title,
-                  style: TextStyle(
-                      color: widget.logout ? Colors.red : Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold)),
+              Text(
+                widget.title,
+                style: TextStyle(
+                    color: widget.logout ? Colors.red : Colors.white,
+                    fontSize: 20.0),
+              ),
               Icon(
                 widget.logout ? Icons.logout : Icons.arrow_forward_ios,
                 color: widget.logout ? Colors.red : Colors.white,

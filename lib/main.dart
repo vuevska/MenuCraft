@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          fontFamily: 'Montserrat',
+          fontFamily: 'Inter',
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.purple,

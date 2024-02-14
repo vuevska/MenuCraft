@@ -9,7 +9,6 @@ import 'package:menu_craft/services/auth_service.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
 
@@ -22,7 +21,6 @@ class _RootPageState extends State<RootPage> {
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
   final AuthService authProvider = AuthService();
-
 
   List<Widget> _buildScreens() {
     return [
@@ -76,7 +74,6 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return PersistentTabView(
       context,
       controller: _controller,
