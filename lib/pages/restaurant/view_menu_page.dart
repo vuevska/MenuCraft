@@ -12,7 +12,7 @@ import 'package:menu_craft/utils/generate_qr.dart';
 class ViewMenuPage extends StatefulWidget {
   final RestaurantModel restaurant;
 
-  const ViewMenuPage({super.key, required this.restaurant});
+  const ViewMenuPage({Key? key, required this.restaurant}) : super(key: key);
 
   @override
   State<ViewMenuPage> createState() => _ViewMenuPageState();
@@ -50,9 +50,13 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
               height: 160,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(widget.restaurant.imageUrl),
-                    fit: BoxFit.cover,
-                    opacity: 0.5),
+                  image: NetworkImage(widget.restaurant.imageUrl),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.5),
+                    BlendMode.dstATop,
+                  ),
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 60, 0, 0),
@@ -155,13 +159,32 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                                         category.name,
                                         style: const TextStyle(
                                           color: Colors.black,
-                                          fontSize: 18,
+                                          fontSize: 14,
                                         ),
                                       ),
                                       leading: Icon(
                                         category.getIconData(),
                                         color: Colors.black,
                                       ),
+                                      trailing: isCurrentUserOwner
+                                          ? Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                IconButton(
+                                                  icon: const Icon(Icons.edit),
+                                                  color: Colors.grey[700],
+                                                  onPressed: () {},
+                                                ),
+                                                const SizedBox(width: 8.0),
+                                                IconButton(
+                                                  icon:
+                                                      const Icon(Icons.delete),
+                                                  color: Colors.red,
+                                                  onPressed: () {},
+                                                ),
+                                              ],
+                                            )
+                                          : null,
                                     ),
                                   ),
                                 ),
