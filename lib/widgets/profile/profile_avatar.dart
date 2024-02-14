@@ -15,12 +15,12 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   Widget build(BuildContext context) {
     if (widget.user.imageUrl != null && widget.user.imageUrl!.isNotEmpty) {
       return CircleAvatar(
-        radius: 65,
+        radius: 70,
         backgroundImage: NetworkImage(widget.user.imageUrl!),
       );
     }
     return CircleAvatar(
-      radius: 65,
+      radius: 70,
       backgroundColor: Colors.purple,
       child: Text(
         widget.user.initial(),

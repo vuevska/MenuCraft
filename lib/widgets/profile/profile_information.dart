@@ -27,7 +27,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
                 const SizedBox(height: 15),
                 Text(
                   user.fullName ?? "",
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                  style: const TextStyle(fontSize: 24, color: Colors.white),
                 ),
                 Consumer<LocationService>(
                   builder: (context, LocationService location, child) {
@@ -48,10 +48,14 @@ class _ProfileInformationState extends State<ProfileInformation> {
                           ),
                           const SizedBox(width: 4),
                           Expanded(
-                            child: Text(
-                              location.currentAddress,
-                              style: const TextStyle(color: Colors.white),
-                              overflow: TextOverflow.clip,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                location.currentAddress,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16.0),
+                                overflow: TextOverflow.clip,
+                              ),
                             ),
                           ),
                         ],

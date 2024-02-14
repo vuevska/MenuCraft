@@ -64,12 +64,12 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                       widget.category.getIconData(),
                       color: Colors.white,
                     ),
-                    SizedBox(width: 10.0),
+                    const SizedBox(width: 10.0),
                     Text(
                       widget.category.name,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 24.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -134,7 +134,7 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                         menuItem.name,
                                         style: const TextStyle(
                                             color: Colors.white,
-                                            fontSize: 24,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Column(
@@ -145,7 +145,8 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                           Text(
                                             menuItem.description,
                                             style: const TextStyle(
-                                                color: Colors.white),
+                                                color: Colors.grey,
+                                                fontSize: 12),
                                           ),
                                           const SizedBox(height: 4.0),
                                         ],
@@ -154,11 +155,11 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                         duration: Duration(
                                             milliseconds: 50 + (index * 200)),
                                         child: Text(
-                                          '\$${menuItem.price.toString()}',
+                                          '${menuItem.price.toString()} мкд',
                                           style: const TextStyle(
                                               color: Colors.greenAccent,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20.0),
+                                              fontSize: 18.0),
                                         ),
                                       ),
                                     ),

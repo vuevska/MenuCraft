@@ -144,41 +144,25 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(16, 4, 16, 4),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(0),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Card(
-                                            color: Colors.grey[50],
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(0),
-                                            ),
-                                            child: ListTile(
-                                              title: Text(
-                                                category.name,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                              leading: Icon(
-                                                category.getIconData(),
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
+                                  child: Card(
+                                    color: Colors.grey[50],
+                                    elevation: 2,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
+                                    child: ListTile(
+                                      title: Text(
+                                        category.name,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
                                         ),
                                       ),
-                                      const SizedBox(height: 6),
-                                    ],
+                                      leading: Icon(
+                                        category.getIconData(),
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
