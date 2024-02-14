@@ -85,12 +85,29 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
+  fonts:
+    - family: Amatic
+      fonts:
+        - asset: fonts/AmaticSC-Bold.ttf
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans_Condensed-Bold.ttf
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Black.ttf
+        - asset: fonts/Lato-Bold.ttf
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter-Black.ttf
+        - asset: fonts/Inter-Bold.ttf
+
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
     - sounds/
+    - fonts/
     - images/intro_splash/
     - assets/
 

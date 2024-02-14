@@ -107,6 +107,7 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Inter',
                           ),
                         )
                             .animate(

@@ -81,11 +81,11 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                         title: "Privacy and Security",
                         onTap: () {
                           Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (BuildContext context) {
-                                  return PrivacyPolicyPage();
-                                },
-                              ),
+                            CupertinoPageRoute(
+                              builder: (BuildContext context) {
+                                return const PrivacyPolicyPage();
+                              },
+                            ),
                           );
                         },
                       ),

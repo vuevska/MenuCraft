@@ -11,113 +11,87 @@ class RestaurantCard extends StatefulWidget {
   const RestaurantCard({super.key, required this.restaurant});
 
   @override
-  _RestaurantCardState createState() => _RestaurantCardState();
+  State<RestaurantCard> createState() => _RestaurantCardState();
 }
 
 class _RestaurantCardState extends State<RestaurantCard> {
-  bool _expanded = false;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _expanded = !_expanded;
-        });
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (BuildContext context) {
+              return ViewMenuPage(restaurant: widget.restaurant);
+            },
+          ),
+        );
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        margin: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 4.0,
-        ),
-        child: Card(
-
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 155.0,
-                  child: Image(
-                    image: NetworkImage(widget.restaurant.imageUrl),
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Center(
-                        child: Text("Error loading image"),
-                      );
-                    },
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  widget.restaurant.name,
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: Colors.green,
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 155.0,
+                    child: Image(
+                      image: NetworkImage(widget.restaurant.imageUrl),
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Text("Error loading image"),
+                        );
+                      },
+                      fit: BoxFit.cover,
                     ),
-                    const SizedBox(width: 4.0),
-                    Expanded(
-                      child: AddressWidget(
-                        latitude: widget.restaurant.latitude,
-                        longitude: widget.restaurant.longitude,
-                      ),
-                    ),
-                  ],
-                ),
-                if (_expanded) ...[
+                  ),
                   const SizedBox(height: 8.0),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                            backgroundColor: Colors.purple[50],
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (BuildContext context) {
-                                  return ViewMenuPage(
-                                      restaurant: widget.restaurant);
-                                },
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.restaurant_menu,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            "View Menu",
-                            style: TextStyle(fontSize: 10, color: Colors.black),
+                      Text(
+                        widget.restaurant.name,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        color: Colors.green,
+                      ),
+                      Expanded(
+                        child: DefaultTextStyle(
+                          style: const TextStyle(color: Colors.grey),
+                          child: AddressWidget(
+                            latitude: widget.restaurant.latitude,
+                            longitude: widget.restaurant.longitude,
                           ),
                         ),
                       ),
-                      FavoriteButton(
-                          restaurantId: widget.restaurant.restaurantId),
                     ],
                   ),
+                  const SizedBox(height: 8.0),
                 ],
-              ],
+              ),
             ),
-          ),
+            Positioned(
+              top: 8.0,
+              right: 8.0,
+              child: FavoriteButton(
+                restaurantId: widget.restaurant.restaurantId,
+              ),
+            ),
+          ],
         ),
       ),
     );

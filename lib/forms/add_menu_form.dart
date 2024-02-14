@@ -97,10 +97,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                               null, // Set the value to null to represent no selection
                           child: Text(
                             'Choose category',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                         ...widget.categories
@@ -113,7 +110,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                               style: const TextStyle(color: Colors.white),
                             ), // Assuming CategoryModel has a 'name' property
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                     const SizedBox(height: 20.0),
@@ -160,20 +157,23 @@ class _AddMenuFormState extends State<AddMenuForm> {
                                   ConnectionState.waiting) {
                                 return const Text("Finding location...",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 20.0));
+                                        color: Colors.white, fontSize: 18.0));
                               }
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               }
                               if (snapshot.hasData) {
-                                return Text(
-                                  'Location: ${snapshot.data}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                    overflow: TextOverflow.ellipsis,
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 5.0),
+                                  child: Text(
+                                    'Location: ${snapshot.data}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 );
                               }
                               return const SizedBox.shrink();
@@ -223,7 +223,10 @@ class _AddMenuFormState extends State<AddMenuForm> {
                   ),
                   onPressed: widget.onPressed,
                   child: const Text('Create',
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      )),
                 ),
               ],
             ),

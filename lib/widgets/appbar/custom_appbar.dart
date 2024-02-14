@@ -11,10 +11,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Text(
           'MenuCraft',
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30.0,
-            color: Colors.white,
-          ),
+              fontWeight: FontWeight.bold,
+              fontSize: 38.0,
+              color: Colors.white,
+              fontFamily: 'Amatic'),
         ),
       ),
       bottom: PreferredSize(

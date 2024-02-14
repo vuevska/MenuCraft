@@ -112,7 +112,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                   child: const Text('Create',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 24,
+                        fontSize: 18,
                       )),
                 ),
               ],

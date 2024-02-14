@@ -40,13 +40,13 @@ class _AddressWidgetState extends State<AddressWidget> {
               );
             },
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 4.0),
                 Text(
                   snapshot.data!,
                   overflow: TextOverflow.clip,
-                  style: const TextStyle(fontSize: 16.0),
+                  style: const TextStyle(fontSize: 13.0),
                 ),
               ],
             ),

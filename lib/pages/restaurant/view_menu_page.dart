@@ -8,7 +8,6 @@ import 'package:menu_craft/pages/restaurant/view_menu_items_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/generate_qr.dart';
-import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
 class ViewMenuPage extends StatefulWidget {
   final RestaurantModel restaurant;
@@ -44,89 +43,144 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
         context, widget.restaurant.restaurantId, widget.restaurant.name);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        padding: const EdgeInsets.only(top: 60.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SecondaryCustomAppBar(title: widget.restaurant.name),
-            const SizedBox(height: 20.0),
-            Expanded(
-              child: FutureBuilder<List<ItemsCategoryModel>>(
-                future: _db.getItemsCategoriesForRestaurant(
-                    widget.restaurant.restaurantId),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: Colors.white,));
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else {
-                    final categories = snapshot.data ?? [];
-                    return ListView.builder(
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        final category = categories[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return ViewMenuItemsPage(
-                                      category: category,
-                                      restaurant: widget.restaurant);
-                                },
-                              ),
-                            );
-                          },
-                          child: FadeInUp(
-                            duration: const Duration(milliseconds: 300),
-                            from: 10,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
-                              child: Card(
-                                child: ListTile(
-
-                                  title: Text(
-                                    category.name,
-                                    style: const TextStyle(color: Colors.black),
+      body: Column(
+        children: [
+          FadeIn(
+            child: Container(
+              height: 160,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(widget.restaurant.imageUrl),
+                    fit: BoxFit.cover,
+                    opacity: 0.5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 60, 0, 0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(Icons.arrow_back,
+                                color: Colors.white, size: 30.0),
+                          ),
+                          const SizedBox(width: 10.0),
+                          Text(
+                            widget.restaurant.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (isCurrentUserOwner)
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 25.0, 0),
+                          child: TextButton(
+                            onPressed: () {
+                              if (!overlay.isShowing()) {
+                                overlay.showOverlay();
+                              }
+                            },
+                            child: const Text("Generate QR Code",
+                                style: TextStyle(
+                                    color: Colors.redAccent,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.redAccent)),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FutureBuilder<List<ItemsCategoryModel>>(
+                    future: _db.getItemsCategoriesForRestaurant(
+                        widget.restaurant.restaurantId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ));
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        final categories = snapshot.data ?? [];
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            final category = categories[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return ViewMenuItemsPage(
+                                        category: category,
+                                        restaurant: widget.restaurant,
+                                      );
+                                    },
                                   ),
-                                  leading: Icon(
-                                    category.getIconData(),
-                                    color: Colors.black,
+                                );
+                              },
+                              child: FadeInUp(
+                                duration: const Duration(milliseconds: 300),
+                                from: 10,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                                  child: Card(
+                                    color: Colors.grey[50],
+                                    elevation: 2,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
+                                    child: ListTile(
+                                      title: Text(
+                                        category.name,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      leading: Icon(
+                                        category.getIconData(),
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         );
-                      },
-                    );
-                  }
-                },
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                if (!overlay.isShowing()) {
-                  overlay.showOverlay();
-                }
-              },
-              child: const Text("Generate QR Code for Menu"),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: isCurrentUserOwner
           ? FloatingActionButton.extended(
               onPressed: () {
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   CupertinoPageRoute(
-                //       builder: (context) =>
-                //           AddCategoryPage(restaurant: widget.restaurant)),
-                //   (route) => false,
-                // );
-
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (BuildContext context) {
