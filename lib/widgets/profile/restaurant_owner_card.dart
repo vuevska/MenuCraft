@@ -5,6 +5,7 @@ import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
 import 'package:menu_craft/widgets/profile/restaurant/delete_restaurant_modal.dart';
 
+import '../../pages/restaurant/edit_menu_page.dart';
 import '../../services/db_restaurant_service.dart';
 import '../../utils/toastification.dart';
 
@@ -75,7 +76,15 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                           IconButton(
                             icon: const Icon(Icons.edit),
                             color: Colors.grey[700],
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditMenuPage(
+                                      restaurantId: widget.restaurant.restaurantId),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(width: 8.0),
                           IconButton(
