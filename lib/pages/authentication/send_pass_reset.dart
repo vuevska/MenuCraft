@@ -60,6 +60,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                         controller: _emailController,
                         icon: Icons.email_outlined,
                         pass: false,
+                        context: context,
                       ),
                       const SizedBox(
                         height: 20,

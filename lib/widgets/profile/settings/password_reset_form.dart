@@ -28,18 +28,21 @@ class _PasswordResetFormState extends State<PasswordResetForm> {
           controller: _oldPassController,
           icon: Icons.lock,
           pass: true,
+          context: context,
         ),
         textInputAuth(
           label: "New Password",
           controller: _newPassController,
           icon: Icons.lock_open,
           pass: true,
+          context: context,
         ),
         textInputAuth(
           label: "Confirm New Password",
           controller: _confirmPassController,
           icon: Icons.lock_open,
           pass: true,
+          context: context,
         ),
         const SizedBox(
           height: 20,

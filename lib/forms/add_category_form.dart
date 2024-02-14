@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker_plus/flutter_iconpicker.dart';
+import 'package:menu_craft/widgets/profile/restaurant/input_restaurant.dart';
 
 class AddCategoryForm extends StatefulWidget {
   final TextEditingController nameController;
@@ -51,25 +52,33 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
               children: [
                 Column(
                   children: [
-                    TextFormField(
+                    textInputRest(
+                      label: "Category Name",
                       controller: widget.nameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Category Name',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
+                      icon: Icons.drag_indicator,
+                      pass: false,
+                      context: context,
                     ),
+                    // TextFormField(
+                    //   controller: widget.nameController,
+                    //   style: const TextStyle(color: Colors.white),
+                    //   decoration: const InputDecoration(
+                    //     labelText: 'Category Name',
+                    //     labelStyle: TextStyle(color: Colors.white),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(color: Colors.white),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(color: Colors.grey),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 20.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (_icon != null) Icon(_icon!.icon, size: 50),
+                        if (_icon != null)
+                          Icon(_icon!.icon, size: 50, color: Colors.white),
                         const SizedBox(width: 20),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -101,7 +110,10 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                   ),
                   onPressed: widget.onPressed,
                   child: const Text('Create',
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      )),
                 ),
               ],
             ),
