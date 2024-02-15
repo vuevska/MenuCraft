@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
 import 'package:menu_craft/models/restaurant_category_model.dart';
+import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/profile/owner_menus.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
@@ -17,8 +18,8 @@ import '../../services/auth_service.dart';
 import '../../utils/data_upward.dart';
 
 class EditMenuPage extends StatefulWidget {
-  final String restaurantId;
-  const EditMenuPage({super.key, required this.restaurantId});
+  final RestaurantModel restaurant;
+  const EditMenuPage({super.key, required this.restaurant});
 
   @override
   State<EditMenuPage> createState() => _EditMenuPageState();
@@ -80,6 +81,8 @@ class _EditMenuPageState extends State<EditMenuPage> {
                   onPressed: _onPressed,
                   categories: _categories,
                   onCategorySelected: _onCategorySelected,
+                  restaurant: widget.restaurant,
+
                 ),
               ],
             ),
@@ -105,32 +108,39 @@ class _EditMenuPageState extends State<EditMenuPage> {
   void _onPressed() async {
     if (_nameController.text.isEmpty ||
         _locationController.data == null ||
-        _locationController.data?.latLong == null ||
-        _pickedImage == null ||
-        _selectedCategory == null) {
+        _locationController.data?.latLong == null) {
       InterfaceUtils.show(
         context,
         'Please fill all fields and pick an image.',
       );
       return;
     }
+
     InterfaceUtils.loadingOverlay(context);
 
-    const uuid = Uuid();
-    final imageUrl = await _db.uploadRestaurantImage(
-      uuid.v4(),
-      _pickedImage!,
-    );
+    String imageUrl = widget.restaurant.imageUrl;
+
+    _selectedCategory ??= _categories.where((element) => element.name == widget.restaurant.category).first;
+
+    if(_pickedImage != null){
+      const uuid = Uuid();
+      imageUrl = await _db.uploadRestaurantImage(
+        uuid.v4(),
+        _pickedImage!,
+      );
+    }
+
     await _db.updateRestaurant(
       name: _nameController.text,
       latitude: _locationController.data?.latLong.latitude ?? 0.0,
       longitude: _locationController.data?.latLong.longitude ?? 0.0,
       imageUrl: imageUrl,
-      restaurantId: widget.restaurantId,
+      restaurantId: widget.restaurant.restaurantId,
       owningUserID: AuthService.user!.uid,
       category: _selectedCategory!.name,
       //categories: _categories,
     );
+
 
     if (!context.mounted) {
       return;

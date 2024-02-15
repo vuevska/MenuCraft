@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-              const ListRestaurants(),
+              ListRestaurants(), // NE KLAVAJ CONST NEMA DA RABOTI
             ],
           ),
         ),

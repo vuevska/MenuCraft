@@ -81,7 +81,7 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => EditMenuPage(
-                                      restaurantId: widget.restaurant.restaurantId),
+                                      restaurant: widget.restaurant),
                                 ),
                               );
                             },
