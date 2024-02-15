@@ -11,7 +11,7 @@ class SearchBarCustom extends StatefulWidget {
 
 class _SearchBarCustomState extends State<SearchBarCustom> {
   late TextEditingController _searchController;
-  bool _isListVisible = false;
+  bool _isListVisible = true;
   late FocusNode _focusNode;
 
   @override
@@ -44,7 +44,7 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
             focusNode: _focusNode,
             onTap: () {
               setState(() {
-                _isListVisible = !_isListVisible;
+                _isListVisible = true;
               });
               // Open the keyboard
               _focusNode.requestFocus();
@@ -65,7 +65,7 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
         Visibility(
           visible: _isListVisible,
           child: Container(
-            height: 300,
+            height: 500,
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
             decoration: BoxDecoration(

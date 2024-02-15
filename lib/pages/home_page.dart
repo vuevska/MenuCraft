@@ -1,21 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_craft/pages/restaurant/filtered_restaurants.dart';
 import 'package:menu_craft/widgets/appbar/custom_appbar.dart';
 import 'package:menu_craft/widgets/home_page/list_restaurants.dart';
 
+import '../models/restaurant_category_model.dart';
 import '../widgets/home_page/restaurant_categories/restaurant_category_grid.dart';
 
-// class HomePage extends StatelessWidget {
-//   const HomePage({Key? key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: const CustomAppBar(),
-//       backgroundColor: Theme.of(context).primaryColor,
-//       body: const ListRestaurants(),
-//     );
-//   }
-// }
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  RestaurantCategoryModel? selectedCategory;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +32,28 @@ class _HomePageState extends State<HomePage> {
             setState(() {});
           },
           child: ListView(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: const [
-              // Category Cards
+            children: [
               SizedBox(
-                height: 200, // Define the height for the category cards
-                child: CategoryGrid(),
+                height: 200,
+                child: CategoryGrid(
+                  onCategorySelected: (category) {
+                    setState(() {
+                      selectedCategory = category;
+                    });
+                    // Navigate to the new page
+                    if (selectedCategory != null) {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (BuildContext context) {
+                            return RestaurantListPage(category: selectedCategory!);
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
-              ListRestaurants(),
+              const ListRestaurants(),
             ],
           ),
         ),
@@ -53,3 +61,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

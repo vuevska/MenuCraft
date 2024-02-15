@@ -100,6 +100,8 @@ class DbRestaurantService {
     return restaurants;
   }
 
+
+
   Future<List<RestaurantModel>> getAllRestaurauntsFromList(
       List<String> ids) async {
     return await Future.wait(ids.map((id) async {
@@ -364,4 +366,49 @@ class DbRestaurantService {
       rethrow;
     }
   }
+
+
+  Future<void> updateRestaurant({
+    required String name,
+    required double latitude,
+    required double longitude,
+    required String imageUrl,
+    required String restaurantId,
+    required String owningUserID,
+    //required List<RestaurantCategoryModel> categories,
+    required String category,
+  }) async {
+    String hash =
+    _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
+
+    final restaurant = RestaurantModel(
+        restaurantId: restaurantId,
+        name: name,
+        geoHash: hash,
+        latitude: latitude,
+        longitude: longitude,
+        imageUrl: imageUrl,
+        owningUserID: owningUserID,
+        category: category);
+
+    final Map<String, dynamic> restaurantData = restaurant.toMap();
+
+    await _db.collection('restaurants').doc(restaurantId).update(restaurantData);
+
+  }
+
+
+  Future<List<RestaurantModel>> getRestaurantsByCategory(RestaurantCategoryModel category) async {
+    final snapshot = await FirebaseFirestore.instance.collection('restaurants').get();
+    final List<RestaurantModel> restaurants = [];
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      if (data['category'] == category.name) { // Assuming category.name is the field that holds the category name
+        final restaurant = RestaurantModel.fromMap(data);
+        restaurants.add(restaurant);
+      }
+    }
+    return restaurants;
+  }
+
 }

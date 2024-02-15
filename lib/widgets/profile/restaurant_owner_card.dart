@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
+import 'package:menu_craft/widgets/profile/restaurant/delete_restaurant_modal.dart';
+
+import '../../pages/restaurant/edit_menu_page.dart';
+import '../../services/db_restaurant_service.dart';
+import '../../utils/toastification.dart';
 
 class RestaurantOwnerCard extends StatefulWidget {
   final RestaurantModel restaurant;
   final Function refresh;
 
-  const RestaurantOwnerCard(
-      {super.key, required this.restaurant, required this.refresh});
+  const RestaurantOwnerCard({
+    Key? key,
+    required this.restaurant,
+    required this.refresh,
+  }) : super(key: key);
 
   @override
   State<RestaurantOwnerCard> createState() => _RestaurantOwnerCardState();
@@ -68,13 +76,45 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                           IconButton(
                             icon: const Icon(Icons.edit),
                             color: Colors.grey[700],
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditMenuPage(
+                                      restaurantId: widget.restaurant.restaurantId),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(width: 8.0),
                           IconButton(
                             icon: const Icon(Icons.delete),
                             color: Colors.red,
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DeleteConfirmationDialog(
+                                    onConfirm: () async {
+                                      try {
+
+                                        await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId).catchError((onError){
+                                          InterfaceUtils.show(context, onError.toString());
+                                        });
+                                        widget.refresh();
+                                        if(!context.mounted){
+                                          return;
+                                        }
+                                        Navigator.of(context).pop(); // Close the dialog
+                                      } catch (e) {
+                                        print('Error deleting restaurant: $e');
+                                        // Handle error if needed
+                                      }
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ],
                       ),

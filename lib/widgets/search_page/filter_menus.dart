@@ -34,7 +34,7 @@ class _FilterRestaurantsState extends State<FilterRestaurants> {
 
           if (widget.searchQuery.isEmpty) {
             // Show nearby restaurants if search query is empty
-            filteredRestaurants = allRestaurants.take(5).toList();
+            filteredRestaurants = allRestaurants.toList();
           } else {
             // Search from all restaurants if there's a search query
             filteredRestaurants = allRestaurants
