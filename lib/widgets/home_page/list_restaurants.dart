@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:provider/provider.dart';
+import '../../models/restaurant_category_model.dart';
 import '../../models/restaurant_model.dart';
 import '../../utils/location_services.dart';
 import 'restaurant_card.dart';
@@ -57,3 +58,6 @@ class _ListRestaurntsState extends State<ListRestaurants> {
     );
   }
 }
+
+
+

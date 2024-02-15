@@ -4,8 +4,13 @@ import 'package:menu_craft/models/restaurant_category_model.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/widgets/home_page/restaurant_categories/restaurant_category_card.dart';
 
+
+
 class CategoryGrid extends StatelessWidget {
-  const CategoryGrid({super.key});
+
+  final Function(RestaurantCategoryModel?) onCategorySelected;
+
+  const CategoryGrid({Key? key, required this.onCategorySelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +44,15 @@ class CategoryGrid extends StatelessWidget {
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 final category = categories[index];
-                return CategoryCard(category: category);
+                return CategoryCard(category: category,
+                  onTap: (selectedCategory) {
+                    // Handle the selected category here
+                    print("Selected category: ${selectedCategory?.name}");
+
+                    // Call the parent callback with the selected category
+                      onCategorySelected(selectedCategory);
+                    },
+                );
               },
             ),
           );

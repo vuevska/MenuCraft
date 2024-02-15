@@ -100,6 +100,8 @@ class DbRestaurantService {
     return restaurants;
   }
 
+
+
   Future<List<RestaurantModel>> getAllRestaurauntsFromList(
       List<String> ids) async {
     return await Future.wait(ids.map((id) async {
@@ -365,15 +367,6 @@ class DbRestaurantService {
     }
   }
 
-  // Function to update the restaurant data
-  // Future<void> updateRestaurant(String restaurantId, Map<String, dynamic> updatedData) async {
-  //   try {
-  //     await _db.collection('restaurants').doc(restaurantId).update(updatedData);
-  //   } catch (e) {
-  //     print('Error updating restaurant: $e');
-  //     rethrow;
-  //   }
-  // }
 
   Future<void> updateRestaurant({
     required String name,
@@ -404,5 +397,18 @@ class DbRestaurantService {
 
   }
 
+
+  Future<List<RestaurantModel>> getRestaurantsByCategory(RestaurantCategoryModel category) async {
+    final snapshot = await FirebaseFirestore.instance.collection('restaurants').get();
+    final List<RestaurantModel> restaurants = [];
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      if (data['category'] == category.name) { // Assuming category.name is the field that holds the category name
+        final restaurant = RestaurantModel.fromMap(data);
+        restaurants.add(restaurant);
+      }
+    }
+    return restaurants;
+  }
 
 }
