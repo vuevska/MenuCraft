@@ -9,6 +9,9 @@ import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/generate_qr.dart';
 
+import '../../utils/toastification.dart';
+import '../../widgets/menu/delete_menu_category_modal.dart';
+
 class ViewMenuPage extends StatefulWidget {
   final RestaurantModel restaurant;
 
@@ -180,7 +183,36 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                                                   icon:
                                                       const Icon(Icons.delete),
                                                   color: Colors.red,
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return DeleteMenuCategoryConfirmationDialog(
+                                                          onConfirm: () async {
+                                                            try {
+
+                                                              await DbRestaurantService().deleteCategory(
+                                                                  widget.restaurant.restaurantId,
+                                                                  category.categoryId).catchError((onError){
+                                                                InterfaceUtils.show(context, onError.toString());
+                                                              });
+                                                              setState(() {
+
+                                                              });
+                                                              if(!context.mounted){
+                                                                return;
+                                                              }
+                                                              Navigator.of(context).pop(); // Close the dialog
+                                                            } catch (e) {
+                                                              print('Error deleting restaurant: $e');
+                                                              // Handle error if needed
+                                                            }
+                                                          },
+                                                        );
+                                                      },
+                                                    );
+
+                                                  },
                                                 ),
                                               ],
                                             )
