@@ -159,15 +159,15 @@ class DbRestaurantService {
       // dokolku nema categories subcollection, ja kreira pa posle dodava
       final categoriesSnapshot =
           await restaurantRef.collection('categories').get();
-      if (categoriesSnapshot.docs.isEmpty) {
-        await restaurantRef.collection('categories').add({
-          'categoryId': '',
-          'name': '',
-          'icon': 0,
-        });
-      }
+      // if (categoriesSnapshot.docs.isEmpty) {
+      //   await restaurantRef.collection('categories').add({
+      //     'categoryId': '',
+      //     'name': '',
+      //     'icon': 0,
+      //   });
+     // }
 
-      await restaurantRef.collection('categories').add(category);
+      await restaurantRef.collection('categories').doc(category["categoryId"]).set(category);
     } catch (e) {
       print('Error adding category to restaurant: $e');
       rethrow;
@@ -297,16 +297,16 @@ class DbRestaurantService {
 
       final menuItemsCollectionRef = categoryRef.collection('menuItems');
       final menuItemsSnapshot = await menuItemsCollectionRef.get();
-      if (menuItemsSnapshot.docs.isEmpty) {
-        await menuItemsCollectionRef.doc().set({
-          'menuItemId': '',
-          'name': '',
-          'price': 0,
-          'description': '',
-        });
-      }
+      // if (menuItemsSnapshot.docs.isEmpty) {
+      //   await menuItemsCollectionRef.doc().set({
+      //     'menuItemId': '',
+      //     'name': '',
+      //     'price': 0,
+      //     'description': '',
+      //   });
+      // }
 
-      await menuItemsCollectionRef.add(menuItem.toMap());
+      await menuItemsCollectionRef.doc(menuItem.menuItemId).set(menuItem.toMap());
     } catch (e) {
       print('Error adding menu item to category: $e');
       rethrow;
@@ -409,6 +409,41 @@ class DbRestaurantService {
       }
     }
     return restaurants;
+  }
+
+  Future<void> deleteCategory(String restaurantId, String categoryId) async {
+    try {
+      // Delete the category document
+      await _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .doc(categoryId)
+          .delete();
+
+    } catch (e) {
+      print('Error deleting category: $e');
+
+    }
+  }
+
+  Future<void> deleteMenuItem(String restaurantId, String categoryId, String menuItemId) async {
+    try {
+      // Delete the menu item document
+      await _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .doc(categoryId)
+          .collection('menuItems')
+          .doc(menuItemId)
+          .delete();
+
+    } catch (e) {
+      print('Error deleting menuItem: $e');
+
+    }
+
   }
 
 }
