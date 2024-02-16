@@ -60,29 +60,43 @@
 </p>
 
 - Intro animation
+  
 ![Introduction](./readmeAssets/animationStartup.gif)
 - Adding Favorites
+  
 ![Adding Favorites](./readmeAssets/animationFavorites.gif)
 - Scanning QR Codes
+  
 ![Scanning QR Codes](./readmeAssets/animationQR.gif)
 - Searching Menus
+  
 ![Searching Menus](./readmeAssets/animationSearch.gif)
 
 - User Profiles
-![User Profiles](./readmeAssets/profile.jpg)
+
+<img src="./readmeAssets/profile.jpg" width=50% />
 
 - QR Code Generation
-![QR Code Generation](./readmeAssets/qr_code.jpg)
+
+<img src="./readmeAssets/qr_code.jpg" width=50% />
 
 - Categories
-![Categories](./readmeAssets/create_category.jpg)
-![Categories](./readmeAssets/see_categories.jpg)
+
+  
+<img src="./readmeAssets/create_category.jpg" width=50% /> <br>
+<img src="./readmeAssets/see_categories.jpg" width=50% />
+
 
 - Items
-![Items](./readmeAssets/see_items.jpg)
+  
+<img src="./readmeAssets/see_items.jpg" width=50% />
+
 - Filtering
 
-![Filtering](./readmeAssets/pizzerias.jpg)
+<img src="./readmeAssets/pizzerias.jpg" width=50% />
+
 
 - Your Menus
-![Your Menus](./readmeAssets/your_menus.jpg)
+
+
+<img src="./readmeAssets/your_menus.jpg" width=50% />
