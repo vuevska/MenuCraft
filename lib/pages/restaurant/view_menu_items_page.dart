@@ -213,8 +213,8 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                                         menuItem: menuItem,
                                                       ),
                                                     ),
-                                                  );
-                                                  setState(() {});
+                                                  ).then((value) =>
+                                                      setState(() {}));
                                                   if (!context.mounted) {
                                                     return;
                                                   }
@@ -284,16 +284,6 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
       floatingActionButton: isCurrentUserOwner
           ? FloatingActionButton.extended(
               onPressed: () {
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   CupertinoPageRoute(
-                //     builder: (context) => AddMenuItemPage(
-                //       categoryId: widget.category.categoryId,
-                //       restaurant: widget.restaurant,
-                //     ),
-                //   ),
-                //   (route) => false,
-                // );
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (BuildContext context) {
