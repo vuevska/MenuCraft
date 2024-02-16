@@ -58,3 +58,31 @@
   <img src="./readmeAssets/3mapanim.gif" width=40% />
   <img src="./readmeAssets/4favsanim.gif" width=40% />
 </p>
+
+- Intro animation
+![Introduction](./readmeAssets/animationStartup.gif)
+- Adding Favorites
+![Adding Favorites](./readmeAssets/animationFavorites.gif)
+- Scanning QR Codes
+![Scanning QR Codes](./readmeAssets/animationQR.gif)
+- Searching Menus
+![Searching Menus](./readmeAssets/animationSearch.gif)
+
+- User Profiles
+![User Profiles](./readmeAssets/profile.jpg)
+
+- QR Code Generation
+![QR Code Generation](./readmeAssets/qr_code.jpg)
+
+- Categories
+![Categories](./readmeAssets/create_category.jpg)
+![Categories](./readmeAssets/see_categories.jpg)
+
+- Items
+![Items](./readmeAssets/see_items.jpg)
+- Filtering
+
+![Filtering](./readmeAssets/pizzerias.jpg)
+
+- Your Menus
+![Your Menus](./readmeAssets/your_menus.jpg)
