@@ -15,7 +15,7 @@ import '../../widgets/menu/delete_menu_category_modal.dart';
 class ViewMenuPage extends StatefulWidget {
   final RestaurantModel restaurant;
 
-  const ViewMenuPage({Key? key, required this.restaurant}) : super(key: key);
+  const ViewMenuPage({super.key, required this.restaurant});
 
   @override
   State<ViewMenuPage> createState() => _ViewMenuPageState();
@@ -186,32 +186,42 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                                                   onPressed: () {
                                                     showDialog(
                                                       context: context,
-                                                      builder: (BuildContext context) {
+                                                      builder: (BuildContext
+                                                          context) {
                                                         return DeleteMenuCategoryConfirmationDialog(
                                                           onConfirm: () async {
                                                             try {
-
-                                                              await DbRestaurantService().deleteCategory(
-                                                                  widget.restaurant.restaurantId,
-                                                                  category.categoryId).catchError((onError){
-                                                                InterfaceUtils.show(context, onError.toString());
+                                                              await DbRestaurantService()
+                                                                  .deleteCategory(
+                                                                      widget
+                                                                          .restaurant
+                                                                          .restaurantId,
+                                                                      category
+                                                                          .categoryId)
+                                                                  .catchError(
+                                                                      (onError) {
+                                                                InterfaceUtils.show(
+                                                                    context,
+                                                                    onError
+                                                                        .toString());
                                                               });
-                                                              setState(() {
-
-                                                              });
-                                                              if(!context.mounted){
+                                                              setState(() {});
+                                                              if (!context
+                                                                  .mounted) {
                                                                 return;
                                                               }
-                                                              Navigator.of(context).pop(); // Close the dialog
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(); // Close the dialog
                                                             } catch (e) {
-                                                              print('Error deleting restaurant: $e');
+                                                              print(
+                                                                  'Error deleting restaurant: $e');
                                                               // Handle error if needed
                                                             }
                                                           },
                                                         );
                                                       },
                                                     );
-
                                                   },
                                                 ),
                                               ],
