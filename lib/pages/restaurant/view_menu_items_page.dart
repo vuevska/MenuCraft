@@ -5,6 +5,7 @@ import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/menu_item_model.dart';
 import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/add_menu_item_page.dart';
+import 'package:menu_craft/pages/restaurant/edit_menu_item_page.dart';
 import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
@@ -17,10 +18,10 @@ class ViewMenuItemsPage extends StatefulWidget {
   final RestaurantModel restaurant;
 
   const ViewMenuItemsPage({
-    Key? key,
+    super.key,
     required this.category,
     required this.restaurant,
-  }) : super(key: key);
+  });
 
   @override
   State<ViewMenuItemsPage> createState() => _ViewMenuItemsPageState();
@@ -182,8 +183,10 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                                   value: 'delete',
                                                   child: Row(
                                                     children: [
-                                                      Icon(Icons.delete,
-                                                          color: Colors.red,),
+                                                      Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red,
+                                                      ),
                                                       SizedBox(width: 8),
                                                       Text(
                                                         'Delete',
@@ -196,29 +199,61 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                               ],
                                               onSelected: (value) {
                                                 if (value == 'edit') {
-                                                  // TODO: tuka da se nosi kon edit page
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EditMenuItemPage(
+                                                        categoryId: widget
+                                                            .category
+                                                            .categoryId,
+                                                        restaurantId: widget
+                                                            .restaurant
+                                                            .restaurantId,
+                                                        menuItem: menuItem,
+                                                      ),
+                                                    ),
+                                                  ).then((value) =>
+                                                      setState(() {}));
+                                                  if (!context.mounted) {
+                                                    return;
+                                                  }
                                                 } else if (value == 'delete') {
                                                   showDialog(
                                                     context: context,
-                                                    builder: (BuildContext context) {
+                                                    builder:
+                                                        (BuildContext context) {
                                                       return DeleteMenuItemConfirmationDialog(
                                                         onConfirm: () async {
                                                           try {
-                                                            await DbRestaurantService().deleteMenuItem(
-                                                                widget.restaurant.restaurantId,
-                                                                widget.category.categoryId,
-                                                                menuItem.menuItemId).catchError((onError){
-                                                              InterfaceUtils.show(context, onError.toString());
+                                                            await DbRestaurantService()
+                                                                .deleteMenuItem(
+                                                                    widget
+                                                                        .restaurant
+                                                                        .restaurantId,
+                                                                    widget
+                                                                        .category
+                                                                        .categoryId,
+                                                                    menuItem
+                                                                        .menuItemId)
+                                                                .catchError(
+                                                                    (onError) {
+                                                              InterfaceUtils.show(
+                                                                  context,
+                                                                  onError
+                                                                      .toString());
                                                             });
-                                                            setState(() {
-
-                                                            });
-                                                            if(!context.mounted){
+                                                            setState(() {});
+                                                            if (!context
+                                                                .mounted) {
                                                               return;
                                                             }
-                                                            Navigator.of(context).pop(); // Close the dialog
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(); // Close the dialog
                                                           } catch (e) {
-                                                            print('Error deleting restaurant: $e');
+                                                            print(
+                                                                'Error deleting restaurant: $e');
                                                             // Handle error if needed
                                                           }
                                                         },
@@ -249,16 +284,6 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
       floatingActionButton: isCurrentUserOwner
           ? FloatingActionButton.extended(
               onPressed: () {
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   CupertinoPageRoute(
-                //     builder: (context) => AddMenuItemPage(
-                //       categoryId: widget.category.categoryId,
-                //       restaurant: widget.restaurant,
-                //     ),
-                //   ),
-                //   (route) => false,
-                // );
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (BuildContext context) {

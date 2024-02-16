@@ -100,8 +100,6 @@ class DbRestaurantService {
     return restaurants;
   }
 
-
-
   Future<List<RestaurantModel>> getAllRestaurauntsFromList(
       List<String> ids) async {
     return await Future.wait(ids.map((id) async {
@@ -112,7 +110,7 @@ class DbRestaurantService {
         print('Error fetching restaurant with ID $id: $e');
         return null; // Return a default restaurant or null
       }
-    })).then((value){
+    })).then((value) {
       return value.where((element) => element != null).map((e) => e!).toList();
     });
   }
@@ -165,9 +163,12 @@ class DbRestaurantService {
       //     'name': '',
       //     'icon': 0,
       //   });
-     // }
+      // }
 
-      await restaurantRef.collection('categories').doc(category["categoryId"]).set(category);
+      await restaurantRef
+          .collection('categories')
+          .doc(category["categoryId"])
+          .set(category);
     } catch (e) {
       print('Error adding category to restaurant: $e');
       rethrow;
@@ -198,6 +199,41 @@ class DbRestaurantService {
     } catch (error) {
       print('Error getting categories for restaurant: $error');
       return [];
+    }
+  }
+
+  Future<void> updateItemsCategory({
+    required String restaurantId,
+    required String categoryId,
+    required ItemsCategoryModel updatedCategory,
+  }) async {
+    try {
+      final categoryRef = _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .doc(categoryId);
+
+      await categoryRef.update(updatedCategory.toMap());
+    } catch (e) {
+      print('Error updating items category: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateMenuItem(String restaurantId, String categoryId,
+      MenuItemModel updatedMenuItem) async {
+    try {
+      await _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .doc(categoryId)
+          .collection('menuItems')
+          .doc(updatedMenuItem.menuItemId)
+          .update(updatedMenuItem.toMap());
+    } catch (e) {
+      throw Exception('Failed to update menu item: $e');
     }
   }
 
@@ -306,7 +342,9 @@ class DbRestaurantService {
       //   });
       // }
 
-      await menuItemsCollectionRef.doc(menuItem.menuItemId).set(menuItem.toMap());
+      await menuItemsCollectionRef
+          .doc(menuItem.menuItemId)
+          .set(menuItem.toMap());
     } catch (e) {
       print('Error adding menu item to category: $e');
       rethrow;
@@ -359,14 +397,11 @@ class DbRestaurantService {
     try {
       // Delete the restaurant document
       await _db.collection('restaurants').doc(restaurantId).delete();
-
-
     } catch (e) {
       print('Error deleting restaurant: $e');
       rethrow;
     }
   }
-
 
   Future<void> updateRestaurant({
     required String name,
@@ -379,7 +414,7 @@ class DbRestaurantService {
     required String category,
   }) async {
     String hash =
-    _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
+        _geo.point(latitude: latitude, longitude: longitude).data['geohash'];
 
     final restaurant = RestaurantModel(
         restaurantId: restaurantId,
@@ -393,17 +428,21 @@ class DbRestaurantService {
 
     final Map<String, dynamic> restaurantData = restaurant.toMap();
 
-    await _db.collection('restaurants').doc(restaurantId).update(restaurantData);
-
+    await _db
+        .collection('restaurants')
+        .doc(restaurantId)
+        .update(restaurantData);
   }
 
-
-  Future<List<RestaurantModel>> getRestaurantsByCategory(RestaurantCategoryModel category) async {
-    final snapshot = await FirebaseFirestore.instance.collection('restaurants').get();
+  Future<List<RestaurantModel>> getRestaurantsByCategory(
+      RestaurantCategoryModel category) async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('restaurants').get();
     final List<RestaurantModel> restaurants = [];
     for (var doc in snapshot.docs) {
       final data = doc.data();
-      if (data['category'] == category.name) { // Assuming category.name is the field that holds the category name
+      if (data['category'] == category.name) {
+        // Assuming category.name is the field that holds the category name
         final restaurant = RestaurantModel.fromMap(data);
         restaurants.add(restaurant);
       }
@@ -420,14 +459,13 @@ class DbRestaurantService {
           .collection('categories')
           .doc(categoryId)
           .delete();
-
     } catch (e) {
       print('Error deleting category: $e');
-
     }
   }
 
-  Future<void> deleteMenuItem(String restaurantId, String categoryId, String menuItemId) async {
+  Future<void> deleteMenuItem(
+      String restaurantId, String categoryId, String menuItemId) async {
     try {
       // Delete the menu item document
       await _db
@@ -438,12 +476,8 @@ class DbRestaurantService {
           .collection('menuItems')
           .doc(menuItemId)
           .delete();
-
     } catch (e) {
       print('Error deleting menuItem: $e');
-
     }
-
   }
-
 }

@@ -22,7 +22,7 @@ class EditMenuForm extends StatefulWidget {
   final Function(RestaurantCategoryModel?) onCategorySelected;
   final RestaurantModel restaurant;
 
-  EditMenuForm({
+  const EditMenuForm({
     super.key,
     required this.nameController,
     required this.locationController,
@@ -43,30 +43,26 @@ class _EditMenuFormState extends State<EditMenuForm> {
     setState(() {});
   }
 
-
   RestaurantCategoryModel? _selectedCategory;
 
   @override
   Widget build(BuildContext context) {
-
-    widget.nameController.value =
-        widget.nameController.value.text.isEmpty ? TextEditingValue(text: widget.restaurant.name) : widget.nameController.value;
-
+    widget.nameController.value = widget.nameController.value.text.isEmpty
+        ? TextEditingValue(text: widget.restaurant.name)
+        : widget.nameController.value;
 
     _selectedCategory = widget.categories
         .where((element) => element.name == widget.restaurant.category)
         .firstOrNull;
 
-
     widget.locationController?.data ??= PickedData(
-        LatLong(
-          widget.restaurant.latitude,
-          widget.restaurant.longitude,
-        ),
-        '',
-        {},
-      );
-
+      LatLong(
+        widget.restaurant.latitude,
+        widget.restaurant.longitude,
+      ),
+      '',
+      {},
+    );
 
     return Expanded(
       child: Padding(
@@ -92,20 +88,6 @@ class _EditMenuFormState extends State<EditMenuForm> {
                       //showBorder: false,
                     ),
                     const SizedBox(height: 20.0),
-                    // TextFormField(
-                    //   controller: locationController,
-                    //   style: const TextStyle(color: Colors.white),
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Location',
-                    //     labelStyle: TextStyle(color: Colors.white),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.white),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.grey),
-                    //     ),
-                    //   ),
-                    // ),
 
                     DropdownButton<RestaurantCategoryModel>(
                       borderRadius: BorderRadius.circular(8.0),
@@ -137,7 +119,7 @@ class _EditMenuFormState extends State<EditMenuForm> {
                             child: Text(
                               value.name,
                               style: const TextStyle(color: Colors.white),
-                            ), // Assuming CategoryModel has a 'name' property
+                            ),
                           );
                         }),
                       ],
