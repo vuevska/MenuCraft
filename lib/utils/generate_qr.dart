@@ -54,7 +54,7 @@ class QRGenOverlay {
                         size: MediaQuery.of(context).size.width * 0.70,
                         padding: const EdgeInsets.all(30),
                         backgroundColor: Colors.white,
-                        embeddedImage: const AssetImage('images/logo.jpg'),
+
                       ),
                       Text(restaurantName,
                           style: const TextStyle(
