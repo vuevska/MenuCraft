@@ -9,6 +9,9 @@ import 'package:menu_craft/services/auth_service.dart';
 import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 
+import '../../utils/toastification.dart';
+import '../../widgets/menu/delete_menu_item_modal.dart';
+
 class ViewMenuItemsPage extends StatefulWidget {
   final ItemsCategoryModel category;
   final RestaurantModel restaurant;
@@ -180,7 +183,7 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                                   child: Row(
                                                     children: [
                                                       Icon(Icons.delete,
-                                                          color: Colors.red),
+                                                          color: Colors.red,),
                                                       SizedBox(width: 8),
                                                       Text(
                                                         'Delete',
@@ -195,7 +198,33 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                                 if (value == 'edit') {
                                                   // TODO: tuka da se nosi kon edit page
                                                 } else if (value == 'delete') {
-                                                  // TODO: kon delete page
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return DeleteMenuItemConfirmationDialog(
+                                                        onConfirm: () async {
+                                                          try {
+                                                            await DbRestaurantService().deleteMenuItem(
+                                                                widget.restaurant.restaurantId,
+                                                                widget.category.categoryId,
+                                                                menuItem.menuItemId).catchError((onError){
+                                                              InterfaceUtils.show(context, onError.toString());
+                                                            });
+                                                            setState(() {
+
+                                                            });
+                                                            if(!context.mounted){
+                                                              return;
+                                                            }
+                                                            Navigator.of(context).pop(); // Close the dialog
+                                                          } catch (e) {
+                                                            print('Error deleting restaurant: $e');
+                                                            // Handle error if needed
+                                                          }
+                                                        },
+                                                      );
+                                                    },
+                                                  );
                                                 }
                                               },
                                             ),

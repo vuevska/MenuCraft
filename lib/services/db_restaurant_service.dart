@@ -427,6 +427,22 @@ class DbRestaurantService {
     }
   }
 
+  Future<void> deleteMenuItem(String restaurantId, String categoryId, String menuItemId) async {
+    try {
+      // Delete the menu item document
+      await _db
+          .collection('restaurants')
+          .doc(restaurantId)
+          .collection('categories')
+          .doc(categoryId)
+          .collection('menuItems')
+          .doc(menuItemId)
+          .delete();
+
+    } catch (e) {
+      print('Error deleting menuItem: $e');
+
+    }
 
   }
 
