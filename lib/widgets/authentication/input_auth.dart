@@ -7,15 +7,13 @@ Widget textInputAuth({
   required IconData icon,
   required bool pass,
   required BuildContext context,
-
 }) {
   print(MediaQuery.of(context).viewInsets.bottom);
   return FadeInDown(
     duration: const Duration(milliseconds: 300),
     from: 10,
     child: TextFormField(
-        scrollPadding: EdgeInsets.only(
-            bottom:  1),
+        scrollPadding: const EdgeInsets.only(bottom: 1),
         controller: controller,
         decoration: InputDecoration(
           icon: Icon(icon),

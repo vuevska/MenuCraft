@@ -8,7 +8,6 @@ import 'package:menu_craft/services/db_restaurant_service.dart';
 import 'package:menu_craft/utils/toastification.dart';
 import 'package:menu_craft/widgets/appbar/secondary_custom_appbar.dart';
 import 'package:toastification/toastification.dart';
-import 'package:uuid/uuid.dart';
 
 class EditCategoryPage extends StatefulWidget {
   final ItemsCategoryModel category;

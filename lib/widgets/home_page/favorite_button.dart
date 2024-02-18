@@ -33,33 +33,36 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: _toggleFavorite,
-        icon: Swing(
-            manualTrigger: true,
-            controller: (controller) => _controller1 = controller,
-            duration: const Duration(milliseconds: 700),
-            child: Pulse(
-                manualTrigger: true,
-                controller: (controller) => _controller2 = controller,
-                duration: const Duration(milliseconds: 500),
-                child: Consumer<FavoriteProvider>(
-                  builder: (context, favoriteProvider, child) {
-                    _setFavorite();
+      onPressed: _toggleFavorite,
+      icon: Swing(
+        manualTrigger: true,
+        controller: (controller) => _controller1 = controller,
+        duration: const Duration(milliseconds: 700),
+        child: Pulse(
+          manualTrigger: true,
+          controller: (controller) => _controller2 = controller,
+          duration: const Duration(milliseconds: 500),
+          child: Consumer<FavoriteProvider>(
+            builder: (context, favoriteProvider, child) {
+              _setFavorite();
 
-                    return Icon(
-                      _isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: _isFavorite ? Colors.red : Colors.white,
-                      size: 40,
-                      shadows: const [
-                        BoxShadow(
-                          color: Colors.white,
-                          blurRadius: 15,
-                          spreadRadius: 10,
-                        )
-                      ],
-                    );
-                  },
-                ))));
+              return Icon(
+                _isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: _isFavorite ? Colors.red : Colors.white,
+                size: 40,
+                shadows: const [
+                  BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 15,
+                    spreadRadius: 10,
+                  )
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   void _toggleFavorite() async {

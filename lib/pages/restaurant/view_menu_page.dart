@@ -226,11 +226,10 @@ class _ViewMenuPageState extends State<ViewMenuPage> {
                                                               }
                                                               Navigator.of(
                                                                       context)
-                                                                  .pop(); // Close the dialog
+                                                                  .pop();
                                                             } catch (e) {
-                                                              print(
+                                                              debugPrint(
                                                                   'Error deleting restaurant: $e');
-                                                              // Handle error if needed
                                                             }
                                                           },
                                                         );

@@ -5,18 +5,24 @@ import 'package:menu_craft/models/restaurant_model.dart';
 import 'package:menu_craft/pages/restaurant/view_menu_page.dart';
 import 'package:menu_craft/widgets/address_widget.dart';
 
-class FavoriteRestaurantCard extends StatelessWidget {
+class FavoriteRestaurantCard extends StatefulWidget {
   final RestaurantModel restaurant;
   final int index;
   final Function onDelete;
-  late AnimationController animationController;
 
-  FavoriteRestaurantCard({
+  const FavoriteRestaurantCard({
     super.key,
     required this.restaurant,
     required this.onDelete,
     required this.index,
   });
+
+  @override
+  State<FavoriteRestaurantCard> createState() => _FavoriteRestaurantCardState();
+}
+
+class _FavoriteRestaurantCardState extends State<FavoriteRestaurantCard> {
+  late AnimationController animationController;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,7 @@ class FavoriteRestaurantCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10.0),
                     child: Image.network(
-                      restaurant.imageUrl,
+                      widget.restaurant.imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -50,7 +56,7 @@ class FavoriteRestaurantCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      restaurant.name,
+                      widget.restaurant.name,
                       style: const TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -64,8 +70,8 @@ class FavoriteRestaurantCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: AddressWidget(
-                            latitude: restaurant.latitude,
-                            longitude: restaurant.longitude,
+                            latitude: widget.restaurant.latitude,
+                            longitude: widget.restaurant.longitude,
                           ),
                         ),
                       ],
@@ -84,7 +90,7 @@ class FavoriteRestaurantCard extends StatelessWidget {
                                   CupertinoPageRoute(
                                     builder: (BuildContext context) {
                                       return ViewMenuPage(
-                                          restaurant: restaurant);
+                                          restaurant: widget.restaurant);
                                     },
                                   ),
                                 );
@@ -115,9 +121,8 @@ class FavoriteRestaurantCard extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {
                                 animationController.reset();
-                                animationController
-                                    .forward()
-                                    .then((value) => onDelete(index));
+                                animationController.forward().then(
+                                    (value) => widget.onDelete(widget.index));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red[700],

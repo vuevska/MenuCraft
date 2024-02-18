@@ -14,10 +14,10 @@ class RestaurantOwnerCard extends StatefulWidget {
   final Function refresh;
 
   const RestaurantOwnerCard({
-    Key? key,
+    super.key,
     required this.restaurant,
     required this.refresh,
-  }) : super(key: key);
+  });
 
   @override
   State<RestaurantOwnerCard> createState() => _RestaurantOwnerCardState();
@@ -97,18 +97,20 @@ class _RestaurantOwnerCardState extends State<RestaurantOwnerCard> {
                                   return DeleteConfirmationDialog(
                                     onConfirm: () async {
                                       try {
-
-                                        await DbRestaurantService().deleteRestaurant(widget.restaurant.restaurantId).catchError((onError){
-                                          InterfaceUtils.show(context, onError.toString());
+                                        await DbRestaurantService()
+                                            .deleteRestaurant(
+                                                widget.restaurant.restaurantId)
+                                            .catchError((onError) {
+                                          InterfaceUtils.show(
+                                              context, onError.toString());
                                         });
                                         widget.refresh();
-                                        if(!context.mounted){
+                                        if (!context.mounted) {
                                           return;
                                         }
-                                        Navigator.of(context).pop(); // Close the dialog
+                                        Navigator.of(context).pop();
                                       } catch (e) {
                                         print('Error deleting restaurant: $e');
-                                        // Handle error if needed
                                       }
                                     },
                                   );

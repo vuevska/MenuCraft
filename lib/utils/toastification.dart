@@ -17,7 +17,6 @@ class InterfaceUtils {
 
   static void loadingOverlay(BuildContext context) {
     overlayEntry = OverlayEntry(
-      // Create a new OverlayEntry.
       builder: (BuildContext context) {
         return FadeIn(
           child: const Material(
@@ -34,7 +33,7 @@ class InterfaceUtils {
                         fontSize: 20,
                       ),
                     ),
-                    SizedBox(height: 10), // Adding some space between text and CircularProgressIndicator
+                    SizedBox(height: 10),
                     CircularProgressIndicator(color: Colors.white),
                   ],
                 ),

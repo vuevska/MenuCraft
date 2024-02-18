@@ -46,16 +46,6 @@ class CardButton extends StatelessWidget {
           const SizedBox(
             height: 60.0,
           ),
-
-          // ListView.builder(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          //   itemCount: allRestaurants.length,
-          //   itemBuilder: (BuildContext context, int index) {
-          //     return FavoriteRestaurantCard(
-          //       restaurant: allRestaurants[index],
-          //     );
-          //   },
-          // )
         ],
       ),
     );

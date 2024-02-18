@@ -18,7 +18,6 @@ class RestaurantNameCard extends StatelessWidget {
             fontSize: 18.0, fontWeight: FontWeight.w400, color: Colors.white),
       ),
       onTap: () {
-        //TODO: open menu (restaurant)
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (BuildContext context) {

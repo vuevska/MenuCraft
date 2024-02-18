@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DeleteMenuItemConfirmationDialog extends StatelessWidget {
   final VoidCallback onConfirm;
 
-  const DeleteMenuItemConfirmationDialog({Key? key, required this.onConfirm}) : super(key: key);
+  const DeleteMenuItemConfirmationDialog({super.key, required this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +14,13 @@ class DeleteMenuItemConfirmationDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop(); // Close the dialog
+            Navigator.of(context).pop();
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: onConfirm,
-          child: Text('Delete'),
+          child: const Text('Delete'),
         ),
       ],
     );

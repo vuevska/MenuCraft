@@ -32,7 +32,7 @@ class _ProfileSettingRowState extends State<ProfileSettingRow> {
               if (states.contains(MaterialState.pressed)) {
                 return const Color.fromRGBO(92, 86, 103, 1.0);
               }
-              return null; // Use the component's default.
+              return null;
             },
           ),
         ),

@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 
-
-// Modify the CategoryTextWidget class to accept file paths
 class CategoryTextWidget extends StatelessWidget {
-  final String filePath; // File path for the text file
+  final String filePath;
 
-  const CategoryTextWidget({Key? key, required this.filePath})
-      : super(key: key);
+  const CategoryTextWidget({super.key, required this.filePath});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +13,7 @@ class CategoryTextWidget extends StatelessWidget {
       future: _loadText(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Show a loading indicator while reading the file
+          return const CircularProgressIndicator();
         } else {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
