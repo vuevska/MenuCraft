@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "387558536399",
+    "project_id": "menucraft-ce623",
+    "storage_bucket": "menucraft-ce623.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387558536399:android:9273c08de07bdbe78733ba",
+        "android_client_info": {
+          "package_name": "com.example.menu_craft"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3zmBjOOWQLwNOLCsHpr2s93Ceo5sCsbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

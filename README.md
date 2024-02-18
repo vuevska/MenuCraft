@@ -1,16 +1,105 @@
-# menu_craft
+# MenuCraft
 
-A new Flutter project.
+Мобилна апликација за креирање и скенирање на дигитални менија за угостителски објекти. <br>
+Изработено од:
 
-## Getting Started
+- Маја Вуевска 203007
+- Марија Савеска 201062
+- Давид Арсовски 206003
 
-This project is a starting point for a Flutter application.
+### Функционалности
 
-A few resources to get you started if this is your first Flutter project:
+- Прикажување на менија на угостителски објекти
+- Скенирање QR кодови на менија
+- Креирање на дигитални менија
+- Додавање омилени менија
+- Пребарување менија
+- Креирање кориснички профили
+- Листање на сопствено креирани менија
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Имплементација
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Веб Сервиси
+
+- Користење на Firebase
+  - Автентикација
+  - Чување на податоци во нерелациона база на податоци
+  - Чување на слики генерирани од корисници
+
+### Custom UI елементи
+
+- Appbar
+- Форми за регистрација и најавување
+- Картички за приказ на менија на ресторани
+- Копчиња за додавање омилени менија
+- Копчиња за промена на менија
+- Копчиња за поставки на профилот
+- Приказ и избор на локација на мени
+- Приказ на профилна слика на корисник и мени
+- Форма за пребарување на менија
+- Изглед на QR скенер
+- Филтрирање според категории на менија
+- Приказ на детали на менија
+- Форми за додавање на нови менија, категории и производи во менијата
+- Форма за промена на корисничка лозинка
+- Форма за промена на заборавена корисничка лозинка
+
+### Шаблони за дизајн на софтвер
+
+- Observer Pattern - користење на Provider архитектурата која што овозможува Flutter апликациите да имаат лесен пренос на состојба помеѓу различни widgets кои се наоѓаат на различни позиции во Widget Tree
+- Singleton Pattern - креирање на една врска со базата на податоци и автентикациски сервиси од Firebase
+- Factory Pattern - помош при креирање на објекти без откривање на логиката за креирање
+
+### Паметење состојба
+
+Во апликацијата постојат повеќе важни состојби кои постојано треба да бидат запаметени. Такви се состојбата за моменталниот најавен корисник, неговите омилени менија и најблиските ресторани.
+
+### Користење сензори, камера или локациски сервиси
+
+Во апликацијата користиме камера каде може корисникот да скенира QR код кој ќе го пренасочи до мени. Користиме локациски сервиси за приказ на ресторани кои се во близина на моменталната локација на корисникот и избор на локација при креирање на ново мени.
+
+### Документација
+
+Стартување на апликацијата: `flutter run` <br>
+При прво вклучување на апликацијата сите можности на апликацијата се објаснети. <br>
+
+## Слики и видеа
+
+<p float="left" align="center">
+  <img src="./readmeAssets/1logoanim.gif" width=40% />
+  <img src="./readmeAssets/2qranim.gif" width=40% />
+</p>
+
+<p float="left" align="center">
+  <img src="./readmeAssets/3mapanim.gif" width=40% />
+  <img src="./readmeAssets/4favsanim.gif" width=40% />
+</p>
+
+<br>
+
+<p float="left" align="center">
+  <img src="./readmeAssets/animationStartup.gif" width=40% />
+  <img src="./readmeAssets/animationFavorites.gif" width=40% />
+</p>
+<p float="left" align="center">
+  <img src="./readmeAssets/animationQR.gif" width=40% />
+  <img src="./readmeAssets/animationSearch.gif" width=40% />
+</p>
+
+<br>
+
+<p float="left" align="center">
+  <img src="./readmeAssets/qr_code.jpg" width=40% />
+  <img src="./readmeAssets/see_items.jpg" width=40% />
+</p>
+<p float="left" align="center">
+  <img src="./readmeAssets/profile.jpg" width=40% />
+  <img src="./readmeAssets/create_category.jpg" width=40% />
+</p>
+
+<br>
+
+<p float="left" align="center">
+  <img src="./readmeAssets/pizzerias.jpg" width=40% />
+  <img src="./readmeAssets/your_menus.jpg" width=40% />
+</p>
