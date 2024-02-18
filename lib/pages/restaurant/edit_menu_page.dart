@@ -31,7 +31,6 @@ class _EditMenuPageState extends State<EditMenuPage> {
   final _picker = ImagePicker();
   final _db = DbRestaurantService();
 
-
   File? _pickedImage;
   RestaurantCategoryModel? _selectedCategory;
 
@@ -82,7 +81,6 @@ class _EditMenuPageState extends State<EditMenuPage> {
                   categories: _categories,
                   onCategorySelected: _onCategorySelected,
                   restaurant: widget.restaurant,
-
                 ),
               ],
             ),
@@ -120,9 +118,11 @@ class _EditMenuPageState extends State<EditMenuPage> {
 
     String imageUrl = widget.restaurant.imageUrl;
 
-    _selectedCategory ??= _categories.where((element) => element.name == widget.restaurant.category).first;
+    _selectedCategory ??= _categories
+        .where((element) => element.name == widget.restaurant.category)
+        .first;
 
-    if(_pickedImage != null){
+    if (_pickedImage != null) {
       const uuid = Uuid();
       imageUrl = await _db.uploadRestaurantImage(
         uuid.v4(),
@@ -138,9 +138,7 @@ class _EditMenuPageState extends State<EditMenuPage> {
       restaurantId: widget.restaurant.restaurantId,
       owningUserID: AuthService.user!.uid,
       category: _selectedCategory!.name,
-      //categories: _categories,
     );
-
 
     if (!context.mounted) {
       return;
@@ -154,7 +152,7 @@ class _EditMenuPageState extends State<EditMenuPage> {
     Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(builder: (context) => const OwnerMenusPage()),
-          (route) => route.isFirst,
+      (route) => route.isFirst,
     );
   }
 }

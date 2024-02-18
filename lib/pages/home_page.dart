@@ -7,8 +7,6 @@ import 'package:menu_craft/widgets/home_page/list_restaurants.dart';
 import '../models/restaurant_category_model.dart';
 import '../widgets/home_page/restaurant_categories/restaurant_category_grid.dart';
 
-
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -40,12 +38,12 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       selectedCategory = category;
                     });
-                    // Navigate to the new page
                     if (selectedCategory != null) {
                       Navigator.of(context).push(
                         CupertinoPageRoute(
                           builder: (BuildContext context) {
-                            return RestaurantListPage(category: selectedCategory!);
+                            return RestaurantListPage(
+                                category: selectedCategory!);
                           },
                         ),
                       );
@@ -61,4 +59,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

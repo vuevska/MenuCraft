@@ -72,8 +72,6 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     );
 
     try {
-      // await _db.addCategory(newCategory);
-
       Map<String, dynamic> categoryMap = newCategory.toMap();
 
       await _db.addItemsCategoryToRestaurant(

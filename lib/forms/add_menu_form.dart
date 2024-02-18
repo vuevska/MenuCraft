@@ -67,21 +67,6 @@ class _AddMenuFormState extends State<AddMenuForm> {
                       //showBorder: false,
                     ),
                     const SizedBox(height: 20.0),
-                    // TextFormField(
-                    //   controller: locationController,
-                    //   style: const TextStyle(color: Colors.white),
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Location',
-                    //     labelStyle: TextStyle(color: Colors.white),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.white),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.grey),
-                    //     ),
-                    //   ),
-                    // ),
-
                     DropdownButton<RestaurantCategoryModel>(
                       borderRadius: BorderRadius.circular(8.0),
                       value: _selectedCategory,
@@ -108,7 +93,7 @@ class _AddMenuFormState extends State<AddMenuForm> {
                             child: Text(
                               value.name,
                               style: const TextStyle(color: Colors.white),
-                            ), // Assuming CategoryModel has a 'name' property
+                            ),
                           );
                         }),
                       ],

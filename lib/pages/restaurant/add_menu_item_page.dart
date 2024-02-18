@@ -13,12 +13,12 @@ import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
 
 class AddMenuItemPage extends StatefulWidget {
-  final String categoryId;
+  final ItemsCategoryModel category;
   final RestaurantModel restaurant;
 
   const AddMenuItemPage({
     super.key,
-    required this.categoryId,
+    required this.category,
     required this.restaurant,
   });
 
@@ -80,7 +80,7 @@ class _AddMenuItemPageState extends State<AddMenuItemPage> {
 
       await _db.addMenuItemToCategory(
         widget.restaurant.restaurantId,
-        widget.categoryId,
+        widget.category.categoryId,
         menuItem,
       );
 
@@ -96,8 +96,8 @@ class _AddMenuItemPageState extends State<AddMenuItemPage> {
         MaterialPageRoute(
           builder: (context) => ViewMenuItemsPage(
             category: ItemsCategoryModel(
-              categoryId: widget.categoryId,
-              name: _nameController.text,
+              categoryId: widget.category.categoryId,
+              name: widget.category.name,
               icon: Icons.restaurant.codePoint,
             ),
             restaurant: widget.restaurant,

@@ -33,11 +33,8 @@ class QRGenOverlay {
             child: Material(
               color: Colors.transparent,
               child: SizedBox(
-                width: MediaQuery.of(context).size.width *
-                    0.8, // Adjust size as needed
-                height: MediaQuery.of(context).size.height *
-                    0.6, // Adjust size as needed
-
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.6,
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -54,7 +51,6 @@ class QRGenOverlay {
                         size: MediaQuery.of(context).size.width * 0.70,
                         padding: const EdgeInsets.all(30),
                         backgroundColor: Colors.white,
-
                       ),
                       Text(restaurantName,
                           style: const TextStyle(

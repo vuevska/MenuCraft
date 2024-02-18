@@ -127,7 +127,6 @@ class _AddMenuPageState extends State<AddMenuPage> {
       restaurantId: uuid.v4(),
       owningUserID: AuthService.user!.uid,
       category: _selectedCategory!.name,
-      //categories: _categories,
     );
 
     if (!context.mounted) {

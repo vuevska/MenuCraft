@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:menu_craft/models/items_category_model.dart';
 import 'package:menu_craft/models/menu_item_model.dart';
@@ -22,7 +23,6 @@ class DbRestaurantService {
     required String imageUrl,
     required String restaurantId,
     required String owningUserID,
-    //required List<RestaurantCategoryModel> categories,
     required String category,
   }) async {
     String hash =
@@ -41,15 +41,6 @@ class DbRestaurantService {
     final Map<String, dynamic> restaurantData = restaurant.toMap();
 
     await _db.collection('restaurants').doc(restaurantId).set(restaurantData);
-
-    // Ova gi zacuvuva categoriite vo subcollection
-    // final categoryCollectionRef = _db
-    //     .collection('restaurants')
-    //     .doc(restaurantId)
-    //     .collection('items_categories');
-    // for (var cat in categories) {
-    //   await categoryCollectionRef.doc(cat.categoryId).set(cat.toMap());
-    // }
   }
 
   Future<List<RestaurantModel>> getLocalRestaurants(
@@ -57,7 +48,6 @@ class DbRestaurantService {
     Position? lastKnownPosition = await lastLocation;
 
     if (lastKnownPosition == null) {
-      // Handle the case when lastKnownPosition is null
       return Future.error('Last known position is null');
     }
 
@@ -106,9 +96,8 @@ class DbRestaurantService {
       try {
         return await getRestaurant(id);
       } catch (e) {
-        // Handle the error (e.g., log it or return a default restaurant)
-        print('Error fetching restaurant with ID $id: $e');
-        return null; // Return a default restaurant or null
+        debugPrint('Error fetching restaurant with ID $id: $e');
+        return null;
       }
     })).then((value) {
       return value.where((element) => element != null).map((e) => e!).toList();
@@ -144,7 +133,7 @@ class DbRestaurantService {
 
       return restaurants;
     } catch (e) {
-      print('Error getting restaurants by user ID: $e');
+      debugPrint('Error getting restaurants by user ID: $e');
       rethrow;
     }
   }
@@ -154,23 +143,12 @@ class DbRestaurantService {
     try {
       final restaurantRef = _db.collection('restaurants').doc(restaurantId);
 
-      // dokolku nema categories subcollection, ja kreira pa posle dodava
-      final categoriesSnapshot =
-          await restaurantRef.collection('categories').get();
-      // if (categoriesSnapshot.docs.isEmpty) {
-      //   await restaurantRef.collection('categories').add({
-      //     'categoryId': '',
-      //     'name': '',
-      //     'icon': 0,
-      //   });
-      // }
-
       await restaurantRef
           .collection('categories')
           .doc(category["categoryId"])
           .set(category);
     } catch (e) {
-      print('Error adding category to restaurant: $e');
+      debugPrint('Error adding category to restaurant: $e');
       rethrow;
     }
   }
@@ -197,7 +175,7 @@ class DbRestaurantService {
 
       return categories;
     } catch (error) {
-      print('Error getting categories for restaurant: $error');
+      debugPrint('Error getting categories for restaurant: $error');
       return [];
     }
   }
@@ -216,7 +194,7 @@ class DbRestaurantService {
 
       await categoryRef.update(updatedCategory.toMap());
     } catch (e) {
-      print('Error updating items category: $e');
+      debugPrint('Error updating items category: $e');
       rethrow;
     }
   }
@@ -284,11 +262,7 @@ class DbRestaurantService {
 
     favorites.docs.forEach(
         (e) => {if (e.data()['favorite'] == true) restIDs.add(e.data()['id'])});
-    // favorites?.forEach((key, value) {
-    //   if (value['favorite'] == true) {
-    //     restIDs.add(value['id']);
-    //   }
-    // });
+
     return await getAllRestaurauntsFromList(restIDs);
   }
 
@@ -317,7 +291,7 @@ class DbRestaurantService {
           .doc(menuItemId)
           .set(menuItemData);
     } catch (e) {
-      print('Error adding menu item: $e');
+      debugPrint('Error adding menu item: $e');
       rethrow;
     }
   }
@@ -332,21 +306,12 @@ class DbRestaurantService {
           .doc(categoryId);
 
       final menuItemsCollectionRef = categoryRef.collection('menuItems');
-      final menuItemsSnapshot = await menuItemsCollectionRef.get();
-      // if (menuItemsSnapshot.docs.isEmpty) {
-      //   await menuItemsCollectionRef.doc().set({
-      //     'menuItemId': '',
-      //     'name': '',
-      //     'price': 0,
-      //     'description': '',
-      //   });
-      // }
 
       await menuItemsCollectionRef
           .doc(menuItem.menuItemId)
           .set(menuItem.toMap());
     } catch (e) {
-      print('Error adding menu item to category: $e');
+      debugPrint('Error adding menu item to category: $e');
       rethrow;
     }
   }
@@ -372,7 +337,7 @@ class DbRestaurantService {
 
       return menuItems;
     } catch (e) {
-      print('Error getting menu items in category: $e');
+      debugPrint('Error getting menu items in category: $e');
       return [];
     }
   }
@@ -388,17 +353,16 @@ class DbRestaurantService {
           .toList();
       return categories;
     } catch (error) {
-      print('Error getting categories: $error');
+      debugPrint('Error getting categories: $error');
       return [];
     }
   }
 
   Future<void> deleteRestaurant(String restaurantId) async {
     try {
-      // Delete the restaurant document
       await _db.collection('restaurants').doc(restaurantId).delete();
     } catch (e) {
-      print('Error deleting restaurant: $e');
+      debugPrint('Error deleting restaurant: $e');
       rethrow;
     }
   }
@@ -410,7 +374,6 @@ class DbRestaurantService {
     required String imageUrl,
     required String restaurantId,
     required String owningUserID,
-    //required List<RestaurantCategoryModel> categories,
     required String category,
   }) async {
     String hash =
@@ -442,7 +405,6 @@ class DbRestaurantService {
     for (var doc in snapshot.docs) {
       final data = doc.data();
       if (data['category'] == category.name) {
-        // Assuming category.name is the field that holds the category name
         final restaurant = RestaurantModel.fromMap(data);
         restaurants.add(restaurant);
       }
@@ -452,7 +414,6 @@ class DbRestaurantService {
 
   Future<void> deleteCategory(String restaurantId, String categoryId) async {
     try {
-      // Delete the category document
       await _db
           .collection('restaurants')
           .doc(restaurantId)
@@ -460,14 +421,13 @@ class DbRestaurantService {
           .doc(categoryId)
           .delete();
     } catch (e) {
-      print('Error deleting category: $e');
+      debugPrint('Error deleting category: $e');
     }
   }
 
   Future<void> deleteMenuItem(
       String restaurantId, String categoryId, String menuItemId) async {
     try {
-      // Delete the menu item document
       await _db
           .collection('restaurants')
           .doc(restaurantId)
@@ -477,7 +437,7 @@ class DbRestaurantService {
           .doc(menuItemId)
           .delete();
     } catch (e) {
-      print('Error deleting menuItem: $e');
+      debugPrint('Error deleting menuItem: $e');
     }
   }
 }

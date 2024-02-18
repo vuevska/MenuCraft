@@ -33,20 +33,6 @@ class AddMenuItemForm extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    // TextFormField(
-                    //   controller: nameController,
-                    //   style: const TextStyle(color: Colors.white),
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Name',
-                    //     labelStyle: TextStyle(color: Colors.white),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.white),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.grey),
-                    //     ),
-                    //   ),
-                    // ),
                     textInputRest(
                       label: "Name",
                       controller: nameController,

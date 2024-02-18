@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/init_load_widget.dart';
 
 class FirstTimeWidget extends StatelessWidget {
-  const FirstTimeWidget({Key? key}) : super(key: key);
+  const FirstTimeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

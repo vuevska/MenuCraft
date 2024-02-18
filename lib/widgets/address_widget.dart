@@ -40,7 +40,6 @@ class _AddressWidgetState extends State<AddressWidget> {
               );
             },
             child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 4.0),
                 Text(

@@ -53,31 +53,6 @@ class _ProfileButtonsState extends State<ProfileButtons> {
               );
             },
           ),
-          //const SizedBox(height: 40),
-          // ElevatedButton(
-          //   style: ElevatedButton.styleFrom(
-          //     backgroundColor: Colors.red,
-          //   ),
-          //   onPressed: () {
-          //     AuthService.signOut().then((value) {
-          //       InterfaceUtils.show(context, "Successfully Logged Out!");
-          //       context.read<UserProvider>().setUser(null);
-          //       widget.refresh();
-          //     }).catchError((error) {
-          //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          //         content: Text(error.toString()),
-          //       ));
-          //     });
-          //   },
-          //   child: const Text(
-          //     'Log Out',
-          //     style: TextStyle(
-          //       fontSize: 16,
-          //       color: Colors.white,
-          //       fontWeight: FontWeight.bold,
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );

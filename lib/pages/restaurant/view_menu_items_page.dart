@@ -250,11 +250,10 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                                                             }
                                                             Navigator.of(
                                                                     context)
-                                                                .pop(); // Close the dialog
+                                                                .pop();
                                                           } catch (e) {
-                                                            print(
+                                                            debugPrint(
                                                                 'Error deleting restaurant: $e');
-                                                            // Handle error if needed
                                                           }
                                                         },
                                                       );
@@ -288,7 +287,7 @@ class _ViewMenuItemsPageState extends State<ViewMenuItemsPage> {
                   CupertinoPageRoute(
                     builder: (BuildContext context) {
                       return AddMenuItemPage(
-                        categoryId: widget.category.categoryId,
+                        category: widget.category,
                         restaurant: widget.restaurant,
                       );
                     },

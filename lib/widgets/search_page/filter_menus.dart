@@ -17,8 +17,7 @@ class _FilterRestaurantsState extends State<FilterRestaurants> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<RestaurantModel>>(
-      future:
-          DbRestaurantService().getAllRestaurants(), // Fetch all restaurants
+      future: DbRestaurantService().getAllRestaurants(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(

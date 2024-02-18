@@ -59,20 +59,6 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                       pass: false,
                       context: context,
                     ),
-                    // TextFormField(
-                    //   controller: widget.nameController,
-                    //   style: const TextStyle(color: Colors.white),
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Category Name',
-                    //     labelStyle: TextStyle(color: Colors.white),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.white),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: Colors.grey),
-                    //     ),
-                    //   ),
-                    // ),
                     const SizedBox(height: 20.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

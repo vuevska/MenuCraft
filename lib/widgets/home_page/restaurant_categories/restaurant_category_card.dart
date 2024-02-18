@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:menu_craft/models/restaurant_category_model.dart';
 
-
 class CategoryCard extends StatefulWidget {
   final RestaurantCategoryModel category;
   final Function(RestaurantCategoryModel?) onTap;
 
-  const CategoryCard({Key? key,
+  const CategoryCard({
+    super.key,
     required this.category,
     required this.onTap,
   });
@@ -27,7 +27,6 @@ class _CategoryCardState extends State<CategoryCard> {
         });
 
         widget.onTap(widget.category);
-
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -38,14 +37,14 @@ class _CategoryCardState extends State<CategoryCard> {
               : null, // Change the border color when pressed
           boxShadow: _pressed
               ? [
-            BoxShadow(
-              color: Colors.purple.withOpacity(0.5),
-              spreadRadius: 4,
-              blurRadius: 4,
-              offset: Offset(0, 3),
-            ),
-          ]
-              : null, // Apply the box shadow when pressed
+                  BoxShadow(
+                    color: Colors.purple.withOpacity(0.5),
+                    spreadRadius: 4,
+                    blurRadius: 4,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
         ),
         child: Material(
           color: Colors.white,

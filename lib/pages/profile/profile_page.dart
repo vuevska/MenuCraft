@@ -7,7 +7,7 @@ import 'package:menu_craft/widgets/profile/profile.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -20,18 +20,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(
-        builder: (context, userProvider, child) {
-          if (AuthService.isUserLoggedIn() && userProvider.user != null) {
-            context.read<LocationService>().determinePosition().catchError((
-                onError) {
-              //TODO: mozebi i ovde error code
-            });
-            return Profile(refresh: refresh);
-          } else {
-            return LoginPage(refresh: refresh);
-          }
-        }
-    );
+    return Consumer<UserProvider>(builder: (context, userProvider, child) {
+      if (AuthService.isUserLoggedIn() && userProvider.user != null) {
+        context
+            .read<LocationService>()
+            .determinePosition()
+            .catchError((onError) {
+          //TODO: mozebi i ovde error code
+        });
+        return Profile(refresh: refresh);
+      } else {
+        return LoginPage(refresh: refresh);
+      }
+    });
   }
 }

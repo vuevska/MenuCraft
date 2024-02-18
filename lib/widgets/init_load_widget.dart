@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +49,7 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
           _db.getUser(AuthService.user!.uid).then((user) {
             context.read<UserProvider>().setUser(user);
           }).whenComplete(() async {
-            await Future.delayed(Duration(seconds: 1));
+            await Future.delayed(const Duration(seconds: 1));
             if (!context.mounted) {
               return;
             }
@@ -63,7 +62,7 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
           });
         }
       } else {
-        Future.delayed(Duration(seconds: 1)).whenComplete(() {
+        Future.delayed(const Duration(seconds: 1)).whenComplete(() {
           if (!context.mounted) {
             return;
           }
@@ -81,7 +80,7 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return isDebug
-        ? RootPage()
+        ? const RootPage()
         : Scaffold(
             body: FadeInUp(
               duration: const Duration(seconds: 1),
@@ -123,11 +122,11 @@ class _LoadHomeScreenState extends State<LoadHomeScreen> {
                             )
                             .fadeOut(
                                 duration: const Duration(milliseconds: 500)),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         AnimatedOpacity(
                           duration: const Duration(seconds: 1),
                           opacity: opacity,
-                          child: CircularProgressIndicator(),
+                          child: const CircularProgressIndicator(),
                         ),
                       ],
                     ),

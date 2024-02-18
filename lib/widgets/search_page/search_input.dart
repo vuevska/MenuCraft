@@ -56,7 +56,6 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
               prefixIcon: Icon(Icons.search),
               hintText: 'Search by name...',
               border: InputBorder.none,
-              // Style customization for the text field
               hintStyle: TextStyle(color: Colors.grey),
             ),
           ),
@@ -72,7 +71,6 @@ class _SearchBarCustomState extends State<SearchBarCustom> {
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.purple.shade50.withOpacity(0.0),
             ),
-            // child: const FilterRestaurants(),
             child: FilterRestaurants(searchQuery: _searchController.text),
           ),
         ),
